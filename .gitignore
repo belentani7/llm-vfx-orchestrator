@@ -27,3 +27,8 @@ Thumbs.db
 *.mp3
 *.mp4
 *.zip
+
+.pytest_cache/
+*.egg-info/
+.coverage/
+htmlcov/
