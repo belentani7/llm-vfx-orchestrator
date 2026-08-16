@@ -1,0 +1,36 @@
+# Character Generation Pipeline Template
+# Use with: vfp run workflow.json --config orchestrator/templates/character_generation.yaml
+
+comfyui:
+  host: "127.0.0.1"
+  port: 8188
+  timeout: 300
+
+llm:
+  claude:
+    model: "claude-sonnet-4-20250514"
+    api_key: "${ANTHROPIC_API_KEY}"
+  qwen:
+    model: "qwen-vl-max"
+    api_key: "${DASHSCOPE_API_KEY}"
+  glm:
+    model: "glm-4v-plus"
+    api_key: "${ZHIPUAI_API_KEY}"
+
+pipeline:
+  max_retries: 3
+  qa_threshold: 0.85
+
+# Template-specific defaults
+template:
+  name: character_generation
+  default_loras:
+    - name: "character_detail_v2"
+      strength: 0.8
+  default_sampler: "euler_a"
+  default_steps: 30
+  default_cfg: 7.5
+  default_size:
+    width: 1024
+    height: 1024
+  negative_prompt: "blurry, low quality, distorted, deformed, extra limbs, bad anatomy"

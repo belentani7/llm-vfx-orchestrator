@@ -1,0 +1,29 @@
+﻿# Dependencias
+node_modules/
+vendor/
+
+# Build
+dist/
+build/
+.next/
+out/
+target/
+*.pyc
+__pycache__/
+
+# Ambientes / secretos
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+
+# Media pesada
+*.mp3
+*.mp4
+*.zip

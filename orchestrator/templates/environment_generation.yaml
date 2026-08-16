@@ -1,0 +1,34 @@
+# Environment Generation Pipeline Template
+
+comfyui:
+  host: "127.0.0.1"
+  port: 8188
+  timeout: 300
+
+llm:
+  claude:
+    model: "claude-sonnet-4-20250514"
+    api_key: "${ANTHROPIC_API_KEY}"
+  qwen:
+    model: "qwen-vl-max"
+    api_key: "${DASHSCOPE_API_KEY}"
+  glm:
+    model: "glm-4v-plus"
+    api_key: "${ZHIPUAI_API_KEY}"
+
+pipeline:
+  max_retries: 3
+  qa_threshold: 0.8
+
+template:
+  name: environment_generation
+  default_loras:
+    - name: "environment_detail_v1"
+      strength: 0.7
+  default_sampler: "dpmpp_2m"
+  default_steps: 40
+  default_cfg: 8.0
+  default_size:
+    width: 1536
+    height: 1024
+  negative_prompt: "blurry, low quality, artifacts, seams, tiling errors"
