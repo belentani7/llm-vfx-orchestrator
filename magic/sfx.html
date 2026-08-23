@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BELENTANI // SOUND FORGE</title>
+<style>
+  html,body{margin:0;height:100%;background:#05010d;color:#e9d5ff;font-family:ui-monospace,Menlo,monospace;display:flex;align-items:center;justify-content:center;}
+  .box{text-align:center;padding:30px;}
+  h1{letter-spacing:.3em;font-size:1.6rem;margin:0 0 6px;}
+  p{opacity:.7;letter-spacing:.2em;font-size:.75rem;margin:0 0 26px;text-transform:uppercase;}
+  button{margin:6px;padding:14px 24px;background:rgba(168,85,247,.15);color:#fff;border:1px solid rgba(255,255,255,.3);
+    letter-spacing:.15em;font-size:.8rem;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:.25s;}
+  button:hover{background:rgba(168,85,247,.5);box-shadow:0 0 25px rgba(168,85,247,.7);}
+  .sign{margin-top:24px;color:#7dd3fc;letter-spacing:.3em;font-size:.7rem;opacity:.7;}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>SOUND FORGE</h1>
+  <p>procedural sound effects &middot; no files, pure web audio</p>
+  <div>
+    <button data-s="chime">Chime</button>
+    <button data-s="whoosh">Whoosh</button>
+    <button data-s="pop">Pop</button>
+    <button data-s="ambient">Ambient Pad</button>
+    <button data-s="power">Power On</button>
+    <button data-s="glitch">Glitch</button>
+  </div>
+  <div class="sign">belentani.eu &middot; noiacore.com</div>
+</div>
+<script>
+const AC = window.AudioContext || window.webkitAudioContext;
+let ctx = null;
+function ac(){ if(!ctx) ctx = new AC(); if(ctx.state==='suspended') ctx.resume(); return ctx; }
+function tone(f, t0, dur, type, vol, slideTo){
+  const c=ac(), o=c.createOscillator(), g=c.createGain();
+  o.type=type||'sine'; o.frequency.setValueAtTime(f,t0);
+  if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo,t0+dur);
+  g.gain.setValueAtTime(0.0001,t0);
+  g.gain.exponentialRampToValueAtTime(vol||0.2,t0+0.01);
+  g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+  o.connect(g).connect(c.destination); o.start(t0); o.stop(t0+dur+0.02);
+}
+function noise(t0,dur,vol,hp){
+  const c=ac(), b=c.createBuffer(1, c.sampleRate*dur, c.sampleRate), d=b.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1);
+  const s=c.createBufferSource(); s.buffer=b; const g=c.createGain(), f=c.createBiquadFilter();
+  f.type='highpass'; f.frequency.value=hp||800;
+  g.gain.setValueAtTime(vol||0.15,t0); g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+  s.connect(f).connect(g).connect(c.destination); s.start(t0); s.stop(t0+dur);
+}
+const sfx = {
+  chime(){ const t=ac().currentTime; [523,659,784,1046].forEach((f,i)=>tone(f,t+i*0.08,0.9,'sine',0.18)); tone(2093,t,1.2,'sine',0.06); },
+  whoosh(){ const t=ac().currentTime; noise(t,0.7,0.25,400); tone(120,t,0.7,'sawtooth',0.12,1400); },
+  pop(){ const t=ac().currentTime; tone(900,t,0.08,'sine',0.3,180); },
+  ambient(){ const t=ac().currentTime; [110,165,220,275].forEach(f=>tone(f,t,6,'sine',0.05)); tone(55,t,6,'triangle',0.12); },
+  power(){ const t=ac().currentTime; tone(60,t,0.5,'sawtooth',0.15,240); tone(880,t+0.35,0.6,'sine',0.12); },
+  glitch(){ const t=ac().currentTime; [220,180,260,150].forEach((f,i)=>tone(f,t+i*0.05,0.05,'square',0.12)); noise(t,0.3,0.2,1500); }
+};
+document.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{ ac(); sfx[b.dataset.s](); }));
+</script>
+</body>
+</html>

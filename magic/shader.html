@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BELENTANI // MAGIC SHADER</title>
+<style>
+  html, body { margin:0; height:100%; overflow:hidden; background:#05010d; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  #gl { position:fixed; inset:0; width:100%; height:100%; display:block; }
+  .ui {
+    position:fixed; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:18px;
+    color:#fff; text-align:center; pointer-events:none; z-index:2;
+  }
+  .ui h1 { font-size:clamp(2rem,7vw,5.5rem); margin:0; letter-spacing:.35em; font-weight:900;
+    text-shadow:0 0 40px rgba(168,85,247,.9),0 0 90px rgba(0,212,255,.4); }
+  .ui p  { margin:0; font-size:clamp(.8rem,2vw,1.2rem); letter-spacing:.25em; opacity:.85;
+    color:#e9d5ff; text-transform:uppercase; }
+  .sign { position:fixed; bottom:18px; width:100%; text-align:center; color:#7dd3fc;
+    letter-spacing:.3em; font-size:.75rem; opacity:.7; z-index:3; }
+  a.cta { pointer-events:auto; color:#fff; text-decoration:none; border:1px solid rgba(255,255,255,.35);
+    padding:12px 30px; letter-spacing:.2em; text-transform:uppercase; font-size:.8rem;
+    background:rgba(168,85,247,.15); border-radius:2px; transition:.3s; }
+  a.cta:hover { background:rgba(168,85,247,.5); box-shadow:0 0 40px rgba(168,85,247,.8); }
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div class="ui">
+  <h1>BELENTANI</h1>
+  <p>Magic Shader</p>
+  <a class="cta" href="immersive.html">enter the experience</a>
+</div>
+<div class="sign">belentani.eu &middot; noiacore.com</div>
+<script>
+const canvas = document.getElementById('gl');
+const gl = canvas.getContext('webgl');
+if (!gl) { document.body.innerHTML='<div style="color:#fff;padding:40px">WebGL not available</div>'; }
+else {
+  const vert = `attribute vec2 p; void main(){ gl_Position=vec4(p,0.,1.); }`;
+  const frag = `
+    precision highp float;
+    uniform vec2 uR; uniform float uT;
+    void main(){
+      vec2 uv = (gl_FragCoord.xy*2.0-uR)/uR.y;
+      float t = uT*0.12;
+      float c = sin(uv.x*3.0+t)+sin(uv.y*4.0-t*1.3)+sin((uv.x+uv.y)*2.4+t*0.7)
+                +sin(length(uv)*6.0-t*1.1);
+      vec3 a = vec3(0.20,0.02,0.35);           // deep violet
+      vec3 b = vec3(0.66,0.10,0.97);           // electric purple
+      vec3 c3= vec3(0.05,0.75,1.00);           // cyan
+      vec3 col = mix(a,b,smoothstep(-1.0,1.0,c));
+      col = mix(col,c3,smoothstep(1.0,2.2,c)*0.4);
+      float vign = 1.0 - length(uv)*0.35;
+      col += pow(max(0.0,sin(uv.x*12.0+t*2.0)*sin(uv.y*12.0-t*2.0)),18.0)*vec3(0.9,0.6,1.0)*0.5;
+      gl_FragColor = vec4(col*vign,1.0);
+    }`;
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  function sh(type, src){ const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); return s; }
+  const pr=gl.createProgram();
+  gl.attachShader(pr, sh(gl.VERTEX_SHADER,vert));
+  gl.attachShader(pr, sh(gl.FRAGMENT_SHADER,frag));
+  gl.linkProgram(pr); gl.useProgram(pr);
+  const a=gl.getAttribLocation(pr,'p'); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a,2,gl.FLOAT,false,0,0);
+  const uR=gl.getUniformLocation(pr,'uR'), uT=gl.getUniformLocation(pr,'uT');
+  function resize(){ canvas.width=innerWidth; canvas.height=innerHeight; gl.viewport(0,0,innerWidth,innerHeight); gl.uniform2f(uR,innerWidth,innerHeight); }
+  addEventListener('resize',resize); resize();
+  (function loop(t){ gl.uniform1f(uT,t/1000); gl.drawArrays(gl.TRIANGLES,0,3); requestAnimationFrame(loop); })(0);
+}
+</script>
+</body>
+</html>
