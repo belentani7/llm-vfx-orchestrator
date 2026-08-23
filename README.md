@@ -1,18 +1,18 @@
-# llm-vfx-orchestrator
+﻿# llm-vfx-orchestrator
 
 Autonomous VFX pipeline orchestration using LLMs (Claude, Qwen, GLM) connected to ComfyUI APIs. Automates render error correction through an intelligent feedback loop.
 
 ## Architecture
 
 ```
-DirectorAgent (Claude)     →  Workflow planning, JSON generation
-QAInspectorAgent (Qwen)    →  Visual quality assessment
-AssetManagerAgent (GLM)    →  RAG for LoRAs, models, textures
-CorrectionAgent            →  Generates fix patches
-        ↓
+DirectorAgent (Claude)     ÔåÆ  Workflow planning, JSON generation
+QAInspectorAgent (Qwen)    ÔåÆ  Visual quality assessment
+AssetManagerAgent (GLM)    ÔåÆ  RAG for LoRAs, models, textures
+CorrectionAgent            ÔåÆ  Generates fix patches
+        Ôåô
   ComfyUI API (queue / websocket / result)
-        ↓
-  Feedback Loop (analyze → correct → re-render → QA)
+        Ôåô
+  Feedback Loop (analyze ÔåÆ correct ÔåÆ re-render ÔåÆ QA)
 ```
 
 ## Installation
@@ -24,7 +24,7 @@ pip install llm-vfx-orchestrator
 Or from source:
 
 ```bash
-git clone https://github.com/your-org/llm-vfx-orchestrator.git
+git clone https://github.com/belentani7/llm-vfx-orchestrator.git
 cd llm-vfx-orchestrator
 pip install -e ".[dev]"
 ```
@@ -105,4 +105,4 @@ pytest
 
 ## License
 
-Apache 2.0 — see [LICENSE](LICENSE).
+Apache 2.0 ÔÇö see [LICENSE](LICENSE).
