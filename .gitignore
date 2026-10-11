@@ -1,6 +1,8 @@
-﻿# Dependencias
+# Dependencias
 node_modules/
 vendor/
+.venv/
+venv/
 
 # Build
 dist/
@@ -32,3 +34,7 @@ Thumbs.db
 *.egg-info/
 .coverage/
 htmlcov/
+
+# Store de jobs local / artefactos del orquestador
+.vfp/
+.jobs/
