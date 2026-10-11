@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "llm-vfx-orchestrator"
-version = "0.1.0"
+version = "0.2.0"
 description = "Autonomous VFX pipeline orchestration using LLMs and ComfyUI"
 readme = "README.md"
 license = "Apache-2.0"
@@ -13,7 +13,6 @@ dependencies = [
     "httpx>=0.27",
     "websockets>=13.0",
     "pyyaml>=6.0",
-    "pydantic>=2.0",
     "click>=8.1",
 ]
 
@@ -33,7 +32,16 @@ packages = ["orchestrator"]
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+pythonpath = ["."]
+filterwarnings = ["error::RuntimeWarning"]
 
 [tool.ruff]
 target-version = "py311"
 line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "C4", "SIM"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["orchestrator"]

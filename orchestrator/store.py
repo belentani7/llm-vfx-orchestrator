@@ -1,0 +1,79 @@
+"""Durable job store — makes ``vfp status``/``vfp retry`` work across processes."""
+
+from __future__ import annotations
+
+import logging
+from pathlib import Path
+from typing import Any
+
+from .utils import atomic_write_json, read_json, utcnow
+
+logger = logging.getLogger(__name__)
+
+SCHEMA_VERSION = 1
+_MAX_WORKFLOW_BYTES = 2_000_000
+
+
+class JobStore:
+    """File-per-job JSON store (atomic writes, tolerant of corrupt files)."""
+
+    def __init__(self, directory: str | Path) -> None:
+        self.directory = Path(directory)
+        self.directory.mkdir(parents=True, exist_ok=True)
+
+    def path_for(self, job_id: str) -> Path:
+        safe = "".join(ch for ch in job_id if ch.isalnum() or ch in "-_") or "job"
+        return self.directory / f"{safe}.json"
+
+    def save(self, job_id: str, payload: dict[str, Any]) -> bool:
+        """Persist a job record; returns False (never raises) when the disk fails."""
+        record = dict(payload)
+        record["job_id"] = job_id
+        record.setdefault("schema_version", SCHEMA_VERSION)
+        record.setdefault("updated_at", utcnow().isoformat())
+        workflow = record.get("workflow")
+        if isinstance(workflow, dict):
+            try:
+                import json
+
+                if len(json.dumps(workflow)) > _MAX_WORKFLOW_BYTES:
+                    record["workflow"] = None
+                    record["workflow_truncated"] = True
+            except (TypeError, ValueError):
+                record["workflow"] = None
+        try:
+            atomic_write_json(self.path_for(job_id), record)
+            return True
+        except OSError as exc:
+            logger.warning("could not persist job %s: %s", job_id, exc)
+            return False
+
+    def get(self, job_id: str) -> dict[str, Any] | None:
+        data = read_json(self.path_for(job_id))
+        return data if isinstance(data, dict) else None
+
+    def exists(self, job_id: str) -> bool:
+        return self.path_for(job_id).exists()
+
+    def delete(self, job_id: str) -> bool:
+        try:
+            self.path_for(job_id).unlink()
+            return True
+        except OSError:
+            return False
+
+    def list(self, limit: int = 50) -> list[dict[str, Any]]:
+        """Most recent jobs first (by start time, falling back to mtime)."""
+        records: list[dict[str, Any]] = []
+        try:
+            paths = list(self.directory.glob("*.json"))
+        except OSError as exc:  # pragma: no cover - unreadable dir
+            logger.warning("could not list jobs: %s", exc)
+            return []
+        for path in paths:
+            data = read_json(path)
+            if isinstance(data, dict):
+                data.setdefault("job_id", path.stem)
+                records.append(data)
+        records.sort(key=lambda r: str(r.get("started_at") or r.get("updated_at") or ""), reverse=True)
+        return records[:limit]
