@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock
 
 import pytest
 
-from orchestrator.feedback_loop import FeedbackLoop, CorrectionPlan
-from orchestrator.config import PipelineConfig
+from orchestrator.feedback_loop import CorrectionPlan, FeedbackLoop
 
 
 class TestFeedbackLoop:
