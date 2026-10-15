@@ -1,5 +1,12 @@
-version: 2
-updates:
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule: { interval: "weekly" }
+# Dependabot - Automatic dependency updates
+
+schedule:
+  - cron: "0 2 * * 0"
+
+# npm auto-update
+npm:
+  enabled: true
+  schedule: "weekly"
+  allow_updates:
+    - "patch"
+    - "minor"
