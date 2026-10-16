@@ -1,40 +1,28 @@
-# Dependencias
-node_modules/
-vendor/
-.venv/
-venv/
+# Git Ignore
 
-# Build
-dist/
-build/
-.next/
-out/
-target/
-*.pyc
-__pycache__/
+# Dependencies
+/node_modules/
+/.pnp/
+/package-lock.json
 
-# Ambientes / secretos
-.env
-.env.*
-!.env.example
-*.pem
-*.key
+# Runtime stuff
+/.next/
+/out/
 
-# OS / editor
-.DS_Store
-Thumbs.db
-*.swp
+# Build artifacts
+/dist/
+/.out/
 
-# Media pesada
-*.mp3
-*.mp4
-*.zip
+# Environment
+/.env.local
+/.env.*.local
 
-.pytest_cache/
-*.egg-info/
-.coverage/
-htmlcov/
+# IDE
+/.vscode/
+/.ts arqueiro/
 
-# Store de jobs local / artefactos del orquestador
-.vfp/
-.jobs/
+# Logs
+/*.log
+
+# Vercel
+/.vercel

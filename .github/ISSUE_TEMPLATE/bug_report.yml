@@ -1,9 +1,45 @@
-name: Bug Report
-title: "[BUG] "
-labels: ["bug"]
+name: bug_report
+
+on: issue_template
+
+labels:
+  - bug
+
+title: "Bug Report: {{title}}"
+description: "Please provide a detailed bug report for us to investigate."
+
 body:
-  - type: textarea
-    id: desc
-    attributes:
-      label: Description
+  - intro_message:
+      text: "Thanks for filing an issue! Please fill in the template below as completely as possible. If you're reporting a security vulnerability, please email belentani7pedro@gmail.com instead."
+    required: true
+  - separator
+  - text_input:
+      id: title
+      valid_regex: ""
       required: true
+      placeholder: "Short description of the bug"
+  - text_input:
+      id: version
+      valid_regex: ""
+      required: true
+      placeholder: "Version of the package"
+  - textarea:
+      id: steps_to_reproduce
+      valid_regex: ""
+      required: true
+      placeholder: "Steps to reproduce the bug"
+  - textarea:
+      id: expected_behavior
+      valid_regex: ""
+      required: true
+      placeholder: "Expected behavior"
+  - textarea:
+      id: actual_behavior
+      valid_regex: ""
+      required: true
+      placeholder: "Actual behavior"
+  - text_input:
+      id: environment
+      valid_regex: ""
+      required: true
+      placeholder: "OS, browser version, etc."
