@@ -1,16 +1,29 @@
 name: Security
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
 jobs:
-  security:
+  analyze:
+    name: CodeQL analysis (javascript-typescript,python)
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - name: Run CodeQL
-        uses: github/codeql-action/init@v2
+      - uses: actions/checkout@v5
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
         with:
-          languages: javascript,python
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+          languages: javascript-typescript,python
+      - name: Analyze
+        uses: github/codeql-action/analyze@v4
