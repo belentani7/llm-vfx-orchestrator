@@ -25,5 +25,7 @@ jobs:
           pip install -e ".[dev]"
       - name: Compilar todo el codigo fuente
         run: python -m compileall -q .
+      - name: Lint Python
+        run: ruff check .
       - name: Tests
         run: pytest -q
