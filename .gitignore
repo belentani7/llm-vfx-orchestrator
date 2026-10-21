@@ -1,35 +1,6 @@
-# Git Ignore
-
-# Dependencies
-/node_modules/
-/.pnp/
-/package-lock.json
-
-# Runtime stuff
-/.next/
-/out/
-
-# Build artifacts
-/dist/
-/.out/
-
-# Environment
-/.env.local
-/.env.*.local
-
-# IDE
-/.vscode/
-/.ts arqueiro/
-
-# Logs
-/*.log
-
-# Vercel
-/.vercel
-# Python
-__pycache__/
-*.py[cod]
-.pytest_cache/
-.venv/
-venv/
-*.egg-info/
+node_modules/
+dist/
+.env
+*.log
+.DS_Store
+.cache/
