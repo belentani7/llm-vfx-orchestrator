@@ -1,0 +1,39 @@
+# VFX Pipeline — configuración reproducible sin secretos embebidos.
+# Copia a config.yaml (archivo ignorado por Git) y exporta las variables de entorno.
+# ComfyUI local y proveedores LLM reales son necesarios para renderizar.
+comfyui:
+  host: 127.0.0.1
+  port: 8188
+  timeout: 300
+  ws_timeout: 3600
+  max_concurrent_renders: 1
+  use_proxy: false
+
+llm:
+  claude:
+    model: claude-sonnet-4-20250514
+    api_key: "${ANTHROPIC_API_KEY}"
+    vision: false
+  qwen:
+    model: qwen-vl-max
+    api_key: "${DASHSCOPE_API_KEY}"
+    vision: true
+  glm:
+    model: glm-4v-plus
+    api_key: "${ZHIPUAI_API_KEY}"
+    vision: true
+  fallbacks: [glm, qwen]
+
+pipeline:
+  max_retries: 3
+  qa_threshold: 0.8
+  min_score_improvement: 0.01
+  plateau_patience: 2
+  concurrency: 2
+  qa_concurrency: 2
+  max_qa_images: 4
+  correct_execution_errors: true
+
+template:
+  name: environment_generation
+  use_assets: false

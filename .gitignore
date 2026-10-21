@@ -33,3 +33,9 @@ __pycache__/
 .venv/
 venv/
 *.egg-info/
+
+# Local credentials/config: never commit operational API keys
+/config.yaml
+/.env
+/.env.*
+!/.env.example

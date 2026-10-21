@@ -1,55 +1,103 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Autonomous VFX pipeline orchestration using LLMs connected to ComfyUI APIs.">
-  <meta name="color-scheme" content="dark">
-  <title>LLM VFX Orchestrator · belentani7</title>
-  <link rel="stylesheet" href="site.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#090b10">
+<meta name="description" content="VFP: planificación, render, inspección visual y corrección iterativa con LLMs y ComfyUI. Orquestación real desde Python CLI.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="VFP — Visual Feedback Pipeline">
+<meta property="og:description" content="Una imagen no está lista hasta que ha sido inspeccionada. Orquestación de VFX con revisión visual y escalado humano.">
+<title>VFP — Visual Feedback Pipeline | BELENTANI</title>
+<link rel="stylesheet" href="site.css">
+<style>
+  :root{--accent:#89f7fe}
+  .hero{position:relative;min-height:630px}.hero:after{content:"";position:absolute;z-index:-1;right:0;top:68px;width:min(55vw,470px);height:440px;border-radius:45% 55% 62% 38%;border:1px solid #89f7fe38;transform:rotate(-22deg);box-shadow:inset 0 0 85px #89f7fe19,0 0 110px #89f7fe12;filter:drop-shadow(0 0 22px #89f7fe21);pointer-events:none}
+  .hero h1{max-width:830px}.hero h1 em{font-style:normal;color:var(--accent)}.hero .lede{max-width:660px}
+  .diagram{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:34px 0 22px}
+  .diagram article{padding:21px 13px;border:1px solid var(--line);background:linear-gradient(155deg,#14202b,#11151d);min-width:0;position:relative}
+  .diagram span{display:block;color:var(--accent);font-size:.68rem;font-weight:800;letter-spacing:.17em;margin-bottom:22px}
+  .diagram h3{font-size:.96rem;font-weight:700;letter-spacing:-.025em;line-height:1.4;margin:0 0 8px}
+  .diagram p{color:var(--muted);font-size:.78rem;line-height:1.55;margin:0}
+  .diagram article:not(:last-child):after{content:"→";position:absolute;right:-11px;top:45%;z-index:1;color:var(--accent);background:var(--paper);padding:2px}
+  .terminal{border:1px solid #89f7fe42;background:#080e13;box-shadow:0 20px 75px #0007;margin:10px 0 0}
+  .terminal-top{border-bottom:1px solid var(--line);padding:13px 20px;color:var(--muted);display:flex;justify-content:space-between;font-size:.7rem;letter-spacing:.14em}
+  pre{margin:0;padding:26px 20px;overflow-x:auto;line-height:1.8;font-size:.86rem;color:#e0f8fa;tab-size:2}
+  pre .comment{color:#8dabb4}pre .prompt{color:var(--accent)}
+  .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:28px 0}
+  .feature-grid article{border:1px solid var(--line);background:#11151d;padding:25px;min-height:205px}
+  .feature-grid b{color:var(--accent);font-size:.7rem;letter-spacing:.16em}
+  .feature-grid h3{font-size:1.12rem;margin:18px 0 10px}.feature-grid p{font-size:.86rem;line-height:1.75;color:var(--muted);margin:0}
+  .pill{display:inline-block;padding:7px 11px;border:1px solid #89f7fe55;color:var(--accent);font-size:.69rem;letter-spacing:.13em;margin-right:6px;margin-top:12px}
+  .notice{border-left:3px solid var(--accent);padding:18px 23px;background:#121a20;color:#c8d8dc;font-size:.86rem;line-height:1.7;margin:24px 0}
+  @media(max-width:800px){.diagram{grid-template-columns:repeat(2,1fr)}.diagram article:after{display:none}.feature-grid{grid-template-columns:1fr}.hero{min-height:unset}}
+  @media(max-width:530px){.diagram{grid-template-columns:1fr}.hero:after{opacity:.28}pre{font-size:.74rem}}
+</style>
 </head>
-<body style="--accent: #e3a4ff;">
-  <a class="skip-link" href="#contenido">Saltar al contenido</a>
-  <header class="site-header" aria-label="Cabecera del sitio">
-    <a class="brand" href="https://github.com/belentani7" aria-label="Perfil de belentani7">B7<span>/</span>OPEN</a>
-    <a class="source-link" href="https://github.com/belentani7/llm-vfx-orchestrator" target="_blank" rel="noopener">Ver código <span aria-hidden="true">↗</span></a>
-  </header>
-  <main id="contenido">
-    <section class="hero" aria-labelledby="titulo-principal">
-      <p class="eyebrow">Orquestación de efectos visuales</p>
-      <h1 id="titulo-principal">LLM VFX Orchestrator</h1>
-      <p class="lede">Pipeline autónomo para planificar, comprobar y corregir flujos de VFX conectados a ComfyUI.</p>
-      <div class="actions">
-        <a class="button button-primary" href="https://github.com/belentani7/llm-vfx-orchestrator" target="_blank" rel="noopener">Explorar repositorio <span aria-hidden="true">↗</span></a>
-        
-        <button class="button button-secondary" type="button" data-copy-url="https://github.com/belentani7/llm-vfx-orchestrator">Copiar enlace</button>
-      </div>
-      <p class="copy-status" role="status" aria-live="polite"></p>
-    </section>
-    <section class="facts" aria-label="Información del proyecto">
-      <div><span>REPOSITORIO</span><strong>llm-vfx-orchestrator</strong></div>
-      <div><span>TECNOLOGÍA</span><strong>Python</strong></div>
-      <div><span>PUBLICACIÓN</span><strong>GitHub Pages</strong></div>
-    </section>
-    <section class="overview" aria-labelledby="sobre-proyecto">
-      <div class="section-heading"><p class="eyebrow">01 · CONTEXTO</p><h2 id="sobre-proyecto">Un punto de entrada claro.</h2></div>
-      <p>Esta página acompaña al repositorio como una portada pública, ligera y accesible. El código, la documentación detallada y las instrucciones de uso permanecen en el repositorio para mantener una única fuente de verdad.</p>
-    </section>
-    <section class="highlights" aria-labelledby="puntos-clave">
-      <div class="section-heading"><p class="eyebrow">02 · PUNTOS CLAVE</p><h2 id="puntos-clave">Qué encontrarás.</h2></div>
-      <ol>
-        <li><span>01</span><p>Agentes de dirección y QA</p></li>
-        <li><span>02</span><p>Bucle de corrección</p></li>
-        <li><span>03</span><p>Integración con API de ComfyUI</p></li>
-      </ol>
-    </section>
-    <section class="next" aria-labelledby="siguiente-paso">
-      <p class="eyebrow">03 · SIGUIENTE PASO</p>
-      <h2 id="siguiente-paso">Consulta la documentación y el código fuente.</h2>
-      <a class="text-link" href="https://github.com/belentani7/llm-vfx-orchestrator" target="_blank" rel="noopener">Abrir llm-vfx-orchestrator en GitHub <span aria-hidden="true">↗</span></a>
-    </section>
-  </main>
-  <footer><span>© <span id="year"></span> belentani7</span><span>Diseñado para lectura rápida y acceso abierto.</span></footer>
-  <script src="site.js"></script>
+<body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<header class="site-header"><a class="brand" href="./" aria-label="VFP, inicio">VFP<span> / </span>BELENTANI</a><a class="source-link" href="https://github.com/belentani7/llm-vfx-orchestrator" target="_blank" rel="noopener noreferrer">Código y manual ↗</a></header>
+<main id="contenido">
+  <section class="hero" aria-labelledby="hero-title">
+    <p class="eyebrow">VISUAL FEEDBACK PIPELINE / 2026 · RENDER INTELLIGENCE</p>
+    <h1 id="hero-title">La imagen se genera.<br><em>La calidad se decide.</em></h1>
+    <p class="lede">VFP conecta agentes de lenguaje con ComfyUI para planificar un workflow, renderizar, inspeccionar los píxeles reales y corregir el resultado. Cuando la mejora no llega, escala a revisión humana en lugar de repetir indefinidamente.</p>
+    <div class="actions">
+      <a class="button button-primary" href="#inicio">Ver instalación y ejecución ↗</a>
+      <a class="button button-secondary" href="#arquitectura">Conocer el pipeline ↓</a>
+      <button class="button button-secondary" type="button" data-copy-url="https://github.com/belentani7/llm-vfx-orchestrator">Copiar código fuente</button>
+    </div>
+    <p class="copy-status" role="status" aria-live="polite"></p>
+    <span class="pill">PYTHON 3.11+</span><span class="pill">COMFYUI API</span><span class="pill">MULTIMODAL QA</span>
+  </section>
+  <section class="facts" aria-label="Características verificables">
+    <div><span>CONTROL</span><strong>Render → inspección → corrección</strong></div>
+    <div><span>INTERFAZ OPERATIVA</span><strong>CLI `vfp` + configuración YAML</strong></div>
+    <div><span>ESTADO DEL PROYECTO</span><strong>Código fuente / requiere ComfyUI y proveedores</strong></div>
+  </section>
+  <section class="overview" id="arquitectura" aria-labelledby="architecture-title">
+    <div class="section-heading"><p class="eyebrow">01 / ARQUITECTURA</p><h2 id="architecture-title">Un bucle cerrado.<br>Sin humo.</h2></div>
+    <p>Los agentes no certifican calidad por intuición. El inspector recibe la imagen real del render; el pipeline conserva el estado del trabajo, mide el resultado y aplica un límite explícito de reintentos y concurrencia. Los errores de proveedor o los controles inconclusos no se convierten en un aprobado ficticio.</p>
+  </section>
+  <div class="diagram" aria-label="Etapas del ciclo de VFX">
+    <article><span>01 / PLAN</span><h3>Director</h3><p>Convierte la intención en un grafo ComfyUI.</p></article>
+    <article><span>02 / RENDER</span><h3>Motor de imagen</h3><p>Encola y sigue el trabajo por HTTP y WebSocket.</p></article>
+    <article><span>03 / INSPECT</span><h3>QA visual</h3><p>Examina los píxeles, no solo el nombre del archivo.</p></article>
+    <article><span>04 / REVISE</span><h3>Correction</h3><p>Propone un parche concreto del workflow.</p></article>
+    <article><span>05 / DECIDE</span><h3>Finalizar o escalar</h3><p>Guarda el estado y exige revisión humana si procede.</p></article>
+  </div>
+  <section class="highlights" aria-labelledby="capabilities-title">
+    <div class="section-heading"><p class="eyebrow">02 / CAPACIDADES</p><h2 id="capabilities-title">Arquitectura antes que espectáculo.</h2></div>
+    <div class="feature-grid">
+      <article><b>01 / VISIÓN</b><h3>Inspección multimodal</h3><p>QA con imagen base64 y puntuación normalizada; informa cuando la inspección está degradada.</p></article>
+      <article><b>02 / RESILIENCIA</b><h3>Control de gasto GPU</h3><p>Retries limitados, detección de plateau, fallback y escalado de trabajos sin progreso.</p></article>
+      <article><b>03 / OPERACIÓN</b><h3>Estado persistente</h3><p>Trabajos JSON atómicos: inspecciona el estado y repite el workflow con el CLI cuando corresponde.</p></article>
+    </div>
+  </section>
+  <section class="overview" id="inicio" aria-labelledby="start-title">
+    <div class="section-heading"><p class="eyebrow">03 / INICIO REAL</p><h2 id="start-title">De código a render.</h2></div>
+    <div>
+      <p style="margin-top:0;color:var(--muted);line-height:1.7">Instala desde el repositorio autorizado. Copia la configuración sin claves reales, exporta credenciales en tu entorno y conecta una instancia de ComfyUI. La web es documentación: no ejecuta renders por sí misma.</p>
+      <div class="terminal"><div class="terminal-top"><span>TERMINAL / VFP</span><span>LOCAL EXECUTION</span></div><pre><code><span class="comment"># Desde el repositorio clonado</span>
+<span class="prompt">$</span> python -m pip install -e ".[dev]"
+<span class="prompt">$</span> cp config.example.yaml config.yaml
+<span class="comment"># Exporta ANTHROPIC_API_KEY y DASHSCOPE_API_KEY</span>
+<span class="prompt">$</span> vfp doctor -c config.yaml
+<span class="prompt">$</span> vfp plan --prompt "retrato cinematográfico" -o workflow.json
+<span class="prompt">$</span> vfp run workflow.json -c config.yaml
+<span class="prompt">$</span> vfp jobs</code></pre></div>
+      <p class="notice">Este flujo requiere proveedores válidos y ComfyUI accesible; algunas órdenes fallarán si faltan. No se afirma que exista una instancia de GPU gratuita ni un servicio SaaS público asociado.</p>
+    </div>
+  </section>
+  <section class="next" aria-labelledby="next-title">
+    <p class="eyebrow">04 / REFERENCIAS Y PRUEBAS</p>
+    <h2 id="next-title">Lo visual es una disciplina de ingeniería.</h2>
+    <p style="max-width:680px;color:var(--muted);line-height:1.8">El repositorio contiene contratos, plantillas, pruebas offline, auditoría técnica y un benchmark reproducible. Consulta el estado real de CI antes de promocionar una versión.</p>
+    <a class="text-link" href="https://github.com/belentani7/llm-vfx-orchestrator" target="_blank" rel="noopener noreferrer">Documentación técnica y código fuente ↗</a>
+  </section>
+</main>
+<footer><span>© <span id="year">2026</span> VFP · BELENTANI STUDIO</span><span>Plan · Render · Inspect · Correct · Escalate</span></footer>
+<script src="site.js"></script>
 </body>
 </html>
