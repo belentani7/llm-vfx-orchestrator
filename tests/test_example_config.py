@@ -21,7 +21,7 @@ def test_example_configuration_parses_and_contains_no_credentials():
     with patch.dict("os.environ", {"ANTHROPIC_API_KEY": "", "DASHSCOPE_API_KEY": "", "ZHIPUAI_API_KEY": ""}):
         config = PipelineConfig.from_yaml(EXAMPLE)
     assert config.comfyui.port == 8188
-    assert config.pipeline if hasattr(config, "pipeline") else config.qa_threshold == 0.8
+    assert config.qa_threshold == 0.8
     assert config.llm.claude.api_key == ""
     assert config.llm.qwen.api_key == ""
 
