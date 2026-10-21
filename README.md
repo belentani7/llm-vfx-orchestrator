@@ -24,17 +24,16 @@ evidence, what was fixed, and the capacity numbers.
 
 ## Installation
 
-```bash
-pip install llm-vfx-orchestrator
-```
-
-Or from source:
+**Instalación reproducible desde el código fuente** (no se presupone una publicación en PyPI):
 
 ```bash
 git clone https://github.com/belentani7/llm-vfx-orchestrator.git
 cd llm-vfx-orchestrator
-pip install -e ".[dev]"
+python -m pip install -e ".[dev]"
+cp config.example.yaml config.yaml  # PowerShell: Copy-Item config.example.yaml config.yaml
 ```
+
+No incluyas secretos en `config.yaml` ni en el repositorio; exporta `ANTHROPIC_API_KEY` y `DASHSCOPE_API_KEY` en el entorno seguro antes de ejecutar el pipeline. El archivo `config.yaml` se excluye del control de versiones.
 
 ### Requirements
 
@@ -43,6 +42,8 @@ pip install -e ".[dev]"
 - API keys for at least one LLM provider (env vars or config YAML)
 
 ## Quick Start
+
+La [página de producto](docs/index.html) describe arquitectura y operación; es documentación estática, **no** un renderizador en el navegador. Se necesita acceso al repositorio, a ComfyUI y a los servicios LLM configurados. 
 
 ```bash
 # 0. Verify config, ComfyUI, providers and store
@@ -163,7 +164,7 @@ python scripts/benchmark.py --jobs 24 --render-ms 50 --qa-ms 20 --images 2 --con
 
 ```bash
 pip install -e ".[dev]"
-pytest -q          # 262 tests, no network required
+pytest -q          # offline regressions, no network required
 ruff check .
 python scripts/benchmark.py
 ```
