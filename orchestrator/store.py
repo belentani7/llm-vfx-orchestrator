@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import re
 from pathlib import Path
 from typing import Any
 
@@ -22,8 +23,14 @@ class JobStore:
         self.directory.mkdir(parents=True, exist_ok=True)
 
     def path_for(self, job_id: str) -> Path:
-        safe = "".join(ch for ch in job_id if ch.isalnum() or ch in "-_") or "job"
-        return self.directory / f"{safe}.json"
+        """Reject invalid IDs rather than collapsing distinct jobs onto one file.
+
+        The previous sanitization mapped `../job` and `job` to the same
+        path. Job IDs are opaque ASCII keys, never filesystem paths.
+        """
+        if not isinstance(job_id, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,119}", job_id):
+            raise ValueError("job_id must contain 1–120 ASCII letters, digits, underscores or hyphens")
+        return self.directory / f"{job_id}.json"
 
     def save(self, job_id: str, payload: dict[str, Any]) -> bool:
         """Persist a job record; returns False (never raises) when the disk fails."""

@@ -88,11 +88,14 @@ class TestJobStore:
         (tmp_path / "broken.json").write_text("{oops")
         assert [record["job_id"] for record in store.list()] == ["good"]
 
-    def test_job_id_is_sanitized(self, tmp_path):
+    def test_invalid_job_ids_are_rejected_without_aliasing_valid_jobs(self, tmp_path):
         store = JobStore(tmp_path)
-        path = store.path_for("../../evil")
-        assert path.parent == tmp_path
-        assert ".." not in path.name
+        with pytest.raises(ValueError, match="job_id"):
+            store.path_for("../../evil")
+        with pytest.raises(ValueError, match="job_id"):
+            store.path_for("../job")
+        assert store.path_for("job") == tmp_path / "job.json"
+        assert not list(tmp_path.glob("*.json"))
 
     def test_delete(self, tmp_path):
         store = JobStore(tmp_path)
