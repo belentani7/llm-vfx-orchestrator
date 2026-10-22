@@ -188,6 +188,23 @@ class TestHttpEndpoints:
         assert await client.upload_image(b"data", "upload.png") == "in/upload.png"
 
     @pytest.mark.asyncio
+    async def test_upload_preserves_existing_takes_instead_of_overwriting(self):
+        seen: list[bytes] = []
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            seen.append(request.content)
+            return httpx.Response(200, json={
+                "name": "input_00001.png", "subfolder": "takes",
+            })
+
+        client = make_client(handler)
+        result = await client.upload_image(b"picture", "input.png", "takes")
+        assert result == "takes/input_00001.png"
+        assert b'overwrite' in seen[0]
+        assert b'false' in seen[0]
+        assert b'true' not in seen[0]
+
+    @pytest.mark.asyncio
     async def test_interrupt_is_best_effort(self):
         def handler(request: httpx.Request) -> httpx.Response:
             raise httpx.ConnectError("no server")
