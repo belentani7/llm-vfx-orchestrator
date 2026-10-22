@@ -43,11 +43,17 @@ class JobStore:
             try:
                 import json
 
-                if len(json.dumps(workflow)) > _MAX_WORKFLOW_BYTES:
+                encoded = json.dumps(
+                    workflow, indent=2, ensure_ascii=False, default=str,
+                ).encode("utf-8")
+                if len(encoded) > _MAX_WORKFLOW_BYTES:
                     record["workflow"] = None
                     record["workflow_truncated"] = True
-            except (TypeError, ValueError):
+            except (TypeError, ValueError, UnicodeError):
+                # Circular/non-serializable workflows must never block the
+                # status record, and omission must be visible to consumers.
                 record["workflow"] = None
+                record["workflow_omitted_reason"] = "invalid_serialization"
         try:
             atomic_write_json(self.path_for(job_id), record)
             return True
