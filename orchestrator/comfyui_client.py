@@ -149,7 +149,9 @@ class ComfyUIClient:
         return response.json()
 
     async def upload_image(self, image: bytes, filename: str = "input.png", subfolder: str = "") -> str:
-        data: dict[str, str] = {"overwrite": "true"}
+        # ComfyUI adds a unique suffix if a filename is already present.
+        # Do not clobber previous takes or an unrelated artist's file.
+        data: dict[str, str] = {"overwrite": "false"}
         if subfolder:
             data["subfolder"] = subfolder
         response = await self._client.post(
