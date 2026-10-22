@@ -32,13 +32,13 @@ def _load_config(config_path: str | None, overrides: tuple[str, ...], store_dir:
     try:
         base = PipelineConfig.from_yaml(config_path) if config_path else PipelineConfig()
         config = PipelineConfig.from_env(base)
-    except Exception as exc:  # noqa: BLE001 - bad config must not print a traceback
+        if store_dir:
+            config.store_dir = store_dir
+        if overrides:
+            config.with_overrides(list(overrides))
+        return config
+    except Exception as exc:  # noqa: BLE001 - invalid overrides must also be clean errors
         raise click.ClickException(f"invalid configuration: {exc}") from exc
-    if store_dir:
-        config.store_dir = store_dir
-    if overrides:
-        config.with_overrides(list(overrides))
-    return config
 
 
 def _make_pipeline(config: PipelineConfig) -> VFPPipeline:
