@@ -194,6 +194,12 @@ class TestRun:
         assert "Error: RuntimeError: no LLM provider configured" in result.output
         assert "Traceback" not in result.output
 
+    def test_invalid_override_reports_cleanly(self, runner, stub_pipeline):
+        result = runner.invoke(cli.main, ["run", "--prompt", "x", "--set", "not_a_config_key=1"])
+        assert result.exit_code == 1
+        assert "invalid configuration" in result.output
+        assert "Traceback" not in result.output
+
     def test_invalid_config_reports_cleanly(self, runner, stub_pipeline, tmp_path):
         config_path = tmp_path / "bad.yaml"
         config_path.write_text("qa_threshold: 4\n")
