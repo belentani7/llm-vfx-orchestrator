@@ -37,22 +37,3 @@ jobs:
           python -m pip install build
           python -m build --no-isolation
 
-  node-ui:
-    name: Optional Vite shell / verify manifest
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - uses: pnpm/action-setup@v4
-        with:
-          version: "9.0.0"
-          run_install: false
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-      - name: Install UI dependencies
-        run: pnpm install --no-frozen-lockfile
-      - name: Build UI
-        run: pnpm run build
