@@ -143,6 +143,23 @@ Templates only fill values the Director left empty, so an explicit workflow alwa
 5. Steps 2-4 repeat up to `max_retries`; the loop stops early on a plateau or a no-op patch
 6. Jobs end **completed**, **escalated** (human review, `escalation_reason` persisted) or **failed**
 
+## Local browser workflow inspector
+
+The static `docs/index.html` includes an offline, client-side ComfyUI **API-format**
+JSON structure inspector. It checks node objects, `class_type`, and `inputs`
+without uploading or storing workflow text. It is **not** a ComfyUI runtime,
+model/connection validator, render engine or provider health check.
+
+Run its focused tests without installing JavaScript dependencies:
+
+```bash
+node --test tests/web-workflow-validator.test.mjs
+```
+
+This repository is private. Links from the static landing require authorized
+GitHub access; do not interpret them as an open-source distribution or expose
+private workflows or user assets on public hosting.
+
 ## Testing
 
 - `pytest -q` runs the whole suite offline.
