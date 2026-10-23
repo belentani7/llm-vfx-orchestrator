@@ -29,3 +29,16 @@ jobs:
         run: ruff check .
       - name: Tests
         run: pytest -q
+
+  browser-workflow-inspector:
+    name: Offline workflow JSON inspector / Node 22
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate browser-side inspector without network dependencies
+        run: node --test tests/web-workflow-validator.test.mjs
+      - name: Check module syntax
+        run: node --check docs/workflow-check.mjs
