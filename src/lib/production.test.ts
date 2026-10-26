@@ -60,6 +60,13 @@ describe("VFX production planning core", () => {
     expect(imported.shots[0].continuity.length).toBeGreaterThan(0);
   });
 
+  it("deduplicates shot identifiers from imported manifests", () => {
+    const project = createStarterProject();
+    const duplicated = { ...project, shots: [{ ...project.shots[0], id: "same" }, { ...project.shots[1], id: "same" }] };
+    const imported = parseProject(JSON.stringify(duplicated));
+    expect(new Set(imported.shots.map((shot) => shot.id)).size).toBe(imported.shots.length);
+  });
+
   it("exports a versioned JSON manifest that can be imported again", () => {
     const project = createStarterProject();
     const manifest = exportProject(project);
