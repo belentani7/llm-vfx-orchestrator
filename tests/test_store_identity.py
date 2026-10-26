@@ -36,7 +36,7 @@ def test_save_and_retrieve_do_not_alias_distinct_ids(tmp_path):
 def test_corrupt_utf8_job_does_not_abort_history(tmp_path):
     store = JobStore(tmp_path / "jobs")
     assert store.save("good", {"status": "completed"})
-    (store.directory / "broken.json").write_bytes(b'{"status":"\\xff"}')
+    (store.directory / "broken.json").write_bytes(b'{"status":"\xff"}')
     assert store.get("broken") is None
     assert [record["job_id"] for record in store.list()] == ["good"]
 
@@ -53,7 +53,7 @@ def test_cyclic_metadata_fails_without_overwriting_last_valid_status(tmp_path):
 
 def test_invalid_unicode_metadata_fails_without_creating_corrupt_record(tmp_path):
     store = JobStore(tmp_path / "jobs")
-    assert store.save("bad_unicode", {"status": "running", "note": "\\ud800"}) is False
+    assert store.save("bad_unicode", {"status": "running", "note": "\ud800"}) is False
     assert store.get("bad_unicode") is None
 
 
