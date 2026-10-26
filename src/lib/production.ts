@@ -32,7 +32,7 @@ const DEFAULT_NEGATIVE = "unwanted text, logos, watermarks, extra fingers, dupli
 export function createShot(index: number): VFXShot {
   const n = Math.max(1, Math.floor(index));
   return {
-    id: `shot-${n}-${Date.now().toString(36)}`,
+    id: `shot-${n}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
     title: `Shot ${String(n).padStart(2, "0")}`,
     purpose: "Advance the story with one clear visual beat.",
     durationSeconds: 5,
@@ -166,36 +166,62 @@ export function getProjectMetrics(project: VFXProject) {
 }
 
 export function parseProject(raw: string | null): VFXProject {
-  if (!raw) return createStarterProject();
+  const fallback = createStarterProject();
+  if (!raw) return fallback;
   try {
     const value: unknown = JSON.parse(raw);
-    if (!value || typeof value !== "object") return createStarterProject();
+    if (!value || typeof value !== "object") return fallback;
     const candidate = value as Partial<VFXProject>;
     if (candidate.schemaVersion !== 1 || typeof candidate.title !== "string" || !Array.isArray(candidate.shots)) {
-      return createStarterProject();
+      return fallback;
     }
-    const fallback = createStarterProject();
-    const shots = candidate.shots.filter((shot): shot is VFXShot =>
-      Boolean(shot && typeof shot === "object" && typeof (shot as VFXShot).id === "string" && typeof (shot as VFXShot).title === "string"),
-    );
+
+    const validAspectRatios: VFXProject["aspectRatio"][] = ["16:9", "9:16", "1:1", "2.39:1"];
+    const validFrameRates: VFXProject["frameRate"][] = [24, 25, 30];
+    const validStatuses: ShotStatus[] = ["planned", "prompt_ready", "in_review", "approved"];
+    const safeText = (value: unknown, defaultValue: string, max: number): string =>
+      typeof value === "string" ? value.slice(0, max) : defaultValue;
+
+    const shots = candidate.shots
+      .filter((shot): shot is VFXShot =>
+        Boolean(shot && typeof shot === "object" && typeof (shot as VFXShot).id === "string" && typeof (shot as VFXShot).title === "string"),
+      )
+      .map((shot, index) => {
+        const defaults = createShot(index + 1);
+        return {
+          ...defaults,
+          id: shot.id.slice(0, 120),
+          title: shot.title.slice(0, 180),
+          purpose: safeText(shot.purpose, defaults.purpose, 500),
+          durationSeconds: Math.min(30, Math.max(1, Number(shot.durationSeconds) || 5)),
+          status: validStatuses.includes(shot.status) ? shot.status : "planned",
+          scene: safeText(shot.scene, "", 6000),
+          camera: safeText(shot.camera, defaults.camera, 1000),
+          movement: safeText(shot.movement, defaults.movement, 1000),
+          lighting: safeText(shot.lighting, defaults.lighting, 1000),
+          continuity: safeText(shot.continuity, defaults.continuity, 2000),
+          referenceNotes: safeText(shot.referenceNotes, "", 2000),
+          negativePrompt: safeText(shot.negativePrompt, defaults.negativePrompt, 2000),
+          seed: safeText(shot.seed, "", 180),
+        };
+      });
+
     return {
-      ...fallback,
-      ...candidate,
+      schemaVersion: 1,
       title: candidate.title.slice(0, 180),
-      logline: typeof candidate.logline === "string" ? candidate.logline.slice(0, 2000) : fallback.logline,
-      visualBible: typeof candidate.visualBible === "string" ? candidate.visualBible.slice(0, 4000) : fallback.visualBible,
-      modelTarget: typeof candidate.modelTarget === "string" ? candidate.modelTarget.slice(0, 180) : fallback.modelTarget,
-      shots: shots.map((shot) => ({
-        ...createShot(1),
-        ...shot,
-        id: shot.id.slice(0, 120),
-        title: shot.title.slice(0, 180),
-        durationSeconds: Math.min(30, Math.max(1, Number(shot.durationSeconds) || 5)),
-        status: ["planned", "prompt_ready", "in_review", "approved"].includes(shot.status) ? shot.status : "planned",
-      })),
+      logline: safeText(candidate.logline, fallback.logline, 2000),
+      visualBible: safeText(candidate.visualBible, fallback.visualBible, 4000),
+      modelTarget: safeText(candidate.modelTarget, fallback.modelTarget, 180),
+      aspectRatio: validAspectRatios.includes(candidate.aspectRatio as VFXProject["aspectRatio"])
+        ? candidate.aspectRatio as VFXProject["aspectRatio"]
+        : fallback.aspectRatio,
+      frameRate: validFrameRates.includes(candidate.frameRate as VFXProject["frameRate"])
+        ? candidate.frameRate as VFXProject["frameRate"]
+        : fallback.frameRate,
+      shots,
     };
   } catch {
-    return createStarterProject();
+    return fallback;
   }
 }
 
