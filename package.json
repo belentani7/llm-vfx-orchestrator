@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "test": "vitest run",
-    "lint": "eslint . --ext ts,tsx"
+    "check": "tsc --noEmit",
+    "build": "pnpm run check && vite build",
+    "test": "vitest run"
   },
   "dependencies": {
     "react": "^18.2.0",
