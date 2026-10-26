@@ -58,3 +58,11 @@ jobs:
         run: pnpm test
       - name: Production build
         run: pnpm run build
+      - name: Export resolved lockfile for deterministic follow-up
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-pnpm-lock
+          path: pnpm-lock.yaml
+          if-no-files-found: error
+          retention-days: 1
