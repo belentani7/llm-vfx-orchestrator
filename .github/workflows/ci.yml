@@ -37,3 +37,24 @@ jobs:
           python -m pip install build
           python -m build --no-isolation
 
+
+  web-app:
+    name: Web UI / typecheck, tests and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install web dependencies
+        run: pnpm install --no-frozen-lockfile
+      - name: Typecheck
+        run: pnpm run check
+      - name: Unit tests
+        run: pnpm test
+      - name: Production build
+        run: pnpm run build
