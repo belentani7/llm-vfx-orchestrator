@@ -33,6 +33,30 @@ def test_save_and_retrieve_do_not_alias_distinct_ids(tmp_path):
     assert len(list((tmp_path / "jobs").glob("*.json"))) == 2
 
 
+def test_corrupt_utf8_job_does_not_abort_history(tmp_path):
+    store = JobStore(tmp_path / "jobs")
+    assert store.save("good", {"status": "completed"})
+    (store.directory / "broken.json").write_bytes(b'{"status":"\\xff"}')
+    assert store.get("broken") is None
+    assert [record["job_id"] for record in store.list()] == ["good"]
+
+
+def test_cyclic_metadata_fails_without_overwriting_last_valid_status(tmp_path):
+    store = JobStore(tmp_path / "jobs")
+    assert store.save("job", {"status": "pending"})
+    cycle = []
+    cycle.append(cycle)
+    assert store.save("job", {"status": "running", "metadata": cycle}) is False
+    assert store.get("job")["status"] == "pending"
+    assert not list(store.directory.glob("*.tmp"))
+
+
+def test_invalid_unicode_metadata_fails_without_creating_corrupt_record(tmp_path):
+    store = JobStore(tmp_path / "jobs")
+    assert store.save("bad_unicode", {"status": "running", "note": "\\ud800"}) is False
+    assert store.get("bad_unicode") is None
+
+
 def test_workflow_limit_uses_actual_utf8_and_matching_disk_format(tmp_path, monkeypatch):
     import json
     import orchestrator.store as store_module
