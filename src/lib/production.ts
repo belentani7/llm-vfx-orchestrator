@@ -182,15 +182,19 @@ export function parseProject(raw: string | null): VFXProject {
     const safeText = (value: unknown, defaultValue: string, max: number): string =>
       typeof value === "string" ? value.slice(0, max) : defaultValue;
 
+    const usedIds = new Set<string>();
     const shots = candidate.shots
       .filter((shot): shot is VFXShot =>
         Boolean(shot && typeof shot === "object" && typeof (shot as VFXShot).id === "string" && typeof (shot as VFXShot).title === "string"),
       )
       .map((shot, index) => {
         const defaults = createShot(index + 1);
+        const requestedId = shot.id.slice(0, 120);
+        const id = requestedId && !usedIds.has(requestedId) ? requestedId : `${requestedId || "shot"}-${index + 1}`;
+        usedIds.add(id);
         return {
           ...defaults,
-          id: shot.id.slice(0, 120),
+          id,
           title: shot.title.slice(0, 180),
           purpose: safeText(shot.purpose, defaults.purpose, 500),
           durationSeconds: Math.min(30, Math.max(1, Number(shot.durationSeconds) || 5)),
