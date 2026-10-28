@@ -189,7 +189,8 @@ def read_json(path: str | Path, default: Any = None) -> Any:
     try:
         with Path(path).open("r", encoding="utf-8") as handle:
             return json.load(handle)
-    except (OSError, json.JSONDecodeError):
+    except (OSError, json.JSONDecodeError, UnicodeError):
+        # Corrupt non-UTF-8 bytes should not abort the entire job history.
         return default
 
 

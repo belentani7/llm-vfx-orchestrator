@@ -33,7 +33,7 @@ class JobStore:
         return self.directory / f"{job_id}.json"
 
     def save(self, job_id: str, payload: dict[str, Any]) -> bool:
-        """Persist a job record; returns False (never raises) when the disk fails."""
+        """Persist a job record; invalid IDs raise, serialization/disk failures return False."""
         record = dict(payload)
         record["job_id"] = job_id
         record.setdefault("schema_version", SCHEMA_VERSION)
@@ -43,16 +43,29 @@ class JobStore:
             try:
                 import json
 
-                if len(json.dumps(workflow)) > _MAX_WORKFLOW_BYTES:
+                # ComfyUI workflows must remain JSON data, never Python reprs.
+                # Reject objects and non-finite numbers instead of silently
+                # persisting an unusable graph via default=str.
+                encoded = json.dumps(
+                    workflow, indent=2, ensure_ascii=False, allow_nan=False,
+                ).encode("utf-8")
+                if len(encoded) > _MAX_WORKFLOW_BYTES:
                     record["workflow"] = None
                     record["workflow_truncated"] = True
-            except (TypeError, ValueError):
+            except (TypeError, ValueError, UnicodeError, RecursionError, OverflowError):
+                # Circular, deeply nested and non-JSON workflows must never block the
+                # status record, and omission must be visible to consumers.
                 record["workflow"] = None
+                record["workflow_omitted_reason"] = "invalid_serialization"
+        # Validate the ID before the recovery boundary: unsafe paths are caller errors.
+        path = self.path_for(job_id)
         try:
-            atomic_write_json(self.path_for(job_id), record)
+            atomic_write_json(path, record)
             return True
-        except OSError as exc:
-            logger.warning("could not persist job %s: %s", job_id, exc)
+        except (OSError, ValueError, TypeError, UnicodeError) as exc:
+            # A cyclic metadata object or malformed Unicode must not crash a job
+            # or overwrite its last valid status. Never log potentially private payloads.
+            logger.warning("could not persist job %s (%s)", job_id, type(exc).__name__)
             return False
 
     def get(self, job_id: str) -> dict[str, Any] | None:

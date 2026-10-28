@@ -165,5 +165,4 @@ python scripts/benchmark.py
 
 MIT — see [LICENSE](LICENSE).
 
-> Note: `pyproject.toml` still declares `license = "Apache-2.0"`; the LICENSE file (MIT) is
-> the authoritative one. Fix the metadata before any public release.
+License metadata in `pyproject.toml` and the MIT license file are consistent.
