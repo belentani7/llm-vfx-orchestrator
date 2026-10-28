@@ -43,14 +43,17 @@ class JobStore:
             try:
                 import json
 
+                # ComfyUI workflows must remain JSON data, never Python reprs.
+                # Reject objects and non-finite numbers instead of silently
+                # persisting an unusable graph via default=str.
                 encoded = json.dumps(
-                    workflow, indent=2, ensure_ascii=False, default=str,
+                    workflow, indent=2, ensure_ascii=False, allow_nan=False,
                 ).encode("utf-8")
                 if len(encoded) > _MAX_WORKFLOW_BYTES:
                     record["workflow"] = None
                     record["workflow_truncated"] = True
-            except (TypeError, ValueError, UnicodeError):
-                # Circular/non-serializable workflows must never block the
+            except (TypeError, ValueError, UnicodeError, RecursionError, OverflowError):
+                # Circular, deeply nested and non-JSON workflows must never block the
                 # status record, and omission must be visible to consumers.
                 record["workflow"] = None
                 record["workflow_omitted_reason"] = "invalid_serialization"
