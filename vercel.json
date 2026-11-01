@@ -3,5 +3,6 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "framework": "vite",
-  "buildCommand": "pnpm run build"
+  "buildCommand": "npm run build",
+  "installCommand": "npm install --no-audit --no-fund"
 }
