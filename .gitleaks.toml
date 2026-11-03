@@ -1,0 +1,31 @@
+title = "belentani7 repo — Gitleaks configuration"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "belentani-api-key"
+description = "Detecta claves API del ecosistema Belentani"
+regex = '''sk-(belentani|omega|judas|duck|aion|neoglass)-[A-Za-z0-9]{20,}'''
+entropy = 3.5
+keywords = ["sk-belentani", "sk-omega", "sk-judas", "sk-duck", "sk-aion", "sk-neoglass"]
+
+[[rules]]
+id = "belentani-token"
+description = "Detecta tokens de acceso del ecosistema Belentani"
+regex = '''bt_(live|test)_[A-Za-z0-9]{32,}'''
+entropy = 3.5
+keywords = ["bt_live", "bt_test"]
+
+[[rules]]
+id = "belentani-private-key"
+description = "Detecta llaves privadas PEM"
+regex = '''-----BEGIN (RSA|EC|DSA|ENCRYPTED) PRIVATE KEY-----'''
+entropy = 3.5
+keywords = ["-----BEGIN"]
+
+[[allowlists]]
+description = "Permitir placeholders en docs y tests"
+paths = ['''docs/.*''', '''tests/.*''']
+regexes = ['''sk-TU_API_KEY_AQUI''', '''sk-reemplazar-con-tu-clave''', '''sk-test_''']
+

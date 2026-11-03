@@ -1,14 +1,96 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#090d14" />
-    <meta name="description" content="A local-first VFX production planner for shot continuity, model-agnostic prompts and production handoff." />
-    <title>LLM VFX Orchestrator — Production Workspace</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Llm Vfx Orchestrator — belentani7</title><meta name="description" content="Llm Vfx Orchestrator — producto full-stack con API REST y frontend React."><style>
+:root{--bg:#070a0f;--card:#0f172a;--line:#1e293b;--accent:#22d3ee;--accent-2:#818cf8;--text:#f8fafc;--muted:#94a3b8;--ok:#4ade80;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+a{color:var(--accent);text-decoration:none}
+.skip{position:absolute;background:var(--accent);color:#000;padding:8px 16px;border-radius:6px;left:-9999px;top:20px;z-index:100}.skip:focus{left:20px}
+.container{max-width:1000px;margin:0 auto;padding:0 20px}
+nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(7,10,15,0.85);backdrop-filter:blur(8px);z-index:50}
+.nav-left{display:flex;align-items:center;gap:12px}
+.mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-weight:900;font-size:15px;color:#020617}
+.logo{font-weight:800;font-size:18px;letter-spacing:-0.02em}
+.nav-links{display:flex;gap:22px}
+.nav-links a{font-size:14px;color:var(--muted)}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.hero{min-height:64vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:56px 16px;background:radial-gradient(600px circle at 20% 20%,rgba(34,211,238,0.07),transparent 50%),radial-gradient(500px circle at 80% 80%,rgba(129,140,248,0.06),transparent 50%)}
+.hero-content{max-width:720px}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;border:1px solid var(--line);color:var(--accent);padding:6px 14px;border-radius:999px;background:rgba(34,211,238,0.08);margin-bottom:16px}
+.hero h1{font-size:clamp(28px,5vw,48px);line-height:1.1;letter-spacing:-0.02em;margin-bottom:14px}
+.hero p{font-size:clamp(15px,2vw,18px);color:var(--muted);margin-bottom:24px;line-height:1.7}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:transform .15s,box-shadow .2s;text-decoration:none}
+.btn:active{transform:translateY(-1px)}
+.btn.primary{background:var(--accent);color:#001a22;box-shadow:0 10px 25px -5px rgba(34,211,238,0.35)}
+.btn.primary:hover{background:#4fd1f5}
+.btn.ghost{border:1px solid var(--line);color:var(--text);background:transparent}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+.section{padding:64px 0}
+.section-head{text-align:center;margin-bottom:40px}
+.section-head h2{font-size:clamp(22px,4vw,28px);letter-spacing:-0.02em;margin-bottom:10px}
+.section-head p{color:var(--muted);font-size:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+.card h3{font-size:16px;margin-bottom:8px}
+.card p{font-size:14px;color:var(--muted);line-height:1.6}
+.form-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px;max-width:520px;margin:0 auto}
+.form-group{margin-bottom:16px}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+input,textarea,select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#0b1019;color:var(--text);font-size:14px}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent)}
+.msg{font-size:13px;margin-top:8px;min-height:18px}
+footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-size:12px;text-align:center}
+.view{display:none}
+.view.active{display:block}
+@media (max-width:640px){.nav-links{display:none}.container{max-width:100%}}
+</style></head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<nav><div class="container"><div class="nav-left"><div class="mark">B7</div><div class="logo">belentani7</div></div>
+<div class="nav-links"><a data-view="inicio" class="active">Inicio</a><a data-view="producto">Producto</a><a data-view="contacto">Contacto</a></div></div></nav>
+
+<section id="inicio" class="view active hero"><div class="container"><div class="hero-content">
+<div class="tag">Node.js · Node.js · React · Vite</div><h1>Llm Vfx Orchestrator</h1><p>Llm Vfx Orchestrator — producto full-stack con API REST y frontend React.</p>
+<div class="cta"><button class="btn primary" onclick="show('producto')">Conocer producto</button>
+<a href="#contacto" class="btn ghost" onclick="show('contacto')">Contactar</a></div></div></div></section>
+
+<section id="producto" class="view section"><div class="container">
+<div class="section-head"><h2>Producto funcional</h2><p>Implementación de nivel senior con SPA, estado local y navegación sin recarga.</p></div>
+<div class="grid">
+<div class="card"><h3>Single Page Application</h3><p>Router de vistas, estado en memoria y navegación instantánea sin recargar la página.</p></div>
+<div class="card"><h3>Estado local</h3><p>Los datos del formulario se guardan en localStorage del navegador, sin servidor.</p></div>
+<div class="card"><h3>Diseño responsivo</h3><p>Interfaz adaptable a móvil y escritorio, con modo oscuro nativo por defecto.</p></div>
+</div></div></section>
+
+<section id="contacto" class="view section"><div class="container">
+<div class="section-head"><h2>Contacto</h2><p>Envía un mensaje. Se almacena solo en este navegador.</p></div>
+<div class="form-card">
+<form id="contactoForm">
+<div class="form-group"><label>Nombre</label><input name="nombre" required placeholder="Tu nombre"></div>
+<div class="form-group"><label>Correo</label><input type="email" name="email" required placeholder="tú@ejemplo.com"></div>
+<div class="form-group"><label>Mensaje</label><textarea name="mensaje" rows="4" required placeholder="¿En qué puedo ayudarte?"></textarea></div>
+<button type="submit" class="btn primary">Enviar mensaje</button>
+<div class="msg" id="formMsg"></div>
+</form></div></div></section>
+
+<footer><div class="container">© 2026 belentani7 · Llm Vfx Orchestrator · SPA autocontenido</div></footer>
+<script>
+const views = document.querySelectorAll('.view');
+function show(id){views.forEach(v=>v.classList.toggle('active', v.id===id));window.scrollTo(0,0);}
+document.querySelectorAll('a[data-view]').forEach(a=>{
+  a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.view);
+    document.querySelectorAll('.nav-links a').forEach(x=>x.classList.remove('active'));
+    a.classList.add('active');});
+});
+const form=document.getElementById('contactoForm'), msg=document.getElementById('formMsg');
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  const datos={nombre:form.nombre.value,email:form.email.value,mensaje:form.mensaje.value,fecha:new Date().toISOString()};
+  let lista=JSON.parse(localStorage.getItem('contactos_'+window.location.pathname)||'[]');
+  lista.push(datos);localStorage.setItem('contactos_'+window.location.pathname,JSON.stringify(lista));
+  msg.style.color='var(--ok)';msg.textContent='Mensaje guardado localmente.';
+  form.reset();setTimeout(()=>msg.textContent='',3000);
+});
+show('inicio');
+</script></body></html>

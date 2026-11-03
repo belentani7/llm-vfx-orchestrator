@@ -1,0 +1,32 @@
+---
+description: Contexto, stack y convenciones base del proyecto
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Proyecto: belentani7__llm-vfx-orchestrator
+
+Stack detectado: ci, frontend, node, pytest, python, react, static-html, tests, typescript, vite.
+Gestores de paquetes: pyproject.
+Tests: pytest, vitest.
+
+## Protocolo
+
+1. Spec-first: PRD → SRS → Design Doc → ADR → Plan → tests GWT.
+2. Cambios pequeños, reversibles y con verificación real.
+3. Conventional commits: `type(scope): summary`.
+4. No commitear secretos ni credenciales.
+5. No ejecutar TypeScript sin compilar en producción.
+
+## Comandos
+
+- `dev`: `vite`
+- `check`: `tsc --noEmit`
+- `build`: `tsc --noEmit && vite build`
+- `test`: `vitest run`
+
+## Verificación mínima
+
+- Tests del stack en verde.
+- Build reproducible.
+- `gitleaks detect --source . --redact` limpio.

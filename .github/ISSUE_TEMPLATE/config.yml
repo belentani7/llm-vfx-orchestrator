@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Seguridad
+    url: https://github.com/belentani7/llm-vfx-orchestrator/security/advisories/new
+    about: Reporta vulnerabilidades de forma privada.

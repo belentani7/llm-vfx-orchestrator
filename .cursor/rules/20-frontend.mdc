@@ -1,0 +1,19 @@
+---
+description: Reglas de UI/UX (Impeccable) para interfaces
+globs: ["**/*.{tsx,jsx,html,css,scss}"]
+alwaysApply: false
+---
+
+# UI/UX — Impeccable
+
+- Contraste de texto corporal ≥ 4.5:1; nada de gris apagado sobre fondo tintado.
+- Longitud de línea 65–75ch; `letter-spacing` de display ≥ -0.04em.
+- Sin texto degradado, sin bordes de franja lateral, sin “eyebrow” en cada sección.
+- Sin rejillas de tarjetas idénticas ni tarjetas anidadas.
+- `z-index` semántico; prohibido 999/9999.
+- Animaciones con alternativa `prefers-reduced-motion: reduce`; sin bounce/elastic.
+- Objetivos táctiles ≥ 44px; foco visible.
+- Estados vacío, error y carga diseñados.
+- HTML semántico; imágenes con `alt`; formularios con `label`.
+
+Checklist antes de publicar: contraste, teclado, lector de pantalla, móvil y modo reducido.

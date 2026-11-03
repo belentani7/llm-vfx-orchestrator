@@ -1,0 +1,18 @@
+---
+description: Reglas de seguridad obligatorias (R1–R8)
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Seguridad
+
+- R1: cero secretos; `gitleaks` antes de cada push.
+- R2: producción ejecuta artefactos compilados, nunca `tsx`/`ts-node`.
+- R3: rate limiting distribuido; prohibido `Map` en memoria.
+- R4: barrera de secretos sobre `dist/`, `_site/` y `site-dist/`.
+- R5: `.gitleaks.toml` y `.github/` protegidos por CODEOWNERS.
+- R6: validar entrada con esquema y enviar cabeceras de seguridad.
+- R7: lockfile, Dependabot y auditoría de dependencias.
+- R8: dos reviewers, commits firmados y CI verde.
+
+Nunca escribir credenciales en código, tests, fixtures ni documentación.
