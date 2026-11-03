@@ -1,0 +1,26 @@
+name: Hygiene
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+  conflict-markers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan conflict markers
+        run: |
+          if git grep -E '^(<<<<<<< |=======$|>>>>>>> )' -- '*.:("*' ; then
+            echo "Marcadores de conflicto detectados"; exit 1; fi

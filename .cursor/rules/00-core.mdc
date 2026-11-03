@@ -1,0 +1,14 @@
+---
+description: Reglas de núcleo del repositorio
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Reglas de núcleo (00-core)
+
+- Ningún secreto en el repositorio: claves, tokens, contraseñas o certificados
+  nunca se commitean. Verificación: `gitleaks detect --source . --redact --no-banner`.
+- Producción ejecuta JavaScript compilado; `tsx`, `ts-node` y `vite dev` son solo desarrollo.
+- Rate limiting distribuido, nunca `Map` en memoria en producción.
+- Barrera de secretos sobre artefactos publicados antes de desplegar.
+- `.gitleaks.toml` protegido: `CODEOWNERS` exige revisión de @belentani7 para `.gitleaks.toml` y `.github/`.
