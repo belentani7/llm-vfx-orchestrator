@@ -1,3 +1,4 @@
+import HeroShader from './components/HeroShader';
 import { useEffect, useMemo, useState } from "react";
 import {
   buildShotPrompt,
