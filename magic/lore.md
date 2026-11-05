@@ -1,4 +1,4 @@
-﻿# BELENTANI // LORE
+# BELENTANI // LORE
 
 > The signature of this node: **belentani.eu** (studio) Â· **noiacore.com** (core).
 

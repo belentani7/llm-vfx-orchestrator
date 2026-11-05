@@ -1,4 +1,4 @@
-﻿# BELENTANI // VIRTUAL AI INSTRUCTIONS
+# BELENTANI // VIRTUAL AI INSTRUCTIONS
 
 > Briefing for any AI agent (opencode, claude, etc.) operating inside this node.
 > Signature authority: **belentani.eu** Â· **noiacore.com**.
