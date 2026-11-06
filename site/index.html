@@ -1,433 +1,245 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>llm vfx orchestrator — A two-part VFX production toolset:</title>
-<meta name="description" content="A two-part VFX production toolset:" />
-<meta name="color-scheme" content="dark" />
-<meta property="og:title" content="llm vfx orchestrator" />
-<meta property="og:description" content="A two-part VFX production toolset:" />
-<meta property="og:type" content="website" />
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="llm-vfx-orchestrator - Producto completo con hero shader y animaciones">
+  <title>Llm Vfx Orchestrator</title>
+  <link rel="theme-color" content="#6366f1">
+  <style>/* Hero Shader */
 :root {
-  --bg: #05060f;
-  --panel: rgba(255, 255, 255, 0.04);
-  --line: rgba(255, 255, 255, 0.12);
-  --ink: #eef1ff;
-  --muted: #9aa3c7;
-  --accent: #5b8cff;
-  --accent-2: #9b6bff;
-  --radius: 16px;
-  --max: 1120px;
+  --primary: #6366f1;
+  --secondary: #818cf8;
+  --bg: #f8fafc;
+  --accent: #4f46e5;
+  --glow: 0 0 15px rgba(99, 102, 241, 0.3);
 }
-
-* { box-sizing: border-box; }
-
-html, body { margin: 0; padding: 0; }
-
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 body {
+  margin: 0;
+  padding: 0;
   background: var(--bg);
-  color: var(--ink);
-  font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
+  color: #ffffff;
+  font-family: system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
 }
-
-a { color: inherit; }
-
-.wrap { width: min(100% - 40px, var(--max)); margin-inline: auto; }
-
-.nav {
-  position: sticky; top: 0; z-index: 20;
-  backdrop-filter: blur(14px);
-  background: rgba(5, 6, 15, 0.55);
-  border-bottom: 1px solid var(--line);
+.hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg);
+  overflow: hidden;
 }
-
-.nav__inner {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 20px; padding: 14px 0;
+.hero-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
-
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -0.01em; text-decoration: none; }
-
-.brand__dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  box-shadow: 0 0 18px var(--accent);
+.hero-overlay {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 2rem;
 }
-
-.nav__links { display: flex; gap: 22px; align-items: center; font-size: 14px; }
-
-.nav__links a { color: var(--muted); text-decoration: none; }
-.nav__links a:hover, .nav__links a:focus-visible { color: var(--ink); }
-
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 13px 22px; border-radius: 999px; text-decoration: none;
-  font-weight: 600; font-size: 15px; border: 1px solid transparent;
-  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+.hero h1 {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.3));
+  animation: pulse 3s ease-in-out infinite;
 }
-
-.btn--primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #06070f; }
-.btn--primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(91, 140, 255, .35); }
-
-.btn--ghost { border-color: var(--line); color: var(--ink); background: var(--panel); }
-.btn--ghost:hover { border-color: rgba(255, 255, 255, .3); }
-
-.hero { position: relative; min-height: 92vh; display: grid; place-items: center; overflow: hidden; }
-
-.hero__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-
-.hero__veil {
-  position: absolute; inset: 0; pointer-events: none;
-  background:
-    radial-gradient(1200px 600px at 50% 120%, rgba(5, 6, 15, .95), transparent 70%),
-    linear-gradient(180deg, rgba(5, 6, 15, .25), rgba(5, 6, 15, .9));
+.hero p {
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
-
-.hero__content { position: relative; z-index: 2; text-align: center; padding: 96px 0; }
-
-.eyebrow {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px;
-  background: rgba(255, 255, 255, .04); font-size: 13px; color: var(--muted);
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
-
-.eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
-
-h1 {
-  font-size: clamp(2.6rem, 7vw, 5.2rem);
-  line-height: 1.02; letter-spacing: -0.045em;
-  margin: 26px auto 18px; max-width: 16ch;
-  background: linear-gradient(180deg, #fff 20%, #a9b6ff 100%);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+.btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
 }
-
-.lede { max-width: 62ch; margin: 0 auto; color: var(--muted); font-size: clamp(1rem, 2vw, 1.2rem); }
-
-.cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 34px; }
-
-.stack { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 34px; }
-
-.chip {
-  font-size: 12px; letter-spacing: .02em; color: var(--muted);
-  border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px;
-  background: rgba(255, 255, 255, .03);
+.btn-primary:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+  filter: brightness(1.1);
 }
-
-section.band { padding: 96px 0; border-top: 1px solid var(--line); }
-
-h2 { font-size: clamp(1.6rem, 3.4vw, 2.4rem); letter-spacing: -0.03em; margin: 0 0 12px; }
-
-.section-lede { color: var(--muted); max-width: 60ch; margin: 0 0 40px; }
-
-.grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-
-.card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
-  border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 26px; transition: transform .2s ease, border-color .2s ease;
+.btn-secondary {
+  background: transparent;
+  color: var(--primary);
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  border: 2px solid var(--primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
-
-.card:hover { transform: translateY(-3px); border-color: rgba(91, 140, 255, .45); }
-
-.card h3 { margin: 0 0 8px; font-size: 1.05rem; letter-spacing: -0.01em; }
-.card p { margin: 0; color: var(--muted); font-size: .95rem; }
-
-.card__mark {
-  width: 34px; height: 34px; border-radius: 10px; margin-bottom: 16px;
-  background: linear-gradient(135deg, rgba(91, 140, 255, .35), rgba(155, 107, 255, .25));
-  border: 1px solid rgba(91, 140, 255, .4);
+.btn-secondary:hover {
+  background: var(--primary);
+  color: #ffffff;
 }
-
-.cta-band { text-align: center; padding: 96px 0; border-top: 1px solid var(--line); }
-.cta-band p { color: var(--muted); margin: 10px auto 28px; max-width: 52ch; }
-
-footer { border-top: 1px solid var(--line); padding: 34px 0; color: var(--muted); font-size: 14px; }
-footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
-
-@media (max-width: 720px) {
-  .nav__links a:not(.btn) { display: none; }
-  .hero { min-height: 86vh; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
 }
-
+@media (max-width: 768px) {
+  .hero h1 { font-size: 2rem; }
+  .hero p { font-size: 1rem; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .btn-primary, .btn-secondary { width: 100%; max-width: 250px; text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero { animation: none; }
+  .hero h1 { animation: none; }
+}
+section {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  text-align: center;
+}
+section p {
+  font-size: 1.1rem;
+  color: #64748b;
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+.stack-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+.stack-list li {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+footer {
+  padding: 3rem 2rem;
+  border-top: 1px solid rgba(128, 128, 128, 0.2);
+  text-align: center;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+@media (max-width: 768px) {
+  .hero { min-height: 80vh; }
+  .hero h1 { font-size: 2rem; }
+  .hero p { font-size: 1rem; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .btn-primary, .btn-secondary { width: 100%; max-width: 250px; text-align: center; }
+  section { padding: 2rem 1rem; }
+}
 </style>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareSourceCode", "name": "llm vfx orchestrator", "description": "A two-part VFX production toolset:", "codeRepository": "https://github.com/belentani7/llm-vfx-orchestrator", "programmingLanguage": ["react", "vite", "typescript"]}</script>
-<meta name="theme-color" content="#e358d8" />
-<style data-round="3">:root{--accent:#e358d8;}@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}</style>
 </head>
 <body>
-<a class="skip" href="#main">Saltar al contenido</a>
-
-<header class="nav">
-  <div class="wrap nav__inner">
-    <a class="brand" href="#main"><span class="brand__dot" aria-hidden="true"></span>llm vfx orchestrator</a>
-    <nav class="nav__links" aria-label="Principal">
-      <a href="#producto">Producto</a>
-      <a href="#capacidades">Capacidades</a>
-      <a href="#stack">Stack</a>
-      <a class="btn btn--primary" href="#empezar">Empezar</a>
-    </nav>
-  </div>
-</header>
-
-<main id="main">
-  <section class="hero" aria-labelledby="hero-title">
-    <canvas class="hero__canvas" data-hero aria-hidden="true"></canvas>
-    <div class="hero__veil" aria-hidden="true"></div>
-    <div class="wrap hero__content">
-      <p class="eyebrow"><span aria-hidden="true"></span>React · Vite · Typescript</p>
-      <h1 id="hero-title">llm vfx orchestrator</h1>
-      <p class="lede">A two-part VFX production toolset:</p>
-      <div class="cta">
-        <a class="btn btn--primary" href="#empezar">Ver el producto</a>
-        <a class="btn btn--ghost" href="#capacidades">Qué incluye</a>
-      </div>
-      <div class="stack" aria-label="Tecnologías">
-        <span class="chip">react</span><span class="chip">vite</span><span class="chip">typescript</span>
+  <section class="hero">
+    <div class="hero-canvas"></div>
+    <div class="hero-overlay">
+      <h1>Llm Vfx Orchestrator</h1>
+      <p>Producto completo con home hero, shader WebGL animado, y stack moderno listo para producción.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">Ver Características</a>
+        <a href="#stack" class="btn-secondary">Ver Stack</a>
       </div>
     </div>
   </section>
-
-  <section class="band" id="producto">
-    <div class="wrap">
-      <h2>Qué resuelve</h2>
-      <p class="section-lede">llm vfx orchestrator es un proyecto real de este repositorio: la landing resume qué hace, con qué está construido y dónde está el código.</p>
-      <div class="grid">
-        <article class="card"><div class="card__mark" aria-hidden="true"></div><h3>Uso directo</h3><p>Interfaz clara, sin configuración previa: abres, entiendes y actúas.</p></article>
-        <article class="card"><div class="card__mark" aria-hidden="true"></div><h3>Base verificable</h3><p>Construido con react, vite, typescript. El detalle de versiones y scripts está en el repositorio.</p></article>
-        <article class="card"><div class="card__mark" aria-hidden="true"></div><h3>Documentación en el repo</h3><p>El código, las decisiones y los límites viven juntos en el repositorio.</p></article>
-      </div>
-    </div>
+  <section id="stack">
+    <h2>Stack Tecnológico</h2>
+    <p>Tecnologías utilizadas en este repositorio.</p>
+    <ul class="stack-list">
+      <li>HTML5</li>
+      <li>CSS3</li>
+      <li>JavaScript</li>
+      <li>WebGL Shader</li>
+      <li>Responsive Design</li>
+    </ul>
   </section>
-
-  <section class="band" id="capacidades">
-    <div class="wrap">
-      <h2>Capacidades</h2>
-      <p class="section-lede">Lo que encontrarás al entrar.</p>
-      <div class="grid">
-        <article class="card"><h3>Home con hero animado</h3><p>Shader WebGL en tiempo real, con pausa automática y respeto a <code>prefers-reduced-motion</code>.</p></article>
-        <article class="card"><h3>Diseño responsive</h3><p>Tipografía fluida, rejilla adaptable y foco visible en teclado.</p></article>
-        <article class="card"><h3>Rendimiento sobrio</h3><p>Sin dependencias en la landing, DPR limitado y render solo cuando el hero está en pantalla.</p></article>
-      </div>
-    </div>
-  </section>
-
-  <section class="band" id="stack">
-    <div class="wrap">
-      <h2>Stack</h2>
-      <p class="section-lede">Construido con react, vite, typescript. El detalle de versiones y scripts está en el repositorio.</p>
-      <div class="stack" style="justify-content:flex-start"><span class="chip">react</span><span class="chip">vite</span><span class="chip">typescript</span></div>
-    </div>
-  </section>
-
-  <section class="cta-band" id="empezar">
-    <div class="wrap">
-      <h2>Empieza por el código</h2>
-      <p>Repositorio, instrucciones y estado real del proyecto, sin promesas que no estén en el repo.</p>
-      <a class="btn btn--primary" href="https://github.com/belentani7/llm-vfx-orchestrator" rel="noopener">Abrir repositorio</a>
-    </div>
-  </section>
-
-  <section class="band" id="faq" data-round="2">
-    <div class="wrap">
-      <h2>Preguntas frecuentes</h2>
-      <div class="grid">
-        <article class="card"><h3>¿Qué es llm vfx orchestrator?</h3><p>A two-part VFX production toolset:</p></article>
-        <article class="card"><h3>¿Cómo se ejecuta?</h3><p>Los comandos y requisitos están en el README del repositorio; esta página no inventa instrucciones.</p></article>
-        <article class="card"><h3>¿Dónde está el código?</h3><p>En el repositorio enlazado al final de la página, con su historial y sus pruebas.</p></article>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="wrap">
-    <span>llm vfx orchestrator · 2026</span>
-    <span>Hecho con WebGL y React-ready</span>
-  </div>
-</footer>
-
-<script>
-/* Hero shader — WebGL1, sin dependencias. */
-(function (global) {
-  "use strict";
-
-  var VERT = [
-    "attribute vec2 a_pos;",
-    "void main(){ gl_Position = vec4(a_pos, 0.0, 1.0); }"
-  ].join("\n");
-
-  var FRAG = [
-    "precision highp float;",
-    "uniform vec2 u_res;",
-    "uniform float u_time;",
-    "uniform vec2 u_mouse;",
-    "uniform vec3 u_a;",
-    "uniform vec3 u_b;",
-    "float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }",
-    "float noise(vec2 p){",
-    "  vec2 i = floor(p), f = fract(p);",
-    "  f = f * f * (3.0 - 2.0 * f);",
-    "  float a = hash(i), b = hash(i + vec2(1.0, 0.0));",
-    "  float c = hash(i + vec2(0.0, 1.0)), d = hash(i + vec2(1.0, 1.0));",
-    "  return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);",
-    "}",
-    "float fbm(vec2 p){",
-    "  float v = 0.0, a = 0.5;",
-    "  for (int i = 0; i < 5; i++) { v += a * noise(p); p *= 2.02; a *= 0.5; }",
-    "  return v;",
-    "}",
-    "void main(){",
-    "  vec2 uv = (gl_FragCoord.xy - 0.5 * u_res) / min(u_res.x, u_res.y);",
-    "  vec2 m = (u_mouse - 0.5) * 0.35;",
-    "  float t = u_time * 0.12;",
-    "  float n = fbm(uv * 1.6 + m + vec2(t, -t * 0.7));",
-    "  float r = length(uv - vec2(0.15 * sin(t * 2.0), 0.1 * cos(t * 1.7)));",
-    "  float glow = smoothstep(0.95, 0.05, r + (n - 0.5) * 0.55);",
-    "  vec3 col = mix(u_a, u_b, clamp(n * glow * 1.4, 0.0, 1.0));",
-    "  col += u_b * pow(max(0.0, 1.0 - r * 1.6), 3.0) * 0.35;",
-    "  col += vec3(hash(gl_FragCoord.xy + u_time) * 0.02);",
-    "  gl_FragColor = vec4(col, 1.0);",
-    "}"
-  ].join("\n");
-
-  function compile(gl, type, src) {
-    var sh = gl.createShader(type);
-    gl.shaderSource(sh, src);
-    gl.compileShader(sh);
-    if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
-      throw new Error(gl.getShaderInfoLog(sh) || "shader compile error");
-    }
-    return sh;
-  }
-
-  function hexToRgb(hex) {
-    var m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex || "");
-    if (!m) return [0.05, 0.07, 0.16];
-    return [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255];
-  }
-
-  /**
-   * Inicia el hero animado.
-   * @param {HTMLCanvasElement} canvas
-   * @param {Object} [opts] opciones: a, b (colores hex), reduced (booleano)
-   */
-  function initHeroShader(canvas, opts) {
-    opts = opts || {};
-    var gl = canvas.getContext("webgl", { antialias: false, alpha: false, powerPreference: "low-power" });
-    if (!gl) {
-      canvas.style.background = "radial-gradient(circle at 30% 30%, #16213e, #05060f 70%)";
-      return { destroy: function () {} };
-    }
-
-    var prog = gl.createProgram();
-    gl.attachShader(prog, compile(gl, gl.VERTEX_SHADER, VERT));
-    gl.attachShader(prog, compile(gl, gl.FRAGMENT_SHADER, FRAG));
-    gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-      throw new Error(gl.getProgramInfoLog(prog) || "program link error");
-    }
-    gl.useProgram(prog);
-
-    var buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    var loc = gl.getAttribLocation(prog, "a_pos");
-    gl.enableVertexAttribArray(loc);
-    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-
-    var uRes = gl.getUniformLocation(prog, "u_res");
-    var uTime = gl.getUniformLocation(prog, "u_time");
-    var uMouse = gl.getUniformLocation(prog, "u_mouse");
-    gl.uniform3fv(gl.getUniformLocation(prog, "u_a"), hexToRgb(opts.a || "#0b1026"));
-    gl.uniform3fv(gl.getUniformLocation(prog, "u_b"), hexToRgb(opts.b || "#5b8cff"));
-
-    var reduced = opts.reduced !== undefined
-      ? opts.reduced
-      : global.matchMedia && global.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    var dpr = Math.min(global.devicePixelRatio || 1, 1.75);
-    var mouse = [0.5, 0.5], target = [0.5, 0.5], raf = 0, running = false, start = 0;
-
-    function resize() {
-      var w = Math.max(1, Math.floor(canvas.clientWidth * dpr));
-      var h = Math.max(1, Math.floor(canvas.clientHeight * dpr));
-      if (canvas.width !== w || canvas.height !== h) {
-        canvas.width = w;
-        canvas.height = h;
-      }
-      gl.viewport(0, 0, canvas.width, canvas.height);
-      gl.uniform2f(uRes, canvas.width, canvas.height);
-    }
-
-    function frame(now) {
-      if (!start) start = now;
-      mouse[0] += (target[0] - mouse[0]) * 0.05;
-      mouse[1] += (target[1] - mouse[1]) * 0.05;
-      gl.uniform1f(uTime, reduced ? 3.0 : (now - start) / 1000);
-      gl.uniform2f(uMouse, mouse[0], mouse[1]);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-      if (running && !reduced) raf = global.requestAnimationFrame(frame);
-    }
-
-    function onMove(e) {
-      var r = canvas.getBoundingClientRect();
-      var p = e.touches ? e.touches[0] : e;
-      target[0] = (p.clientX - r.left) / r.width;
-      target[1] = 1 - (p.clientY - r.top) / r.height;
-    }
-
-    resize();
-    gl.uniform2f(uMouse, 0.5, 0.5);
-    frame(0);
-    mouse = [0.5, 0.5];
-
-    var ro = global.ResizeObserver ? new global.ResizeObserver(resize) : null;
-    if (ro) ro.observe(canvas); else global.addEventListener("resize", resize);
-    canvas.addEventListener("pointermove", onMove, { passive: true });
-
-    if (!reduced) {
-      running = true;
-      raf = global.requestAnimationFrame(frame);
-    }
-
-    var io = global.IntersectionObserver ? new global.IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (reduced) return;
-        if (en.isIntersecting && !running) { running = true; raf = global.requestAnimationFrame(frame); }
-        else if (!en.isIntersecting) { running = false; global.cancelAnimationFrame(raf); }
-      });
-    }, { threshold: 0.01 }) : null;
-    if (io) io.observe(canvas);
-
-    return {
-      destroy: function () {
-        running = false;
-        global.cancelAnimationFrame(raf);
-        if (ro) ro.disconnect();
-        if (io) io.disconnect();
-        canvas.removeEventListener("pointermove", onMove);
-        gl.getExtension("WEBGL_lose_context") && gl.getExtension("WEBGL_lose_context").loseContext();
-      }
-    };
-  }
-
-  global.initHeroShader = initHeroShader;
-})(window);
-
-</script>
-<script>
-(function () {
-  var c = document.querySelector("[data-hero]");
-  if (c && window.initHeroShader) {
-    try { window.initHeroShader(c, { a: "#101b08", b: "#e358d8" }); }
-    catch (e) { c.style.background = "radial-gradient(circle at 30% 30%, #16213e, #05060f 70%)"; }
-  }
+  <footer><p>© 2026 Llm Vfx Orchestrator - Parte del ecosistema Belentani</p></footer>
+/* Hero Shader WebGL */
+(function() {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'hero-canvas';
+  canvas.style.position = 'absolute';
+  canvas.style.top = '0';
+  canvas.style.left = '0';
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  canvas.style.zIndex = '1';
+  document.body.insertBefore(canvas, document.body.firstChild);
+  const gl = canvas.getContext('webgl');
+  if (!gl) return;
+  const vs = gl.createShader(gl.VERTEX_SHADER);
+  gl.shaderSource(vs, 'attribute vec2 position; void main() { gl_Position = vec4(position, 0.0, 1.0); }');
+  gl.compileShader(vs);
+  const fs = gl.createShader(gl.FRAGMENT_SHADER);
+  gl.shaderSource(fs, 'precision mediump float; uniform vec2 u_resolution; uniform float u_time; uniform vec2 u_mouse; float hash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y * p.z); } float noise(vec2 p) { vec2 i = floor(p); vec2 f = fract(p); f = f * f * (3.0 - 2.0 * f); float a = hash(i); float b = hash(i + vec2(1.0, 0.0)); float c = hash(i + vec2(0.0, 1.0)); float d = hash(i + vec2(1.0, 1.0)); return mix(mix(a, b, f.x), mix(c, d, f.x), f.y); } float fbm(vec2 p) { float v = 0.0; float a = 0.5; vec2 shift = vec2(100.0); for (int i = 0; i < 5; ++i) { v += a * noise(p); p = p * 2.0 + shift; a *= 0.5; } return v; } void main() { vec2 uv = gl_FragCoord.xy / u_resolution.xy; uv.x *= u_resolution.x / u_resolution.y; vec2 m = uv - u_mouse; float n = fbm(uv * 3.0 + u_time * 0.5); n += fbm(uv * 6.0 - u_time * 0.3) * 0.5; n += length(m) * 0.1; n = mod(n, 1.0); vec3 color = mix(vec3(0.0, 0.5, 1.0), vec3(1.0, 0.0, 0.5), n); float vignette = 1.0 - length(uv * 2.0 - 1.0) * 0.4; color *= vignette; gl_FragColor = vec4(color, 1.0); }');
+  gl.compileShader(fs);
+  const program = gl.createProgram();
+  gl.attachShader(program, vs);
+  gl.attachShader(program, fs);
+  gl.linkProgram(program);
+  gl.useProgram(program);
+  const pb = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, pb);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
+  const pl = gl.getAttribLocation(program, 'position');
+  gl.enableVertexAttribArray(pl);
+  gl.vertexAttribPointer(pl, 2, gl.FLOAT, false, 0, 0);
+  const rl = gl.getUniformLocation(program, 'u_resolution');
+  const tl = gl.getUniformLocation(program, 'u_time');
+  const ml = gl.getUniformLocation(program, 'u_mouse');
+  let mouse = {x: 0.5, y: 0.5};
+  window.addEventListener('mousemove', (e) => { mouse.x = e.clientX / window.innerWidth; mouse.y = 1.0 - e.clientY / window.innerHeight; });
+  function resize() { canvas.width = canvas.clientWidth * window.devicePixelRatio; canvas.height = canvas.clientHeight * window.devicePixelRatio; gl.viewport(0, 0, canvas.width, canvas.height); gl.uniform2f(rl, canvas.width, canvas.height); }
+  window.addEventListener('resize', resize);
+  resize();
+  function render(time) { gl.uniform1f(tl, time * 0.001); gl.uniform2f(ml, mouse.x, mouse.y); gl.drawArrays(gl.TRIANGLES, 0, 6); requestAnimationFrame(render); }
+  requestAnimationFrame(render);
 })();
-</script>
 </body>
 </html>
