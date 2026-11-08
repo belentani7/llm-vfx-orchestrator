@@ -1,0 +1,60 @@
+/* ux-enhance.css v1 — capa ADITIVA para páginas existentes.
+   No cambia colores ni layouts heredados: solo activa comportamientos
+   con clases data-ux-* y mejora focus. Segura sin JS (html.uxjs la apaga). */
+
+/* Revelado al hacer scroll — solo si JS está activo (html.uxjs lo garantiza) */
+html.uxjs [data-ux-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1);
+  will-change: opacity, transform;
+}
+html.uxjs [data-ux-reveal].ux-in {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+html.uxjs [data-ux-reveal="left"]  { transform: translateX(-28px); }
+html.uxjs [data-ux-reveal="right"] { transform: translateX(28px); }
+html.uxjs [data-ux-reveal="zoom"]  { transform: scale(.94); }
+
+/* Contadores: cifras estables */
+[data-ux-count] { font-variant-numeric: tabular-nums; }
+
+/* Focus visible digno en cualquier sitio (specificity 0 via :where) */
+:where(a, button, summary, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Skip link accesible (si la página lo incluye) */
+.ux-skip {
+  position: absolute;
+  left: -9999px;
+  top: 1rem;
+  z-index: 999;
+  padding: .55rem 1rem;
+  background: #111;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+}
+.ux-skip:focus { left: 1rem; }
+
+/* Lenis activo → desactivar scroll-behavior nativo para no pelear */
+html.ux-smooth { scroll-behavior: auto; }
+
+/* Reduced motion: revelar todo sin animación */
+@media (prefers-reduced-motion: reduce) {
+  html.uxjs [data-ux-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

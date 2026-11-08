@@ -1,0 +1,280 @@
+/* ux-tokens.css v1 — sistema de diseño del ecosistema belentani7.
+   Para landings NUEVAS (las páginas existentes usan ux-enhance.css).
+   Un solo archivo = coherencia total entre repos. Tema claro/oscuro con
+   data-theme; acento por repo vía --ux-accent en :root de cada landing. */
+
+:root {
+  /* Acento por defecto — cada landing lo sobreescribe (contraste AA verificado) */
+  --ux-accent: #4f46e5;
+  --ux-accent-soft: color-mix(in oklab, var(--ux-accent) 14%, transparent);
+  --ux-accent-line: color-mix(in oklab, var(--ux-accent) 38%, transparent);
+  --ux-on-accent: #ffffff;
+
+  /* Superfices claro */
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --surface-2: #f4f4f3;
+  --fg: #1c1917;
+  --muted: #57534e;
+  --border: color-mix(in oklab, #1c1917 12%, transparent);
+
+  /* Escala de espaciado (~1.33) */
+  --space-3xs: .25rem; --space-2xs: .5rem; --space-xs: .75rem; --space-s: 1rem;
+  --space-m: 1.5rem; --space-l: 2.5rem; --space-xl: 4rem; --space-2xl: 6.5rem; --space-3xl: 9rem;
+
+  /* Tipografía fluida */
+  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  --step--1: clamp(.83rem, .80rem + .15vw, .90rem);
+  --step-0:  clamp(1rem,  .95rem + .25vw, 1.13rem);
+  --step-1:  clamp(1.25rem, 1.15rem + .5vw, 1.5rem);
+  --step-2:  clamp(1.56rem, 1.36rem + 1vw, 2rem);
+  --step-3:  clamp(1.95rem, 1.6rem + 1.75vw, 2.75rem);
+  --step-4:  clamp(2.44rem, 1.9rem + 2.9vw, 3.8rem);
+  --step-5:  clamp(3.05rem, 2.2rem + 4.6vw, 5.4rem); /* hero "big & sharpest" */
+
+  --radius-s: 8px; --radius: 14px; --radius-l: 22px;
+  --shadow-1: 0 1px 2px rgb(0 0 0 / .05), 0 8px 24px rgb(0 0 0 / .07);
+  --shadow-2: 0 2px 6px rgb(0 0 0 / .06), 0 18px 50px rgb(0 0 0 / .13);
+  --glow: 0 0 0 1px var(--ux-accent-line), 0 14px 44px -14px color-mix(in oklab, var(--ux-accent) 48%, transparent);
+  --content: 1160px;
+  color-scheme: light;
+}
+
+/* ─── Tema oscuro ─────────────────────────────────────────── */
+[data-theme="dark"] {
+  --bg: #0c0b0f;
+  --surface: #14131a;
+  --surface-2: #1b1a23;
+  --fg: #f4f3f6;
+  --muted: #a8a3b3;
+  --border: color-mix(in oklab, #f4f3f6 13%, transparent);
+  --shadow-1: 0 1px 2px rgb(0 0 0 / .5), 0 8px 24px rgb(0 0 0 / .45);
+  --shadow-2: 0 2px 6px rgb(0 0 0 / .55), 0 18px 50px rgb(0 0 0 / .6);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c0b0f; --surface: #14131a; --surface-2: #1b1a23;
+    --fg: #f4f3f6; --muted: #a8a3b3;
+    --border: color-mix(in oklab, #f4f3f6 13%, transparent);
+    --shadow-1: 0 1px 2px rgb(0 0 0 / .5), 0 8px 24px rgb(0 0 0 / .45);
+    --shadow-2: 0 2px 6px rgb(0 0 0 / .55), 0 18px 50px rgb(0 0 0 / .6);
+    color-scheme: dark;
+  }
+}
+
+/* ─── Base ────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+img, svg, video { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+h1, h2, h3, h4 { line-height: 1.12; letter-spacing: -.022em; font-weight: 800; margin: 0 0 var(--space-s); }
+h1 { font-size: var(--step-5); }
+h2 { font-size: var(--step-3); }
+h3 { font-size: var(--step-1); }
+p  { margin: 0 0 var(--space-s); }
+::selection { background: var(--ux-accent); color: var(--ux-on-accent); }
+
+.ux-container { width: min(var(--content), 100% - 2.5rem); margin-inline: auto; }
+.ux-section { padding-block: var(--space-2xl); position: relative; }
+.ux-eyebrow {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: var(--step--1); font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ux-accent);
+  background: var(--ux-accent-soft); border: 1px solid var(--ux-accent-line);
+  padding: .35rem .8rem; border-radius: 999px; margin-bottom: var(--space-s);
+}
+.ux-lead { font-size: var(--step-1); color: var(--muted); max-width: 62ch; }
+.ux-muted { color: var(--muted); }
+.text-center { text-align: center; }
+.mx-auto { margin-inline: auto; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+code, kbd {
+  font-family: var(--font-mono); font-size: .88em;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 6px; padding: .12em .4em;
+}
+
+/* ─── Botones ─────────────────────────────────────────────── */
+.ux-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
+  padding: .8rem 1.5rem; border-radius: 999px;
+  font-weight: 700; font-size: var(--step-0); text-decoration: none;
+  border: 1px solid transparent; cursor: pointer;
+  transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s, background .25s, border-color .25s;
+  will-change: transform;
+}
+.ux-btn svg { width: 1.1em; height: 1.1em; }
+.ux-btn--primary { background: var(--ux-accent); color: var(--ux-on-accent); box-shadow: var(--shadow-1); }
+.ux-btn--primary:hover { transform: translateY(-2px); box-shadow: var(--glow); }
+.ux-btn--ghost { background: transparent; color: var(--fg); border-color: var(--border); }
+.ux-btn--ghost:hover { border-color: var(--ux-accent-line); background: var(--ux-accent-soft); transform: translateY(-2px); }
+.ux-btn:focus-visible { outline: 2px solid var(--ux-accent); outline-offset: 3px; }
+
+/* ─── Nav ─────────────────────────────────────────────────── */
+.ux-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in oklab, var(--bg) 82%, transparent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.ux-nav__inner { display: flex; align-items: center; gap: var(--space-m); min-height: 64px; }
+.ux-nav__brand { display: flex; align-items: center; gap: .6rem; font-weight: 800; text-decoration: none; letter-spacing: -.02em; }
+.ux-nav__brand-dot {
+  width: 12px; height: 12px; border-radius: 50%; background: var(--ux-accent);
+  box-shadow: 0 0 12px var(--ux-accent); flex: none;
+}
+.ux-nav__links { display: flex; gap: var(--space-s); margin-left: auto; list-style: none; padding: 0; }
+.ux-nav__links a { text-decoration: none; font-weight: 600; color: var(--muted); padding: .4rem .6rem; border-radius: 8px; }
+.ux-nav__links a:hover { color: var(--fg); background: var(--surface-2); }
+.ux-nav__actions { display: flex; gap: .6rem; align-items: center; }
+.ux-nav .ux-btn { padding: .5rem 1.1rem; font-size: var(--step--1); }
+.ux-menu-btn { display: none; background: none; border: 1px solid var(--border); border-radius: 10px; padding: .45rem .6rem; cursor: pointer; color: var(--fg); }
+@media (max-width: 860px) {
+  .ux-nav__links, .ux-nav__actions .ux-btn--ghost { display: none; }
+  .ux-menu-btn { display: inline-flex; }
+  [data-ux-menu] {
+    display: none; position: absolute; inset: 64px 0 auto 0; flex-direction: column;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: var(--space-s) 1.25rem var(--space-m); gap: .2rem; box-shadow: var(--shadow-2);
+  }
+  [data-ux-menu].ux-open { display: flex; }
+  [data-ux-menu] a { text-decoration: none; font-weight: 600; padding: .7rem .4rem; border-bottom: 1px solid var(--border); }
+}
+@media (min-width: 861px) { [data-ux-menu] { display: none !important; } }
+
+/* ─── Hero big & sharpest ─────────────────────────────────── */
+.ux-hero {
+  position: relative; overflow: clip;
+  padding-block: var(--space-3xl) var(--space-2xl);
+  display: grid; align-items: center;
+}
+.ux-hero__title { font-size: var(--step-5); letter-spacing: -.035em; margin-bottom: var(--space-m); text-wrap: balance; }
+.ux-hero__title .ux-accent {
+  background: linear-gradient(120deg, var(--ux-accent), color-mix(in oklab, var(--ux-accent) 55%, #ff8ac0));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.ux-hero__sub { font-size: var(--step-1); color: var(--muted); max-width: 60ch; margin-bottom: var(--space-l); }
+.ux-hero__cta { display: flex; flex-wrap: wrap; gap: .8rem; margin-bottom: var(--space-l); }
+.ux-hero__meta { display: flex; flex-wrap: wrap; gap: var(--space-s) var(--space-l); color: var(--muted); font-size: var(--step--1); }
+.ux-hero__meta > * { display: inline-flex; align-items: center; gap: .45rem; }
+.ux-hero__meta svg { width: 16px; height: 16px; color: var(--ux-accent); }
+/* Sin GSAP: el hero aparece con transición CSS al recibir .ux-hero-in */
+[data-ux-hero] .ux-hero__title, [data-ux-hero] .ux-hero__sub,
+[data-ux-hero] .ux-hero__cta > *, [data-ux-hero] .ux-hero__meta > * {
+  opacity: 0; transform: translateY(18px);
+  transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1);
+}
+[data-ux-hero].ux-hero-in .ux-hero__title,
+[data-ux-hero].ux-hero-in .ux-hero__sub,
+[data-ux-hero].ux-hero-in .ux-hero__cta > *,
+[data-ux-hero].ux-hero-in .ux-hero__meta > * { opacity: 1; transform: none; }
+[data-ux-hero].ux-hero-in .ux-hero__cta > *:nth-child(2) { transition-delay: .08s; }
+
+/* Fondo: mesh gradient + grano */
+.ux-mesh {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(58% 78% at 18% 8%,  color-mix(in oklab, var(--ux-accent) 26%, transparent) 0%, transparent 60%),
+    radial-gradient(46% 62% at 86% 16%, color-mix(in oklab, #ff8ac0 16%, transparent) 0%, transparent 55%),
+    radial-gradient(60% 55% at 55% 100%, color-mix(in oklab, var(--ux-accent) 20%, transparent) 0%, transparent 62%),
+    var(--bg);
+}
+.ux-grain::after {
+  content: ""; position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: .05;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ─── Cards / bento ───────────────────────────────────────── */
+.ux-grid { display: grid; gap: var(--space-m); grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.ux-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: var(--space-m); box-shadow: var(--shadow-1);
+  transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s, border-color .25s;
+}
+.ux-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-2), var(--glow); border-color: var(--ux-accent-line); }
+.ux-card h3 { margin-bottom: .4rem; }
+.ux-card p { color: var(--muted); margin: 0; font-size: var(--step--1); }
+.ux-card__icon {
+  width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+  background: var(--ux-accent-soft); color: var(--ux-accent); margin-bottom: var(--space-s);
+}
+.ux-card__icon svg { width: 22px; height: 22px; }
+.ux-bento { display: grid; gap: var(--space-m); grid-template-columns: repeat(4, 1fr); }
+.ux-bento > * { grid-column: span 4; }
+@media (min-width: 700px) {
+  .ux-bento > *:nth-child(6n+1), .ux-bento > *:nth-child(6n+6) { grid-column: span 2; }
+  .ux-bento > *:nth-child(6n+2), .ux-bento > *:nth-child(6n+5) { grid-column: span 2; }
+}
+
+/* ─── Stats ───────────────────────────────────────────────── */
+.ux-stats { display: grid; gap: var(--space-m); grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); text-align: center; }
+.ux-stat__num { font-size: var(--step-4); font-weight: 800; letter-spacing: -.03em; color: var(--ux-accent); }
+.ux-stat__label { color: var(--muted); font-size: var(--step--1); }
+
+/* ─── Pasos ───────────────────────────────────────────────── */
+.ux-steps { counter-reset: paso; display: grid; gap: var(--space-m); grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); list-style: none; padding: 0; margin: 0; }
+.ux-steps li { counter-increment: paso; padding-top: var(--space-l); position: relative; }
+.ux-steps li::before {
+  content: counter(paso, decimal-leading-zero);
+  position: absolute; top: 0; left: 0;
+  font-family: var(--font-mono); font-size: var(--step-1); font-weight: 700;
+  color: var(--ux-accent);
+  border-bottom: 2px solid var(--ux-accent-line); padding-bottom: .3rem;
+}
+
+/* ─── FAQ ─────────────────────────────────────────────────── */
+.ux-faq { display: grid; gap: .7rem; max-width: 760px; margin-inline: auto; }
+.ux-faq details { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-s); padding: 0 1.1rem; }
+.ux-faq summary {
+  cursor: pointer; font-weight: 700; padding: .95rem 0; list-style: none;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+}
+.ux-faq summary::-webkit-details-marker { display: none; }
+.ux-faq summary::after { content: "+"; font-size: 1.3rem; color: var(--ux-accent); transition: transform .3s; }
+.ux-faq details[open] summary::after { transform: rotate(45deg); }
+.ux-faq details p { color: var(--muted); margin: 0 0 1rem; }
+
+/* ─── CTA final + footer ──────────────────────────────────── */
+.ux-cta-band {
+  background:
+    radial-gradient(70% 120% at 50% 0%, color-mix(in oklab, var(--ux-accent) 24%, transparent), transparent 70%),
+    var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-l);
+  padding: var(--space-2xl) var(--space-l); text-align: center;
+}
+.ux-footer { border-top: 1px solid var(--border); padding-block: var(--space-xl); color: var(--muted); font-size: var(--step--1); }
+.ux-footer__inner { display: flex; flex-wrap: wrap; gap: var(--space-m); justify-content: space-between; align-items: center; }
+.ux-footer a { color: inherit; }
+
+/* ─── Barra progreso lectura ──────────────────────────────── */
+[data-ux-progress] {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60;
+  background: linear-gradient(90deg, var(--ux-accent), color-mix(in oklab, var(--ux-accent) 50%, #ff8ac0));
+  transform-origin: 0 50%; transform: scaleX(0);
+}
+
+/* ─── Reduced motion ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  [data-ux-hero] .ux-hero__title, [data-ux-hero] .ux-hero__sub,
+  [data-ux-hero] .ux-hero__cta > *, [data-ux-hero] .ux-hero__meta > * {
+    opacity: 1 !important; transform: none !important; transition: none !important;
+  }
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
