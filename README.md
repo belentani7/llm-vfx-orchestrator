@@ -1,4 +1,4 @@
-﻿# LLM VFX Orchestrator
+# LLM VFX Orchestrator
 
 A two-part VFX production toolset:
 
