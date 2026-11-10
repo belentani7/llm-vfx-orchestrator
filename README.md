@@ -1,4 +1,4 @@
-# LLM VFX Orchestrator
+﻿# LLM VFX Orchestrator
 
 A two-part VFX production toolset:
 
@@ -167,3 +167,85 @@ MIT — see [LICENSE](LICENSE).
 
 > Note: `pyproject.toml` still declares `license = "Apache-2.0"`; the LICENSE file (MIT) is
 > the authoritative one. Fix the metadata before any public release.
+
+<!-- repo-forge:readme:inicio -->
+## Qué es
+
+**LLM VFX Orchestrator** — orquestador VFX con LLM.
+
+Un artefacto editorial que respeta al lector: dato con fuente, voz con autoría, límite declarado.
+
+## Estado medido
+
+| Dato | Valor |
+|---|---|
+| Lenguajes | Python, JSON, HTML, Markdown, TypeScript, CSS |
+| Archivos / líneas | 80 / 13418 |
+| Páginas HTML | 8 |
+| Tests detectados | 13 |
+| Cumplimiento de reglas | 37/37 (100.0%) |
+
+Todo lo anterior se midió en disco el 2026-11-10; no es una estimación.
+
+## Uso
+
+```bash
+npm install
+npm run dev
+```
+
+## Estructura
+
+```
+assets/
+brand/
+data/
+docs/
+magic/
+orchestrator/
+plataforma/
+producto/
+scripts/
+site/
+```
+
+## Diseño de plataforma
+
+- Planificador
+- Ejecutor
+- Registro
+- Coste
+
+La ficha completa —máximo potencial, marca, fases de monetización y recursos— vive en
+[`plataforma/FICHA.md`](plataforma/FICHA.md). Los tokens de marca están en
+[`brand/tokens.css`](brand/tokens.css).
+
+## Reglas del proyecto
+
+Este repositorio sigue el catálogo oficial del ecosistema (`GH-*`, `WEB-*`, `ACC-*`,
+`SEO-*`, `COH-*`, `DEV-*`). El gate se ejecuta con:
+
+```bash
+python scripts/doctor.py
+```
+
+## Licencia
+
+MIT. Ver [`LICENSE`](LICENSE).
+<!-- repo-forge:readme:fin -->
+<!-- repo-forge:readme:fin -->
+<!-- repo-forge:readme:fin -->
+<!-- repo-forge:readme:fin -->
+
+## Resumen en español
+
+LLM VFX Orchestrator — orquestador VFX con LLM.
+
+pipeline reproducible que va del prompt al render con coste y calidad medidos
+
+Este resumen se añadió para que el repositorio se pueda leer en el idioma del ecosistema.
+El contenido técnico completo sigue en el resto del documento.
+
+## Producto
+
+Oferta, precio y cobro: [`producto/OFERTA.md`](producto/OFERTA.md) · [`producto/precios.json`](producto/precios.json) · [`producto/landing.html`](producto/landing.html)

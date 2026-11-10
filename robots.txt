@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://belentani7.github.io/llm-vfx-orchestrator/sitemap.xml

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accesibilidad del sitio — LLM VFX Orchestrator</title>
+<meta name="description" content="Compromiso de accesibilidad de LLM VFX Orchestrator: objetivo WCAG 2.2 AA y cómo se comprueba.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<style>body{max-width:66ch;margin:0 auto;padding:2rem;background:#f7f4ef;color:#221f1a;font-family:system-ui,sans-serif;line-height:1.6}a{color:#8c3d22}</style>
+</head>
+<body>
+<main>
+  <h1>Accesibilidad</h1>
+  <p>Objetivo: <strong>WCAG 2.2 nivel AA</strong> en las páginas públicas.</p>
+  <h2>Qué está garantizado</h2>
+  <ul>
+    <li>Estructura semántica con un solo <code>h1</code> por página.</li>
+    <li>Navegación completa por teclado y foco visible.</li>
+    <li>Texto alternativo en imágenes con contenido.</li>
+    <li>Respeto a la preferencia de movimiento reducido.</li>
+  </ul>
+  <h2>Cómo se comprueba</h2>
+  <p><code>python scripts/doctor.py</code> revisa las reglas ACC-* y WEB-* sobre el árbol real.</p>
+  <h2>Contacto</h2>
+  <p>Si encuentras una barrera, abre un issue con la página y el lector de pantalla usado.</p>
+  <p><a href="/">Volver al inicio</a></p>
+</main>
+<footer><p>© 2026 LLM VFX Orchestrator · Parte del ecosistema Belentani</p></footer>
+</body>
+</html>

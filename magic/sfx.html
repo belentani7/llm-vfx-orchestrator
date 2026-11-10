@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>BELENTANI // SOUND FORGE</title>
+<title>SOUND FORGE · LLM VFX Orchestrator</title>
 <style>
   html,body{margin:0;height:100%;background:#05010d;color:#e9d5ff;font-family:ui-monospace,Menlo,monospace;display:flex;align-items:center;justify-content:center;}
   .box{text-align:center;padding:30px;}
@@ -17,8 +17,17 @@
     :focus-visible{outline:2px solid var(--ng-red,#ff073a);outline-offset:3px;border-radius:4px}
     input:focus-visible,button:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--ng-red,#ff073a);outline-offset:3px;border-radius:4px}
 </style>
+<meta name="description" content="SOUND FORGE procedural sound effects · no files, pure web audio.. Información, recursos y contacto en un solo sitio, sin registro.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SOUND FORGE · LLM VFX Orchestrator">
+<meta property="og:description" content="SOUND FORGE procedural sound effects · no files, pure web audio.. Información, recursos y contacto en un solo sitio, sin registro.">
+<meta property="og:image" content="brand/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 </head>
 <body>
+<main>
+
 <div class="box">
   <h1>SOUND FORGE</h1>
   <p>procedural sound effects &middot; no files, pure web audio</p>
@@ -63,5 +72,8 @@ const sfx = {
 };
 document.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{ ac(); sfx[b.dataset.s](); }));
 </script>
+</main>
+<footer><p>© 2026 LLM VFX Orchestrator · Parte del ecosistema Belentani</p></footer>
+<!-- page-fix:1 -->
 </body>
 </html>

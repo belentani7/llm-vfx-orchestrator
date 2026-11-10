@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM VFX Orchestrator — diseño de plataforma</title>
+<meta name="description" content="Prototipo autocontenido del diseño de plataforma de LLM VFX Orchestrator: módulos, paleta y fases de monetización.">
+<style>
+  :root { --bg:#f7f4ef; --surface:#f1eee9; --ink:#221f1a; --muted:#73706b;
+           --accent:#8c3d22; --accent2:#166534; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+          font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height:1.55; }
+  header { padding: clamp(1.5rem, 5vw, 4rem); border-bottom:1px solid color-mix(in srgb, var(--ink) 12%, transparent); }
+  h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2rem, 6vw, 3.6rem);
+        margin:0 0 .5rem; line-height:1.05; }
+  .kicker { font-family: ui-monospace, monospace; color:var(--accent); letter-spacing:.14em;
+             text-transform:uppercase; font-size:.78rem; }
+  .lead { color:var(--muted); max-width:60ch; font-size:1.1rem; }
+  main { padding: clamp(1.5rem, 4vw, 3rem); display:grid; gap:2.5rem; }
+  .grid { display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+  .card { background:var(--surface); border:1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+           border-radius:14px; padding:1.2rem; }
+  .card h3 { margin:.2rem 0 .5rem; font-family: Georgia, serif; font-size:1.15rem; }
+  .card p { margin:0; color:var(--muted); font-size:.92rem; }
+  table { border-collapse:collapse; width:100%; font-size:.9rem; }
+  th, td { text-align:left; padding:.6rem .5rem; border-bottom:1px solid color-mix(in srgb, var(--ink) 12%, transparent); }
+  th { font-family: ui-monospace, monospace; font-size:.75rem; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); }
+  .rule { border-left:3px solid var(--accent2); padding-left:1rem; color:var(--muted); }
+  footer { padding: 2rem clamp(1.5rem,4vw,3rem); color:var(--muted); font-size:.85rem; }
+  :focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+</style>
+</head>
+<body>
+<header>
+  <p class="kicker">orquestador VFX con LLM</p>
+  <h1>LLM VFX Orchestrator</h1>
+  <p class="lead">Un artefacto editorial que respeta al lector: dato con fuente, voz con autoría, límite declarado.</p>
+</header>
+<main>
+  <section aria-labelledby="mods">
+    <h2 id="mods">Módulos que la promesa exige</h2>
+    <div class="grid">
+      <article class="card"><h3>Planificador</h3><p>Contrato por escribir; el módulo ya está en el alcance.</p></article>
+      <article class="card"><h3>Ejecutor</h3><p>Contrato por escribir; el módulo ya está en el alcance.</p></article>
+      <article class="card"><h3>Registro</h3><p>Contrato por escribir; el módulo ya está en el alcance.</p></article>
+      <article class="card"><h3>Coste</h3><p>Contrato por escribir; el módulo ya está en el alcance.</p></article>
+    </div>
+  </section>
+  <section aria-labelledby="monet">
+    <h2 id="monet">Fases de monetización</h2>
+    <table>
+      <caption class="rule">Principio: acceso abierto; monetización solo si hay servicio real detrás.</caption>
+      <thead><tr><th>Fase</th><th>Nombre</th><th>Gratis</th><th>Pago</th><th>Qué se bloquea</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Abierto</td><td>todo</td><td>nada</td><td>ninguno</td></tr>
+        <tr><td>2</td><td>Servicio</td><td>el artefacto</td><td>trabajo hecho a medida</td><td>solo encargos</td></tr>
+        <tr><td>3</td><td>Licencia</td><td>uso personal</td><td>uso comercial</td><td>licencia comercial</td></tr>
+        <tr><td>4</td><td>Patrocinio</td><td>todo</td><td>marcas que apoyan</td><td>ninguno</td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section aria-labelledby="brand">
+    <h2 id="brand">Marca</h2>
+    <div class="grid">
+      <article class="card"><h3>Acento</h3><p><code>#8c3d22</code> · contraste 6.82:1</p></article>
+      <article class="card"><h3>Tinta</h3><p><code>#221f1a</code> · contraste 14.97:1</p></article>
+      <article class="card"><h3>Tono</h3><p>humano, contenido</p></article>
+    </div>
+  </section>
+</main>
+<footer>Prototipo generado por repo-forge. Sin dependencias, sin analítica, sin cookies.</footer>
+</body>
+</html>

@@ -1,0 +1,15 @@
+/* repo-forge:brand-page */
+/* Capa de marca opcional: se enlaza después del CSS del sitio. */
+.brand-hero {
+  background: #f7f4ef;
+  color: #221f1a;
+  padding: clamp(1.5rem, 6vw, 4rem);
+  border-radius: var(--radius-lg, 20px);
+}
+.brand-cta {
+  display: inline-block; background: #8c3d22;
+  color: #f7f4ef; padding: .8rem 1.2rem; border-radius: 999px;
+  text-decoration: none; font-weight: 600;
+}
+.brand-cta:hover { filter: brightness(1.08); }
+.brand-cta:focus-visible { outline: 3px solid #166534; outline-offset: 3px; }
