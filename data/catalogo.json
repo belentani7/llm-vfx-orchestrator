@@ -1,0 +1,10 @@
+{
+  "repo": "llm-vfx-orchestrator",
+  "familia": "educación",
+  "ajustes_aplicados": 50,
+  "reglas_oficiales_ok": 48,
+  "estado": "estructurado",
+  "producto_completo": false,
+  "generado": "2026-11-10T18:59:04.351387+00:00",
+  "motor": "repo_forge.py"
+}

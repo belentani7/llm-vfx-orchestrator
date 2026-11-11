@@ -167,3 +167,7 @@ MIT — see [LICENSE](LICENSE).
 
 > Note: `pyproject.toml` still declares `license = "Apache-2.0"`; the LICENSE file (MIT) is
 > the authoritative one. Fix the metadata before any public release.
+
+
+## Producto
+Véase `plataforma/OFERTA.md`, `plataforma/precios.json`, `plataforma/ONEPAGER.md`.
