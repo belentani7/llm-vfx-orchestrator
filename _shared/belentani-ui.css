@@ -1,0 +1,47 @@
+@import url('hero-base.css');
+/* belentani-ui.css — Bundle compartido del ecosistema (ampliación 2026-11-10)
+   Fuente: hero.css de belentani-omega-template (recurso real de los 6 repos de recursos)
+   + extensión de ampliación: registry cards, grid de recursos, footer. */
+
+/* --- Ampliación: grid de recursos --- */
+.res-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+  padding: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.res-card {
+  background: var(--bg-body);
+  border: 1px solid rgba(128,128,128,0.25);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  transition: transform .2s, box-shadow .2s;
+}
+.res-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(14,165,233,.15); }
+.res-card h3 { margin: 0 0 .5rem; font-size: 1.05rem; color: var(--text-primary); }
+.res-card p { margin: 0; font-size: .88rem; color: var(--text-secondary); }
+.res-card .tag {
+  display: inline-block; margin-top: .75rem; padding: .2rem .6rem;
+  border-radius: 999px; font-size: .72rem; font-weight: 600;
+  background: linear-gradient(135deg, rgba(14,165,233,.15), rgba(124,58,237,.15));
+  color: var(--hero-color-a);
+}
+
+/* --- Ampliación: sección contenedora --- */
+.res-section { padding: 4rem 0; }
+.res-section > h2 {
+  text-align: center; font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800; margin: 0 0 .5rem;
+  background: linear-gradient(135deg, var(--hero-color-a), var(--hero-color-b));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.res-section > .sub { text-align: center; color: var(--text-secondary); margin: 0 0 1.5rem; }
+
+/* --- Footer --- */
+.site-footer {
+  border-top: 1px solid rgba(128,128,128,.2);
+  padding: 2rem; text-align: center; color: var(--text-secondary); font-size: .85rem;
+}
+.site-footer a { color: var(--hero-color-a); text-decoration: none; }

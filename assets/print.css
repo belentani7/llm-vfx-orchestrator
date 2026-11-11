@@ -1,0 +1,8 @@
+/* repo-forge:print */
+@media print {
+  nav, footer, .no-print { display: none !important; }
+  body { background: #fff; color: #000; font-size: 11pt; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; }
+  h1, h2, h3 { break-after: avoid; }
+  table, img { break-inside: avoid; }
+}

@@ -1,0 +1,32 @@
+// Banco de datos canónico. Generado por repo-forge.
+export const catalogo = {
+  "nombre": "llm-vfx-orchestrator",
+  "remoto": "https://github.com/belentani7/llm-vfx-orchestrator",
+  "tipo": "web-app",
+  "modelo": "orquestador VFX con LLM",
+  "publico": "artistas técnicos",
+  "licencia": "MIT",
+  "medido": {
+    "archivos": 80,
+    "lineas": 13418,
+    "bytes": 532897,
+    "html": 8,
+    "tests": 13
+  },
+  "modulos": [
+    "Planificador",
+    "Ejecutor",
+    "Registro",
+    "Coste"
+  ],
+  "paleta": {
+    "bg": "#f7f4ef",
+    "ink": "#221f1a",
+    "accent": "#8c3d22"
+  },
+  "fuente": {
+    "ruta": "repos\\llm-vfx-orchestrator",
+    "fecha": "2026-11-10"
+  }
+};
+export default catalogo;

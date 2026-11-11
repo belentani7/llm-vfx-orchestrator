@@ -1,0 +1,44 @@
+{
+  "principio": "acceso abierto; monetización solo si hay servicio real detrás",
+  "quien_paga": "quien recibe un servicio, no quien lee",
+  "fases": [
+    {
+      "fase": 1,
+      "nombre": "Abierto",
+      "gratis": "todo",
+      "pago": "nada",
+      "gate": "ninguno",
+      "metrica": "uso",
+      "por_que": "primero ser útil"
+    },
+    {
+      "fase": 2,
+      "nombre": "Servicio",
+      "gratis": "el artefacto",
+      "pago": "trabajo hecho a medida",
+      "gate": "solo encargos",
+      "metrica": "encargos",
+      "por_que": "se cobra el trabajo, no el archivo"
+    },
+    {
+      "fase": 3,
+      "nombre": "Licencia",
+      "gratis": "uso personal",
+      "pago": "uso comercial",
+      "gate": "licencia comercial",
+      "metrica": "licencias",
+      "por_que": "quien factura con ello, paga"
+    },
+    {
+      "fase": 4,
+      "nombre": "Patrocinio",
+      "gratis": "todo",
+      "pago": "marcas que apoyan",
+      "gate": "ninguno",
+      "metrica": "patrocinios",
+      "por_que": "sostener sin cerrar"
+    }
+  ],
+  "regla_dura": "si no hay servicio, no hay muro",
+  "generado_por": "repo-forge"
+}

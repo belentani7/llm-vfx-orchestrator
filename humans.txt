@@ -1,0 +1,7 @@
+/* TEAM */
+  Owner: Pedro Belentani
+  Site: https://github.com/belentani7/llm-vfx-orchestrator
+/* SITE */
+  Standards: HTML5, WCAG 2.2 AA
+  Software: generado y verificado con repo-forge
+  Last update: 2026-11-10

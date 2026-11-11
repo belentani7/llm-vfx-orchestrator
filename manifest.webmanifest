@@ -1,0 +1,17 @@
+{
+  "name": "LLM VFX Orchestrator",
+  "short_name": "LLM VFX Orch",
+  "description": "orquestador VFX con LLM",
+  "lang": "es",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f4ef",
+  "theme_color": "#8c3d22",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

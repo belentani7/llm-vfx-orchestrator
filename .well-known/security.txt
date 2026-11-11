@@ -1,0 +1,4 @@
+Contact: https://github.com/belentani7/llm-vfx-orchestrator/security/advisories/new
+Expires: 2027-12-31T00:00:00.000Z
+Preferred-Languages: es, en, pt
+Canonical: https://github.com/belentani7/llm-vfx-orchestrator/blob/main/.well-known/security.txt
