@@ -1,94 +1,108 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LLM VFX Orchestrator — Autonomous VFX Pipeline with LLMs + ComfyUI</title>
-  <meta name="description" content="Two-part VFX production toolset: browser-based shot planner for model-agnostic prompts + Python vfp CLI for closed-loop LLM/ComfyUI orchestration, QA, corrections, retries and persisted job state.">
-  <link rel="canonical" href="https://llm-vfx-orchestrator.vercel.app/">
-  <meta name="theme-color" content="#0d9488">
-  <meta name="color-scheme" content="dark light">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="LLM VFX Orchestrator">
-  <meta property="og:title" content="LLM VFX Orchestrator — Autonomous VFX Pipeline">
-  <meta property="og:description" content="Browser shot planner + Python vfp CLI for LLM-driven ComfyUI renders with closed-loop QA, corrections and retries.">
-  <meta property="og:url" content="https://llm-vfx-orchestrator.vercel.app/">
-  <meta name="twitter:card" content="summary_large_image">
-
-  <!-- sin FOUC de tema -->
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('ux-theme');
-        document.documentElement.setAttribute('data-theme', t || 'dark');
-      } catch (e) {}
-      document.documentElement.classList.add('uxjs');
-    })();
-  </script>
-
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@600&display=swap">
-  <link rel="stylesheet" href="assets/ux/ux-tokens.css">
-  <link rel="stylesheet" href="assets/ux/ux-enhance.css">
-
-  <!-- CDNs exactos con defer + onerror a unpkg -->
-  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/gsap.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/gsap@3.15.1/dist/gsap.min.js'"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/ScrollTrigger.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/gsap@3.15.1/dist/ScrollTrigger.min.js'"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/SplitText.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/gsap@3.15.1/dist/SplitText.min.js'"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/lenis@1.3.27/dist/lenis.min.js'"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/lucide@1.70.0/dist/umd/lucide.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/lucide@1.70.0/dist/umd/lucide.min.js'"></script>
-  <script defer src="assets/ux/ux-kit.js"></script>
-
-  <!-- Estilos específicos de esta landing -->
-  <style>
-    /* — Acento VFX/Teal con contraste AA en ambos temas — */
-    :root { --ux-accent: #0d9488; --ux-on-accent: #ffffff; }
-    [data-theme="dark"] { --ux-accent: #5eead4; --ux-on-accent: #0c0b0f; }
-
-    /* Hero canvas WebGL sutil */
-    .ux-hero__canvas { position: absolute; inset: 0; z-index: -2; }
-    .ux-hero__canvas canvas { width: 100%; height: 100%; display: block; }
-    .ux-hero .ux-mesh { z-index: -1; opacity: .55; }
-
-    /* Tira de enlaces del ecosistema */
-    .strip { border-block: 1px solid var(--border); padding-block: var(--space-m); }
-    .strip__inner { display: flex; flex-wrap: wrap; gap: var(--space-m) var(--space-xl); align-items: center; justify-content: center; color: var(--muted); font-size: var(--step--1); }
-    .strip a { display: inline-flex; align-items: center; gap: .5rem; text-decoration: none; font-weight: 600; }
-    .strip a:hover { color: var(--ux-accent); }
-    .strip svg { width: 15px; height: 15px; }
-
-    /* Features bento */
-    .ux-bento { display: grid; gap: var(--space-m); grid-template-columns: repeat(4, 1fr); }
-    .ux-bento > * { grid-column: span 4; }
-    @media (min-width: 700px) {
-      .ux-bento > *:nth-child(6n+1), .ux-bento > *:nth-child(6n+6) { grid-column: span 2; }
-      .ux-bento > *:nth-child(6n+2), .ux-bento > *:nth-child(6n+5) { grid-column: span 2; }
-    }
-
-    /* Stats honestas */
-    .ux-stats { display: grid; gap: var(--space-m); grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); text-align: center; }
-    .ux-stat__num { font-size: var(--step-4); font-weight: 800; letter-spacing: -.03em; color: var(--ux-accent); }
-    .ux-stat__label { color: var(--muted); font-size: var(--step--1); }
-
-    /* Pipeline steps */
-    .ux-steps { counter-reset: paso; display: grid; gap: var(--space-m); grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); list-style: none; padding: 0; margin: 0; }
-    .ux-steps li { counter-increment: paso; padding-top: var(--space-l); position: relative; }
-    .ux-steps li::before {
-      content: counter(paso, decimal-leading-zero);
-      position: absolute; top: 0; left: 0;
-      font-family: var(--font-mono); font-size: var(--step-1); font-weight: 700;
-      color: var(--ux-accent);
-      border-bottom: 2px solid var(--ux-accent-line); padding-bottom: .3rem;
-    }
-
-    /* GitHub SVG inline (Lucide no tiene iconos de marca) */
-    .icon-github { width: 16px; height: 16px; fill: currentColor; flex: none; }
-    .icon-github-sm { width: 14px; height: 14px; fill: currentColor; flex: none; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM VFX Orchestrator — Autonomous VFX Pipeline with LLMs + ComfyUI</title>
+<meta name="description" content="Two-part VFX production toolset: browser-based shot planner for model-agnostic prompts + Python vfp CLI for closed-loop LLM/ComfyUI orchestration, QA, corrections, retries and persisted job state.">
+<meta name="generator" content="repo-superpowers-audit-v1">
+<meta property="og:title" content="LLM VFX Orchestrator — Autonomous VFX Pipeline with LLMs + ComfyUI">
+<meta property="og:description" content="Two-part VFX production toolset: browser-based shot planner for model-agnostic prompts + Python vfp CLI for closed-loop LLM/ComfyUI orchestration, QA, corrections, retries and persisted job state.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0a09'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23c5c68c'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#0b0a09;--bg2:#131110;--ink:#f4efe7;--dim:#a89f92;--accent:#e0a35c;
+--accent2:#7fa88b;--line:rgba(244,239,231,.14);--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+--sans:ui-sans-serif,"Segoe UI",Inter,system-ui,-apple-system,sans-serif;
+--mono:ui-monospace,"Cascadia Mono",Consolas,monospace;--measure:62ch;--radius:14px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;
+-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(18px,4vw,40px);position:relative;z-index:1}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent2);outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--accent);color:#12100e;padding:10px 16px;z-index:9}
+.skip:focus{left:12px;top:12px}
+header.site{border-bottom:1px solid var(--line);padding:22px 0;display:flex;gap:18px;
+align-items:baseline;justify-content:space-between;flex-wrap:wrap}
+.brand{font-family:var(--serif);font-size:1.05rem;letter-spacing:.01em}
+.brand span{color:var(--dim)}
+nav.site{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:.72rem;
+letter-spacing:.14em;text-transform:uppercase}
+nav.site a{color:var(--dim);text-decoration:none}
+nav.site a:hover,nav.site a[aria-current=page]{color:var(--ink)}
+main{padding:clamp(48px,9vh,104px) 0}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+color:var(--accent);margin:0 0 18px}
+h1{font-family:var(--serif);font-size:clamp(2.4rem,7vw,5.2rem);line-height:.95;
+letter-spacing:-.03em;margin:0 0 24px;font-weight:500;text-wrap:balance}
+h2{font-family:var(--serif);font-size:clamp(1.4rem,3vw,2.1rem);line-height:1.15;
+letter-spacing:-.02em;margin:64px 0 18px;font-weight:500}
+h3{font-size:1.02rem;margin:28px 0 10px;letter-spacing:-.01em}
+p,li{max-width:var(--measure);color:var(--ink)}
+.lead{font-size:clamp(1.05rem,2vw,1.28rem);color:var(--dim);max-width:56ch}
+hr{border:0;border-top:1px solid var(--line);margin:clamp(40px,8vh,80px) 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;
+background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:32px 0}
+.cell{background:var(--bg2);padding:22px 20px}
+.cell h3{margin-top:0}
+.cell p{font-size:.9rem;color:var(--dim);margin:0}
+code,kbd{font-family:var(--mono);font-size:.86em;background:rgba(244,239,231,.07);
+padding:2px 6px;border-radius:5px}
+pre{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);
+padding:18px;overflow:auto;max-width:100%}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:.92rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.pill{display:inline-block;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;
+text-transform:uppercase;border:1px solid var(--line);color:var(--dim);padding:3px 9px;border-radius:999px}
+footer.site{border-top:1px solid var(--line);padding:28px 0 44px;color:var(--dim);font-size:.8rem}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+.reveal{opacity:1;transform:none;transition:none}}
+::selection{background:var(--accent);color:#12100e}
+.webgl-canvas{width:100%;height:400px;background:var(--bg2);border:1px solid var(--line);
+border-radius:var(--radius);margin:24px 0;display:block}
+.superpowers-badge{display:inline-block;font-family:var(--mono);font-size:.65rem;
+letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--accent2);
+color:var(--accent2);padding:4px 10px;border-radius:999px;margin:10px 0}
+</style>
 </head>
-<body class="ux-grain">
-  <div data-ux-progress aria-hidden="true"></div>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html" aria-current="page">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html" aria-current="page">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html" aria-current="page">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html" aria-current="page">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html" aria-current="page">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
+<div data-ux-progress aria-hidden="true"></div>
   <a class="ux-skip" href="#main">Saltar al contenido</a>
 
   <header class="ux-nav">
@@ -110,7 +124,7 @@
         <button class="ux-btn ux-btn--ghost" data-ux-theme-toggle type="button" aria-pressed="false">
           <i data-lucide="moon" aria-hidden="true"></i><span class="sr-only">Tema</span>
         </button>
-        <a class="ux-btn ux-btn--primary" data-ux-magnet href="https://github.com/belentani7/llm-vfx-orchestrator" rel="noopener">
+        <a class="ux-btn ux-btn--primary" data-ux-magnet  rel="noopener">
           <svg class="icon-github" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.26 5.66.41.36.77 1.05.77 2.13 0 1.54-.01 2.78-.01 3.16 0 .3.2.67.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg> GitHub
         </a>
         <button class="ux-menu-btn" data-ux-menu-btn type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú">
@@ -125,7 +139,7 @@
       <a href="#stats">Stats</a>
       <a href="#templates">Templates</a>
       <a href="#faq">FAQ</a>
-      <a href="https://github.com/belentani7/llm-vfx-orchestrator" rel="noopener">GitHub ↗</a>
+      <a  rel="noopener">GitHub ↗</a>
     </div>
   </header>
 
@@ -141,10 +155,10 @@
           Autonomous VFX pipeline: local-first shot planner for model-agnostic prompts + Python <code>vfp</code> CLI for closed-loop LLM/ComfyUI orchestration with QA, corrections, retries and persisted job state.
         </p>
         <div class="ux-hero__cta" data-ux-hero-cta>
-          <a class="ux-btn ux-btn--primary" data-ux-magnet href="https://github.com/belentani7/llm-vfx-orchestrator" rel="noopener">
+          <a class="ux-btn ux-btn--primary" data-ux-magnet  rel="noopener">
             <i data-lucide="github" aria-hidden="true"></i> Ver en GitHub
           </a>
-          <a class="ux-btn ux-btn--ghost" href="https://llm-vfx-orchestrator.vercel.app" rel="noopener">
+          <a class="ux-btn ux-btn--ghost"  rel="noopener">
             <i data-lucide="external-link" aria-hidden="true"></i> Demo en Vercel
           </a>
         </div>
@@ -160,9 +174,9 @@
     <!-- ── TIRA DEL ECOSISTEMA ──────────────────────────── -->
     <section class="strip" aria-label="Ecosistema Belentani">
       <div class="ux-container strip__inner" data-ux-reveal>
-        <a href="https://llm-vfx-orchestrator.vercel.app" rel="noopener"><i data-lucide="globe" aria-hidden="true"></i> Demo Vercel</a>
-        <a href="https://github.com/belentani7/llm-vfx-orchestrator" rel="noopener"><svg class="icon-github-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.26 5.66.41.36.77 1.05.77 2.13 0 1.54-.01 2.78-.01 3.16 0 .3.2.67.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg> belentani7 · GitHub</a>
-        <a href="https://github.com/belentani7" rel="noopener"><i data-lucide="user" aria-hidden="true"></i> Ecosistema belentani7</a>
+        <a  rel="noopener"><i data-lucide="globe" aria-hidden="true"></i> Demo Vercel</a>
+        <a  rel="noopener"><svg class="icon-github-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.26 5.66.41.36.77 1.05.77 2.13 0 1.54-.01 2.78-.01 3.16 0 .3.2.67.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg> belentani7 · GitHub</a>
+        <a  rel="noopener"><i data-lucide="user" aria-hidden="true"></i> Ecosistema belentani7</a>
         <span><i data-lucide="git-branch" aria-hidden="true"></i> Parte del ecosistema Belentani</span>
       </div>
     </section>
@@ -404,7 +418,7 @@
           <p class="ux-lead mx-auto" style="margin-bottom: var(--space-l);">
             262 tests offline, 3 templates listos, bucle cerrado con QA real. El pipeline VFX que no se rinde.
           </p>
-          <a class="ux-btn ux-btn--primary" data-ux-magnet href="https://github.com/belentani7/llm-vfx-orchestrator" rel="noopener">
+          <a class="ux-btn ux-btn--primary" data-ux-magnet  rel="noopener">
             <i data-lucide="download" aria-hidden="true"></i> Empezar en GitHub
           </a>
         </div>
@@ -416,9 +430,9 @@
     <div class="ux-container ux-footer__inner">
       <span>© <span data-ux-year>2026</span> LLM VFX Orchestrator · MIT · Ecosistema belentani7</span>
       <span style="display:inline-flex;gap:1.2rem;align-items:center">
-        <a href="https://github.com/belentani7/llm-vfx-orchestrator" rel="noopener" style="display:inline-flex;align-items:center;gap:.35rem"><svg class="icon-github-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.26 5.66.41.36.77 1.05.77 2.13 0 1.54-.01 2.78-.01 3.16 0 .3.2.67.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>GitHub</a>
-        <a href="https://llm-vfx-orchestrator.vercel.app" rel="noopener">Demo Vercel</a>
-        <a href="https://github.com/belentani7" rel="noopener">Ecosistema belentani7</a>
+        <a  rel="noopener" style="display:inline-flex;align-items:center;gap:.35rem"><svg class="icon-github-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.26 5.66.41.36.77 1.05.77 2.13 0 1.54-.01 2.78-.01 3.16 0 .3.2.67.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>GitHub</a>
+        <a  rel="noopener">Demo Vercel</a>
+        <a  rel="noopener">Ecosistema belentani7</a>
       </span>
     </div>
   </footer>
@@ -483,5 +497,170 @@
       }
     });
   </script>
+<!-- belentani-ampliacion:start -->
+<a href="ampliacion.html" data-belentani-ampliacion="1" aria-label="Abrir la ampliación de llm-vfx-orchestrator" style="position:fixed;right:16px;bottom:16px;z-index:2147483647;display:inline-flex;align-items:center;gap:.45rem;padding:.62rem .85rem;border-radius:999px;background:#0f172a;color:#f8fafc;font:600 13px/1.2 system-ui,-apple-system,Segoe UI,sans-serif;text-decoration:none;border:1px solid rgba(255,255,255,.18);box-shadow:0 8px 24px rgba(0,0,0,.28);white-space:nowrap;">Ampliación <span aria-hidden="true">&#8599;</span></a>
+<!-- belentani-ampliacion:end -->
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
+<script>
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible en este navegador.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}');
+    gl.compileShader(vs);
+    var fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, 'precision mediump float;uniform vec4 c;void main(){gl_FragColor=c;}');
+    gl.compileShader(fs);
+    var prog = gl.createProgram();
+    gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    gl.useProgram(prog);
+    var loc = gl.getUniformLocation(prog,'c');
+    gl.uniform4f(loc, 0.549, 0.659, 0.545, 1.0);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var attr = gl.getAttribLocation(prog,'p');
+    gl.enableVertexAttribArray(attr);
+    gl.vertexAttribPointer(attr,2,gl.FLOAT,false,0,0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }catch(e){ console.log('WebGL init:', e.message); }
+})();
+</script>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
+<script>
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible en este navegador.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}');
+    gl.compileShader(vs);
+    var fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, 'precision mediump float;uniform vec4 c;void main(){gl_FragColor=c;}');
+    gl.compileShader(fs);
+    var prog = gl.createProgram();
+    gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    gl.useProgram(prog);
+    var loc = gl.getUniformLocation(prog,'c');
+    gl.uniform4f(loc, 0.549, 0.659, 0.545, 1.0);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var attr = gl.getAttribLocation(prog,'p');
+    gl.enableVertexAttribArray(attr);
+    gl.vertexAttribPointer(attr,2,gl.FLOAT,false,0,0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }catch(e){ console.log('WebGL init:', e.message); }
+})();
+</script>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
+<script>
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible en este navegador.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}');
+    gl.compileShader(vs);
+    var fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, 'precision mediump float;uniform vec4 c;void main(){gl_FragColor=c;}');
+    gl.compileShader(fs);
+    var prog = gl.createProgram();
+    gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    gl.useProgram(prog);
+    var loc = gl.getUniformLocation(prog,'c');
+    gl.uniform4f(loc, 0.549, 0.659, 0.545, 1.0);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var attr = gl.getAttribLocation(prog,'p');
+    gl.enableVertexAttribArray(attr);
+    gl.vertexAttribPointer(attr,2,gl.FLOAT,false,0,0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }catch(e){ console.log('WebGL init:', e.message); }
+})();
+</script>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
+<script>
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible en este navegador.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}');
+    gl.compileShader(vs);
+    var fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, 'precision mediump float;uniform vec4 c;void main(){gl_FragColor=c;}');
+    gl.compileShader(fs);
+    var prog = gl.createProgram();
+    gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    gl.useProgram(prog);
+    var loc = gl.getUniformLocation(prog,'c');
+    gl.uniform4f(loc, 0.549, 0.659, 0.545, 1.0);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var attr = gl.getAttribLocation(prog,'p');
+    gl.enableVertexAttribArray(attr);
+    gl.vertexAttribPointer(attr,2,gl.FLOAT,false,0,0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }catch(e){ console.log('WebGL init:', e.message); }
+})();
+</script>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
+<script>
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+  }catch(e){ console.log('WebGL:', e.message); }
+})();
+</script>
 </body>
 </html>
