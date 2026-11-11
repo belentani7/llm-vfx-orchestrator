@@ -56,3 +56,51 @@ Proveer valor a través de tecnología moderna, código mantenible y experiencia
 - Monorepo o repositorio independiente según el producto
 - Despliegue por copia de archivos (cero build) salvo que se especifique lo contrario
 - Working trees respetados: no se sobrescriben cambios sin restaurar desde HEAD
+
+<!-- repo-forge:biblia:inicio -->
+# BIBLIA.md — llm-vfx-orchestrator
+
+Doctrina del producto del repositorio `llm-vfx-orchestrator` del ecosistema belentani7.
+
+## Visión
+
+pipeline reproducible que va del prompt al render con coste y calidad medidos
+
+## Misión
+
+Un artefacto editorial que respeta al lector: dato con fuente, voz con autoría, límite declarado.
+
+## Público
+
+artistas técnicos
+
+## Stack
+
+aplicación web con build (Next/Vite/Expo) · Python, JSON, HTML, Markdown, TypeScript, CSS
+
+## Módulos que la promesa exige
+
+- Planificador
+- Ejecutor
+- Registro
+- Coste
+
+## Reglas de desarrollo
+
+- Protocolo spec-first: PRD → SRS → Design Doc → ADR → Plan → Tests.
+- Un cambio, un resultado verificable.
+- Nada se afirma sin ejecución; lo no probado se declara como no probado.
+- Escritura solo con confirmación; nada destructivo.
+- Idioma del producto: español, salvo el público del repositorio.
+- Secreto fuera de disco, logs y manifiestos.
+
+## Lo que este repositorio no va a hacer
+
+generar sin control de coste
+
+## Convenciones
+
+`type(scope): resumen` — feat, fix, docs, chore, refactor, test, perf.
+
+<!-- repo-forge:biblia -->
+<!-- repo-forge:biblia:fin -->

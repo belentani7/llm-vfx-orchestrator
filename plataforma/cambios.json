@@ -1,0 +1,582 @@
+[
+  {
+    "id": "A01",
+    "regla": "GH-02",
+    "titulo": "Licencia MIT en raíz",
+    "path": "LICENSE",
+    "estado": "ya estaba",
+    "detalle": "no se toca LICENSE: existe y no es nuestro · 48 B",
+    "archivos": []
+  },
+  {
+    "id": "A02",
+    "regla": "GH-01",
+    "titulo": "README con qué es, estado medido y arranque",
+    "path": "README.md",
+    "estado": "aplicado",
+    "detalle": "README.md ya tenía el bloque readme · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A03",
+    "regla": "GH-04",
+    "titulo": "Guía de contribución",
+    "path": "CONTRIBUTING.md",
+    "estado": "aplicado",
+    "detalle": "CONTRIBUTING.md ya tenía el bloque contributing · 1991 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A04",
+    "regla": "GH-03",
+    "titulo": "Código de conducta",
+    "path": "CODE_OF_CONDUCT.md",
+    "estado": "aplicado",
+    "detalle": "CODE_OF_CONDUCT.md ya tenía el bloque code_of_conduct · 3000 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A05",
+    "regla": "GH-10",
+    "titulo": "Política de seguridad",
+    "path": "SECURITY.md",
+    "estado": "aplicado",
+    "detalle": "SECURITY.md ya tenía el bloque security · 1414 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A06",
+    "regla": "GH-01",
+    "titulo": "Changelog con formato",
+    "path": "CHANGELOG.md",
+    "estado": "aplicado",
+    "detalle": "CHANGELOG.md ya tenía el bloque changelog · 1044 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A07",
+    "regla": "GH-06",
+    "titulo": "Propiedad del código",
+    "path": ".github/CODEOWNERS",
+    "estado": "aplicado",
+    "detalle": ".github/CODEOWNERS ya estaba · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A08",
+    "regla": "GH-08",
+    "titulo": "EditorConfig",
+    "path": ".editorconfig",
+    "estado": "ya estaba",
+    "detalle": "no se toca .editorconfig: existe y no es nuestro",
+    "archivos": []
+  },
+  {
+    "id": "A09",
+    "regla": "GH-08",
+    "titulo": "Atributos de línea y binarios",
+    "path": ".gitattributes",
+    "estado": "ya estaba",
+    "detalle": "no se toca .gitattributes: existe y no es nuestro",
+    "archivos": []
+  },
+  {
+    "id": "A10",
+    "regla": "GH-08",
+    "titulo": ".gitignore con patrones reales",
+    "path": ".gitignore",
+    "estado": "ya estaba",
+    "detalle": ".gitignore ya completo",
+    "archivos": []
+  },
+  {
+    "id": "A11",
+    "regla": "GH-05",
+    "titulo": "Plantilla de error",
+    "path": ".github/ISSUE_TEMPLATE/bug_report.md",
+    "estado": "aplicado",
+    "detalle": ".github/ISSUE_TEMPLATE/bug_report.md ya estaba · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A12",
+    "regla": "GH-05",
+    "titulo": "Plantilla de propuesta",
+    "path": ".github/ISSUE_TEMPLATE/feature_request.md",
+    "estado": "aplicado",
+    "detalle": ".github/ISSUE_TEMPLATE/feature_request.md ya estaba · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A13",
+    "regla": "GH-06",
+    "titulo": "Plantilla de pull request",
+    "path": ".github/PULL_REQUEST_TEMPLATE.md",
+    "estado": "omitido",
+    "detalle": "no se toca .github/PULL_REQUEST_TEMPLATE.md: existe y no es nuestro",
+    "archivos": []
+  },
+  {
+    "id": "A14",
+    "regla": "GH-07",
+    "titulo": "CI que ejecuta el gate",
+    "path": ".github/workflows/ci.yml",
+    "estado": "omitido",
+    "detalle": "no se toca .github/workflows/ci.yml: existe y no es nuestro",
+    "archivos": []
+  },
+  {
+    "id": "A15",
+    "regla": "GH-08",
+    "titulo": "Dependabot",
+    "path": ".github/dependabot.yml",
+    "estado": "omitido",
+    "detalle": "no se toca .github/dependabot.yml: existe y no es nuestro",
+    "archivos": []
+  },
+  {
+    "id": "A16",
+    "regla": "GH-11",
+    "titulo": "Doctrina del repositorio",
+    "path": "BIBLIA.md",
+    "estado": "aplicado",
+    "detalle": "BIBLIA.md ya tenía el bloque biblia · 3047 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A17",
+    "regla": "GH-11",
+    "titulo": "Instrucciones para agentes",
+    "path": "AGENTS.md",
+    "estado": "aplicado",
+    "detalle": "AGENTS.md ya tenía el bloque agents · 2207 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A18",
+    "regla": "DEV-04",
+    "titulo": "Arquitectura observada",
+    "path": "docs/ARQUITECTURA.md",
+    "estado": "aplicado",
+    "detalle": "docs/ARQUITECTURA.md ya tenía el bloque docs-arquitectura · 893 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A19",
+    "regla": "DEV-04",
+    "titulo": "ADR del stack",
+    "path": "docs/ADR/0001-stack.md",
+    "estado": "aplicado",
+    "detalle": "docs/ADR/0001-stack.md ya tenía el bloque docs-adr-0001-stack · 735 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A20",
+    "regla": "DEV-04",
+    "titulo": "Runbook de operación",
+    "path": "docs/OPERACION.md",
+    "estado": "aplicado",
+    "detalle": "docs/OPERACION.md ya tenía el bloque docs-operacion · 726 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A21",
+    "regla": "COH-02",
+    "titulo": "Privacidad declarada",
+    "path": "docs/PRIVACIDAD.md",
+    "estado": "aplicado",
+    "detalle": "docs/PRIVACIDAD.md ya tenía el bloque docs-privacidad · 560 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A22",
+    "regla": "ACC-01",
+    "titulo": "Compromiso de accesibilidad",
+    "path": "docs/ACCESIBILIDAD.md",
+    "estado": "aplicado",
+    "detalle": "docs/ACCESIBILIDAD.md ya tenía el bloque docs-accesibilidad · 663 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A23",
+    "regla": "GH-01",
+    "titulo": "Roadmap ligado a módulos",
+    "path": "docs/ROADMAP.md",
+    "estado": "aplicado",
+    "detalle": "docs/ROADMAP.md ya tenía el bloque docs-roadmap · 625 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A24",
+    "regla": "GH-01",
+    "titulo": "Handoff con decisiones abiertas",
+    "path": "docs/HANDOFF.md",
+    "estado": "aplicado",
+    "detalle": "docs/HANDOFF.md ya tenía el bloque docs-handoff · 791 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A25",
+    "regla": "GH-10",
+    "titulo": "Procedencia de cada dato",
+    "path": "docs/FUENTES.md",
+    "estado": "aplicado",
+    "detalle": "docs/FUENTES.md ya tenía el bloque docs-fuentes · 650 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A26",
+    "regla": "DEV-04",
+    "titulo": "Modelo de datos",
+    "path": "docs/MODELO-DE-DATOS.md",
+    "estado": "aplicado",
+    "detalle": "docs/MODELO-DE-DATOS.md ya tenía el bloque docs-modelo-de-datos · 680 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A27",
+    "regla": "DEV-01",
+    "titulo": "Evaluación: cómo se mide el éxito",
+    "path": "docs/EVALUACION.md",
+    "estado": "aplicado",
+    "detalle": "docs/EVALUACION.md ya tenía el bloque docs-evaluacion · 635 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A28",
+    "regla": "COH-03",
+    "titulo": "Glosario del producto",
+    "path": "docs/GLOSARIO.md",
+    "estado": "aplicado",
+    "detalle": "docs/GLOSARIO.md ya tenía el bloque docs-glosario · 574 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A29",
+    "regla": "COH-01",
+    "titulo": "Tokens de marca en JSON",
+    "path": "brand/tokens.json",
+    "estado": "aplicado",
+    "detalle": "brand/tokens.json ya estaba · 529 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A30",
+    "regla": "COH-01",
+    "titulo": "Tokens de marca en CSS",
+    "path": "brand/tokens.css",
+    "estado": "aplicado",
+    "detalle": "brand/tokens.css ya estaba · 1138 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A31",
+    "regla": "COH-01",
+    "titulo": "Manual de marca",
+    "path": "brand/MARCA.md",
+    "estado": "aplicado",
+    "detalle": "brand/MARCA.md ya tenía el bloque brand-marca · 1411 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A32",
+    "regla": "WEB-23",
+    "titulo": "Logo vectorial",
+    "path": "brand/logo.svg",
+    "estado": "aplicado",
+    "detalle": "brand/logo.svg ya estaba · 449 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A33",
+    "regla": "WEB-22",
+    "titulo": "Imagen social en SVG",
+    "path": "brand/og-image.svg",
+    "estado": "aplicado",
+    "detalle": "brand/og-image.svg ya estaba · 695 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A34",
+    "regla": "GH-01",
+    "titulo": "Ficha de máximo potencial",
+    "path": "plataforma/FICHA.md",
+    "estado": "aplicado",
+    "detalle": "plataforma/FICHA.md ya tenía el bloque plataforma-ficha · 1945 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A35",
+    "regla": "DEV-04",
+    "titulo": "Diseño de plataforma",
+    "path": "plataforma/PLATAFORMA.md",
+    "estado": "aplicado",
+    "detalle": "plataforma/PLATAFORMA.md ya tenía el bloque plataforma-plataforma · 1192 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A36",
+    "regla": "COH-05",
+    "titulo": "Fases de monetización",
+    "path": "plataforma/PAYWALL.md",
+    "estado": "aplicado",
+    "detalle": "plataforma/PAYWALL.md ya tenía el bloque plataforma-paywall · 1135 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A37",
+    "regla": "COH-05",
+    "titulo": "Contrato de monetización en JSON",
+    "path": "plataforma/paywall.json",
+    "estado": "aplicado",
+    "detalle": "plataforma/paywall.json ya estaba · 1123 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A38",
+    "regla": "COH-05",
+    "titulo": "Mapa de recursos",
+    "path": "plataforma/RECURSOS.md",
+    "estado": "aplicado",
+    "detalle": "plataforma/RECURSOS.md ya tenía el bloque plataforma-recursos · 1393 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A39",
+    "regla": "COH-05",
+    "titulo": "Recursos en JSON",
+    "path": "plataforma/recursos.json",
+    "estado": "aplicado",
+    "detalle": "plataforma/recursos.json ya estaba · 114 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A40",
+    "regla": "DEV-01",
+    "titulo": "Madurez por eje",
+    "path": "plataforma/MADUREZ.md",
+    "estado": "aplicado",
+    "detalle": "plataforma/MADUREZ.md ya tenía el bloque plataforma-madurez · 485 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A41",
+    "regla": "DEV-01",
+    "titulo": "Banco de datos JSON",
+    "path": "data/catalogo.json",
+    "estado": "aplicado",
+    "detalle": "data/catalogo.json escrito (622 B) · 622 B",
+    "archivos": [
+      "data/catalogo.json"
+    ]
+  },
+  {
+    "id": "A42",
+    "regla": "DEV-01",
+    "titulo": "Doctor de reglas",
+    "path": "scripts/doctor.py",
+    "estado": "aplicado",
+    "detalle": "scripts/doctor.py ya estaba · 2589 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A43",
+    "regla": "GH-10",
+    "titulo": "security.txt",
+    "path": ".well-known/security.txt",
+    "estado": "aplicado",
+    "detalle": ".well-known/security.txt ya estaba · 247 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A44",
+    "regla": "COH-01",
+    "titulo": "humans.txt",
+    "path": "humans.txt",
+    "estado": "aplicado",
+    "detalle": "humans.txt ya estaba · 213 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A45",
+    "regla": "GH-02",
+    "titulo": "Licencias de terceros",
+    "path": "LICENSES.md",
+    "estado": "aplicado",
+    "detalle": "LICENSES.md ya tenía el bloque licenses · 473 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A46",
+    "regla": "DEV-05",
+    "titulo": "Pre-commit con gitleaks",
+    "path": ".pre-commit-config.yaml",
+    "estado": "aplicado",
+    "detalle": ".pre-commit-config.yaml ya estaba · 308 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A47",
+    "regla": "GH-10",
+    "titulo": "Configuración de gitleaks",
+    "path": ".gitleaks.toml",
+    "estado": "ya estaba",
+    "detalle": "no se toca .gitleaks.toml: existe y no es nuestro · 936 B",
+    "archivos": []
+  },
+  {
+    "id": "A48",
+    "regla": "DEV-04",
+    "titulo": "Tareas del proyecto",
+    "path": "Makefile",
+    "estado": "aplicado",
+    "detalle": "Makefile ya estaba · 165 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A49",
+    "regla": "DEV-01",
+    "titulo": "Prototipo navegable de la plataforma",
+    "path": "plataforma/PROTOTIPO.html",
+    "estado": "aplicado",
+    "detalle": "plataforma/PROTOTIPO.html ya estaba · 4451 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A50",
+    "regla": "DEV-01",
+    "titulo": "Banco de datos ESM",
+    "path": "data/catalogo.mjs",
+    "estado": "aplicado",
+    "detalle": "data/catalogo.mjs escrito (693 B) · 693 B",
+    "archivos": [
+      "data/catalogo.mjs"
+    ]
+  },
+  {
+    "id": "A51",
+    "regla": "DEV-01",
+    "titulo": "Validador del banco de datos",
+    "path": "scripts/validate-catalog.mjs",
+    "estado": "aplicado",
+    "detalle": "scripts/validate-catalog.mjs ya estaba · 723 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A52",
+    "regla": "DEV-02",
+    "titulo": "Versión de Node fijada",
+    "path": ".nvmrc",
+    "estado": "aplicado",
+    "detalle": ".nvmrc ya estaba · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A53",
+    "regla": "WEB-24",
+    "titulo": "robots.txt",
+    "path": "robots.txt",
+    "estado": "aplicado",
+    "detalle": "robots.txt ya estaba · 95 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A54",
+    "regla": "WEB-24",
+    "titulo": "sitemap.xml",
+    "path": "sitemap.xml",
+    "estado": "aplicado",
+    "detalle": "sitemap.xml ya estaba · 285 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A55",
+    "regla": "WEB-01",
+    "titulo": "Página 404",
+    "path": "404.html",
+    "estado": "aplicado",
+    "detalle": "404.html ya estaba · 996 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A56",
+    "regla": "WEB-23",
+    "titulo": "Manifiesto web",
+    "path": "manifest.webmanifest",
+    "estado": "aplicado",
+    "detalle": "manifest.webmanifest ya estaba · 354 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A57",
+    "regla": "ACC-01",
+    "titulo": "Capa de accesibilidad",
+    "path": "assets/a11y.css",
+    "estado": "aplicado",
+    "detalle": "assets/a11y.css ya estaba · 752 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A58",
+    "regla": "DEV-05",
+    "titulo": "Hoja de impresión",
+    "path": "assets/print.css",
+    "estado": "aplicado",
+    "detalle": "assets/print.css ya estaba · 304 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A59",
+    "regla": "COH-01",
+    "titulo": "Capa de marca",
+    "path": "assets/brand.css",
+    "estado": "aplicado",
+    "detalle": "assets/brand.css ya estaba · 522 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A60",
+    "regla": "WEB-23",
+    "titulo": "Favicon",
+    "path": "assets/favicon.svg",
+    "estado": "aplicado",
+    "detalle": "assets/favicon.svg ya estaba · 472 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A61",
+    "regla": "ACC-01",
+    "titulo": "Declaración de accesibilidad",
+    "path": "accessibility.html",
+    "estado": "aplicado",
+    "detalle": "accessibility.html ya estaba · 1376 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A62",
+    "regla": "COH-02",
+    "titulo": "Privacidad en el sitio",
+    "path": "privacidad.html",
+    "estado": "aplicado",
+    "detalle": "privacidad.html ya estaba · 961 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A63",
+    "regla": "COH-02",
+    "titulo": "Aviso legal",
+    "path": "aviso-legal.html",
+    "estado": "aplicado",
+    "detalle": "aviso-legal.html ya estaba · 989 B · confirmado en primera pasada",
+    "archivos": []
+  },
+  {
+    "id": "A64",
+    "regla": "WEB-22",
+    "titulo": "Meta, Open Graph y favicon en las páginas",
+    "path": "(25 primeras páginas)",
+    "estado": "ya estaba",
+    "detalle": "0 páginas con meta/OG/favicon · 2/2",
+    "archivos": []
+  }
+]

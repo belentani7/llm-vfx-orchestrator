@@ -21,6 +21,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Scan conflict markers
+        shell: bash
         run: |
-          if git grep -E '^(<<<<<<< |=======$|>>>>>>> )' -- '*.:("*' ; then
-            echo "Marcadores de conflicto detectados"; exit 1; fi
+          fail=0
+          # The previous pathspec ('*.:("*') matched no file, so this gate could
+          # never fail. Scan the tracked tree explicitly and treat a broken
+          # search as a failure instead of a clean result.
+          scan() {
+            label="$1"; pattern="$2"; shift 2
+            code=0
+            git grep -nE "$pattern" -- "$@" > markers.txt 2>&1 || code=$?
+            if [ "$code" -eq 0 ]; then
+              echo "::error::Marcadores de conflicto detectados ($label)"
+              cat markers.txt
+              fail=1
+            elif [ "$code" -gt 1 ]; then
+              echo "::error::git grep no pudo completar la busqueda ($label, exit $code)"
+              cat markers.txt
+              fail=1
+            fi
+          }
+          scan "apertura/cierre" '^(<<<<<<< |>>>>>>> )' .
+          # A bare equals line is a setext heading in Markdown, not a conflict.
+          scan "separador" '^=======$' . ':(exclude)*.md' ':(exclude)*.MD'
+          rm -f markers.txt
+          exit "$fail"

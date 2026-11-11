@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="LLM VFX Orchestrator">
+  <rect width="1200" height="630" fill="#f7f4ef"/>
+  <rect x="48" y="48" width="1104" height="534" rx="24" fill="none" stroke="#8c3d22" stroke-width="2" opacity="0.45"/>
+  <text x="96" y="300" font-family="Georgia, serif" font-size="86" fill="#221f1a">LLM VFX Orchestrator</text>
+  <text x="96" y="372" font-family="system-ui, sans-serif" font-size="34" fill="#73706b">orquestador VFX con LLM</text>
+  <rect x="96" y="430" width="120" height="6" fill="#8c3d22"/>
+  <text x="96" y="520" font-family="ui-monospace, monospace" font-size="24" fill="#8c3d22">belentani7 · 2026</text>
+</svg>

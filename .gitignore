@@ -39,3 +39,13 @@ secrets.json
 .npmrc
 .pypirc
 .user_env
+
+# repo-forge
+build/
+.next/
+out/
+coverage/
+__pycache__/
+*.pyc
+.venv/
+Thumbs.db

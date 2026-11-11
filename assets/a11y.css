@@ -1,0 +1,20 @@
+/* repo-forge:a11y — mejoras de accesibilidad sin tocar el diseño existente */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid #8c3d22;
+  outline-offset: 2px;
+}
+.skip-link {
+  position: absolute; left: -9999px; top: 0; background: #f1eee9;
+  color: #221f1a; padding: .75rem 1rem; z-index: 9999;
+}
+.skip-link:focus { left: 1rem; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+@media (prefers-contrast: more) {
+  :root { --color-ink: #000; }
+}

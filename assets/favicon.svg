@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="32" height="32" role="img" aria-label="LLM VFX Orchestrator">
+  <rect width="120" height="120" rx="26" fill="#f7f4ef"/>
+  <rect x="8" y="8" width="104" height="104" rx="20" fill="none" stroke="#8c3d22" stroke-width="2" opacity="0.5"/>
+  <text x="60" y="76" text-anchor="middle" font-family="Georgia, serif" font-size="44" fill="#221f1a">LV</text>
+  <circle cx="60" cy="96" r="3" fill="#8c3d22"/>
+</svg>

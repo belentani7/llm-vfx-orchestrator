@@ -1,0 +1,76 @@
+{
+  "esquema": "repo-forge/ficha/1",
+  "nombre": "llm-vfx-orchestrator",
+  "remoto": "https://github.com/belentani7/llm-vfx-orchestrator",
+  "arquetipo": "web-app",
+  "stack": "React + Python",
+  "modelo": "orquestador VFX con LLM",
+  "publico": "artistas técnicos",
+  "techo": "pipeline reproducible que va del prompt al render con coste y calidad medidos",
+  "modulos": [
+    "Planificador",
+    "Ejecutor",
+    "Registro",
+    "Coste"
+  ],
+  "no_go": "generar sin control de coste",
+  "marca": {
+    "nombre": "LLM VFX Orchestrator",
+    "familia": "editorial",
+    "paleta": {
+      "familia": "editorial",
+      "bg": "#f7f4ef",
+      "surface": "#f1eee9",
+      "ink": "#221f1a",
+      "muted": "#73706b",
+      "accent": "#8c3d22",
+      "accent2": "#166534",
+      "ok": "#15803d",
+      "warn": "#b45309",
+      "danger": "#b91c1c",
+      "contraste_ink_bg": 14.97,
+      "contraste_accent_bg": 6.82,
+      "accent_sobre_bg_ok": true
+    },
+    "narrativa": "Contar sin adornar"
+  },
+  "paywall": {
+    "principio": "acceso abierto; monetización solo si hay servicio real detrás",
+    "fases": 4
+  },
+  "medido": {
+    "archivos": 80,
+    "lineas": 13418,
+    "html": 8,
+    "tests": 13,
+    "bytes": 532897,
+    "lenguajes": {
+      "Python": 47.5,
+      "JSON": 20.7,
+      "HTML": 13.0,
+      "Markdown": 6.7,
+      "TypeScript": 6.0,
+      "CSS": 3.9
+    },
+    "fecha": "2026-11-10"
+  },
+  "gate": {
+    "pass": 37,
+    "fail": 0,
+    "skip": 12,
+    "cumplimiento": 100.0,
+    "fallos": []
+  },
+  "ajustes": {
+    "total": 64,
+    "aplicados": 55,
+    "ya_estaban": 9,
+    "fallos": 0
+  },
+  "esfuerzo_dias": 41,
+  "doctor": {
+    "ok": true,
+    "detalle": "38/38 comprobaciones en verde"
+  },
+  "huella": "b82851c56fdf4ac4"
+}

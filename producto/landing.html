@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM VFX Orchestrator — orquestador VFX con LLM</title>
+<meta name="description" content="orquestador VFX con LLM para artistas técnicos. Alcance cerrado, precio publicado y entrega verificable.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LLM VFX Orchestrator">
+<meta property="og:description" content="orquestador VFX con LLM para artistas técnicos. Alcance cerrado, precio publicado y entrega verificable.">
+<meta property="og:image" content="../brand/og-image.svg">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<style>
+  :root { --bg:#f7f4ef; --surface:#f1eee9; --ink:#221f1a; --muted:#73706b;
+           --accent:#8c3d22; --line:color-mix(in srgb, #221f1a 14%, transparent); }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  header, main, footer { padding: clamp(1.2rem, 5vw, 3.5rem); }
+  .kicker { font:600 .78rem/1 ui-monospace,monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+  h1 { font-family:Georgia,serif; font-size:clamp(1.9rem,5vw,3.1rem); line-height:1.08; margin:.5rem 0 1rem; max-width:22ch; }
+  .lead { color:var(--muted); max-width:60ch; font-size:1.08rem; }
+  .cta { display:inline-block; margin-top:1.4rem; background:var(--accent); color:#f7f4ef;
+          padding:.85rem 1.4rem; border-radius:999px; font-weight:650; text-decoration:none; }
+  .cta:focus-visible { outline:3px solid var(--ink); outline-offset:3px; }
+  .grid { display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); }
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:1.15rem; }
+  .card h3 { margin:.1rem 0 .5rem; font-family:Georgia,serif; font-size:1.1rem; }
+  .card p { margin:0; color:var(--muted); font-size:.93rem; }
+  .precio { font-family:Georgia,serif; font-size:clamp(2rem,6vw,3rem); }
+  .nota { color:var(--muted); font-size:.85rem; }
+  table { border-collapse:collapse; width:100%; font-size:.9rem; margin-top:.6rem; }
+  th, td { text-align:left; padding:.55rem .4rem; border-bottom:1px solid var(--line); }
+  th { font:600 .72rem/1 ui-monospace,monospace; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); }
+  footer { color:var(--muted); font-size:.85rem; border-top:1px solid var(--line); }
+  @media (prefers-reduced-motion: reduce) { * { transition:none!important; animation:none!important; } }
+</style>
+</head>
+<body>
+<header>
+  <p class="kicker">orquestador VFX con LLM</p>
+  <h1>LLM VFX Orchestrator</h1>
+  <p class="lead">orquestador VFX con LLM para artistas técnicos. Alcance cerrado, precio publicado y entrega verificable.</p>
+  <a class="cta" href="https://github.com/belentani7/llm-vfx-orchestrator/issues/new?title=Solicitud:%20LLM%20VFX%20Orchestrator">Solicitar propuesta</a>
+</header>
+<main>
+  <section aria-labelledby="incluye">
+    <h2 id="incluye">Qué incluye</h2>
+    <div class="grid"><article class="card"><h3>Planificador</h3><p>Incluido en el alcance y verificable en el repositorio.</p></article><article class="card"><h3>Ejecutor</h3><p>Incluido en el alcance y verificable en el repositorio.</p></article><article class="card"><h3>Registro</h3><p>Incluido en el alcance y verificable en el repositorio.</p></article></div>
+  </section>
+  <section aria-labelledby="precio" style="margin-top:2.5rem">
+    <h2 id="precio">Precio</h2>
+    <p class="precio">49 € <span class="nota">/ mes</span></p>
+    <p class="nota">21 % no incluido; se emite factura con IVA cuando corresponda. · Si en los primeros 14 días el resultado no se corresponde con lo descrito aquí, se devuelve el importe íntegro.</p>
+  </section>
+  <section aria-labelledby="quien" style="margin-top:2.5rem">
+    <h2 id="quien">Quién paga y qué no se bloquea</h2>
+    <table>
+      <caption class="nota" style="text-align:left">acceso abierto; monetización solo si hay servicio real detrás</caption>
+      <thead><tr><th>Fase</th><th>Nombre</th><th>Gratis</th><th>Pago</th></tr></thead>
+      <tbody><tr><td>1</td><td>Abierto</td><td>todo</td><td>nada</td></tr><tr><td>2</td><td>Servicio</td><td>el artefacto</td><td>trabajo hecho a medida</td></tr><tr><td>3</td><td>Licencia</td><td>uso personal</td><td>uso comercial</td></tr><tr><td>4</td><td>Patrocinio</td><td>todo</td><td>marcas que apoyan</td></tr></tbody>
+    </table>
+  </section>
+  <section aria-labelledby="prueba" style="margin-top:2.5rem">
+    <h2 id="prueba">Prueba</h2>
+    <p class="nota">Lo que se afirma aquí se comprueba en el repositorio: 80 archivos, 13419 líneas, 8 páginas HTML y 13 archivos de prueba medidos en el repositorio el 2026-11-10.</p>
+  </section>
+</main>
+<footer>
+  <p>© 2026 LLM VFX Orchestrator · Parte del ecosistema Belentani · Precio propuesto, pendiente de validación con el primer cliente.</p>
+</footer>
+</body>
+</html>
