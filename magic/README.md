@@ -16,3 +16,7 @@ Open `immersive.html` in a browser to enter the experience.
 Open `ai-instructions.md` to brief agents working in this node.
 
 **Signature: belentani.eu · noiacore.com**
+
+
+## Producto
+Véase `plataforma/OFERTA.md`.

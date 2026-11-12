@@ -1,37 +1,16 @@
-
-
-<!-- repo-forge:plataforma-paywall:inicio -->
-# Monetización por fases — LLM VFX Orchestrator
-
-## Principio
-
-**acceso abierto; monetización solo si hay servicio real detrás**. Paga: quien recibe un servicio, no quien lee.
-
-## Fases
-
-| Fase | Nombre | Gratis | Pago | Qué se bloquea | Métrica |
-|---|---|---|---|---|---|
-| 1 | Abierto | todo | nada | ninguno | uso |
-| 2 | Servicio | el artefacto | trabajo hecho a medida | solo encargos | encargos |
-| 3 | Licencia | uso personal | uso comercial | licencia comercial | licencias |
-| 4 | Patrocinio | todo | marcas que apoyan | ninguno | patrocinios |
-
-## Por qué cada fase
-
-- **Fase 1 — Abierto:** primero ser útil
-- **Fase 2 — Servicio:** se cobra el trabajo, no el archivo
-- **Fase 3 — Licencia:** quien factura con ello, paga
-- **Fase 4 — Patrocinio:** sostener sin cerrar
+# Modelo de monetizaciÃ³n â€” llm-vfx-orchestrator
 
 ## Regla dura
+Ninguna capacidad del nÃºcleo se reserva a un plan de pago. El producto base sigue siendo libre. El cobro ocurre Ãºnicamente en servicios opcionales alrededor del producto.
 
-si no hay servicio, no hay muro
+## QuÃ© se paga
+| Concepto | Â¿Se cobra? | QuÃ© incluye |
+|----------|------------|-------------|
+| Uso base | No | CÃ³digo abierto, uso gratuito |
+| Soporte | SÃ­ | Asistencia prioritaria, SLA |
+| Gestionado | SÃ­ | Despliegue y mantenimiento |
+| ConsultorÃ­a | SÃ­ | IntegraciÃ³n y personalizaciÃ³n |
 
-## Lo que no se hace
+## Estructura de pago
+No hay paywall dentro del producto. Los pagos son por servicios opcionales de soporte, alojamiento y consultorÃ­a.
 
-- No se cobra por acceder a lo que la promesa declara abierto.
-- No se pide registro para leer.
-- No se activa ninguna fase sin decisión explícita del propietario.
-
-<!-- repo-forge:paywall -->
-<!-- repo-forge:plataforma-paywall:fin -->

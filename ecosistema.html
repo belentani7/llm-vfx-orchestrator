@@ -1,53 +1,74 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LLM VFX ORCHESTRATOR · BELENTANI ECOSYSTEM CIRCUIT</title>
-<meta name="description" content="Circuito del ecosistema Belentani: catálogo tipo HBO, rojo neon glass. Las webs más parecidas aparecen arriba."/>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23FF2B2B'/><text x='50' y='68' font-size='56' text-anchor='middle' fill='%23070707' font-family='Arial'>B</text></svg>"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<meta name="description" content="Circuito del ecosistema Belentani: catálogo tipo HBO, rojo neon glass. Las webs más parecidas aparecen arriba.">
+<meta name="generator" content="repo-superpowers-audit-v1">
+<meta property="og:title" content="LLM VFX ORCHESTRATOR · BELENTANI ECOSYSTEM CIRCUIT">
+<meta property="og:description" content="Circuito del ecosistema Belentani: catálogo tipo HBO, rojo neon glass. Las webs más parecidas aparecen arriba.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0a09'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23c5c68c'/%3E%3C/svg%3E">
 <style>
-:root{--primary:#FF2B2B;--primary-deep:#C8102E;--bg:#070707;--text:#F5F1EC;--muted:#B8AFA6;--line:rgba(255,43,43,.22);--glass:rgba(255,255,255,.03);--surface:rgba(255,43,43,.07)}
-*{box-sizing:border-box;margin:0;padding:0}
-@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
-body{background:var(--bg);color:var(--text);font-family:'Sora',system-ui,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;letter-spacing:.01em;line-height:1.6;background-image:radial-gradient(1200px 500px at 80% -6%,rgba(255,43,43,.15),transparent 60%),radial-gradient(800px 400px at -10% 10%,rgba(200,16,46,.10),transparent 55%)}
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;background:radial-gradient(circle at 1px 1px,rgba(255,255,255,.028) 1px,transparent 0);background-size:34px 34px}
-.wrap{position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
-a{color:inherit;text-decoration:none}
-::selection{background:var(--primary);color:#070707}
-h1,h2,h3{font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;text-wrap:balance}
-h1{font-size:clamp(3rem,9vw,6.5rem);line-height:.92;color:#fff}
-h2{font-size:2.4rem}
-.brand-line{font-family:'Bebas Neue',sans-serif;letter-spacing:.35em;color:var(--primary);font-size:.95rem;margin-top:2.2rem}
-header.home{padding:7vh 0 2vh;border-bottom:1px solid var(--line)}
-header.home p.lede{max-width:60ch;color:var(--muted);margin-top:1rem;font-size:1.02rem}
-.cur-chip{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.4rem;padding:.55rem 1rem;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:.86rem;color:#fff;letter-spacing:.04em}
-.cur-chip b{color:var(--primary)}
-section.row{margin:4.5vh 0}
-.row-title{display:flex;align-items:center;gap:.6rem;font-size:1.7rem;color:#fff;margin-bottom:1.2rem;letter-spacing:.02em}
-.row-title::before{content:'';width:5px;height:26px;background:var(--primary);display:inline-block}
-.cardset{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
-#similar .cardset{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
-.card{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--glass);min-height:96px;display:flex;align-items:flex-end;padding:14px;transition:border-color .18s ease,transform .18s ease,background .18s ease}
-.card.big{min-height:150px}
-.card .cd-glow{position:absolute;inset:0;background:radial-gradient(120px 90px at 90% 0,rgba(255,43,43,.22),transparent 70%);opacity:0;transition:opacity .2s}
-.card:hover{border-color:var(--primary);transform:translateY(-2px);background:rgba(255,43,43,.05)}
-.card:hover .cd-glow{opacity:1}
-.cd-fg{position:relative;display:flex;flex-direction:column;gap:.15rem}
-.cd-ico{font-size:1.6rem;line-height:1}
-.cd-name{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;color:#fff;letter-spacing:.03em}
-.card.big .cd-name{font-size:1.8rem}
-.cd-short{color:var(--muted);font-size:.76rem;line-height:1.35}
-footer{border-top:1px solid var(--line);margin-top:6vh;padding:3.4vh 0 6vh;color:var(--muted);font-size:.86rem}
-footer a{color:#fff;border-bottom:1px solid var(--primary);text-underline-offset:3px}
-@media(max-width:640px){.cardset{grid-template-columns:repeat(2,1fr)}.card{min-height:80px}.card.big{min-height:120px}}
-@media print{footer{display:none}}
-
-    :focus-visible{outline:2px solid var(--ng-red,#ff073a);outline-offset:3px;border-radius:4px}
-    input:focus-visible,button:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--ng-red,#ff073a);outline-offset:3px;border-radius:4px}
+:root{--bg:#0b0a09;--bg2:#131110;--ink:#f4efe7;--dim:#a89f92;--accent:#e0a35c;
+--accent2:#7fa88b;--line:rgba(244,239,231,.14);--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+--sans:ui-sans-serif,"Segoe UI",Inter,system-ui,-apple-system,sans-serif;
+--mono:ui-monospace,"Cascadia Mono",Consolas,monospace;--measure:62ch;--radius:14px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;
+-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(18px,4vw,40px);position:relative;z-index:1}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent2);outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--accent);color:#12100e;padding:10px 16px;z-index:9}
+.skip:focus{left:12px;top:12px}
+header.site{border-bottom:1px solid var(--line);padding:22px 0;display:flex;gap:18px;
+align-items:baseline;justify-content:space-between;flex-wrap:wrap}
+.brand{font-family:var(--serif);font-size:1.05rem;letter-spacing:.01em}
+.brand span{color:var(--dim)}
+nav.site{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:.72rem;
+letter-spacing:.14em;text-transform:uppercase}
+nav.site a{color:var(--dim);text-decoration:none}
+nav.site a:hover,nav.site a[aria-current=page]{color:var(--ink)}
+main{padding:clamp(48px,9vh,104px) 0}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+color:var(--accent);margin:0 0 18px}
+h1{font-family:var(--serif);font-size:clamp(2.4rem,7vw,5.2rem);line-height:.95;
+letter-spacing:-.03em;margin:0 0 24px;font-weight:500;text-wrap:balance}
+h2{font-family:var(--serif);font-size:clamp(1.4rem,3vw,2.1rem);line-height:1.15;
+letter-spacing:-.02em;margin:64px 0 18px;font-weight:500}
+h3{font-size:1.02rem;margin:28px 0 10px;letter-spacing:-.01em}
+p,li{max-width:var(--measure);color:var(--ink)}
+.lead{font-size:clamp(1.05rem,2vw,1.28rem);color:var(--dim);max-width:56ch}
+hr{border:0;border-top:1px solid var(--line);margin:clamp(40px,8vh,80px) 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;
+background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:32px 0}
+.cell{background:var(--bg2);padding:22px 20px}
+.cell h3{margin-top:0}
+.cell p{font-size:.9rem;color:var(--dim);margin:0}
+code,kbd{font-family:var(--mono);font-size:.86em;background:rgba(244,239,231,.07);
+padding:2px 6px;border-radius:5px}
+pre{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);
+padding:18px;overflow:auto;max-width:100%}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:.92rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.pill{display:inline-block;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;
+text-transform:uppercase;border:1px solid var(--line);color:var(--dim);padding:3px 9px;border-radius:999px}
+footer.site{border-top:1px solid var(--line);padding:28px 0 44px;color:var(--dim);font-size:.8rem}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+.reveal{opacity:1;transform:none;transition:none}}
+::selection{background:var(--accent);color:#12100e}
+.webgl-canvas{width:100%;height:400px;background:var(--bg2);border:1px solid var(--line);
+border-radius:var(--radius);margin:24px 0;display:block}
+.superpowers-badge{display:inline-block;font-family:var(--mono);font-size:.65rem;
+letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--accent2);
+color:var(--accent2);padding:4px 10px;border-radius:999px;margin:10px 0}
 </style>
 
 <!-- repo-forge:head -->
@@ -61,8 +82,36 @@ footer a{color:#fff;border-bottom:1px solid var(--primary);text-underline-offset
 <link rel="stylesheet" href="assets/a11y.css">
 </head>
 <body>
-<main>
-
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
 <div class="wrap">
   <header class="home">
     <div class="brand-line">BELENTANI · ECOSYSTEM CIRCUIT</div>
@@ -73,31 +122,31 @@ footer a{color:#fff;border-bottom:1px solid var(--primary);text-underline-offset
 
   <section class="row" id="similar">
     <h2 class="row-title">Más parecidas</h2>
-    <div class="cardset">      <a class="card big" href="https://github.com/belentani7/cinematic-prompt-formatter">
+    <div class="cardset">      <a class="card big" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">C</span><span class="cd-name">CINEMATIC PROMPT</span><span class="cd-short">Prompts cinematográficos</span></div>
-      </a>      <a class="card big" href="https://github.com/belentani7/temporal-artifact-detector">
+      </a>      <a class="card big" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">T</span><span class="cd-name">TEMPORAL DETECTOR</span><span class="cd-short">Detector artefactos</span></div>
-      </a>      <a class="card big" href="https://github.com/belentani7/comfyui-json-compiler">
+      </a>      <a class="card big" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">C</span><span class="cd-name">COMFYUI COMPILER</span><span class="cd-short">ComfyUI JSON</span></div>
-      </a>      <a class="card big" href="https://github.com/belentani7/judas-omega-static">
+      </a>      <a class="card big" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">J</span><span class="cd-name">JUDAS OMEGA</span><span class="cd-short">Storyboard estático</span></div>
-      </a>      <a class="card big" href="https://github.com/belentani7/entrenador-jorge-bcn">
+      </a>      <a class="card big" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">E</span><span class="cd-name">ENTRENADOR JORGE</span><span class="cd-short">Empresa app</span></div>
-      </a>      <a class="card big" href="https://github.com/belentani7/latent-consistency-bench">
+      </a>      <a class="card big" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">L</span><span class="cd-name">LATENT CONSISTENCY</span><span class="cd-short">Benchmark IA</span></div>
-      </a>      <a class="card big" href="https://github.com/belentani7/belentani7">
+      </a>      <a class="card big" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">B</span><span class="cd-name">BELENTANI PROFILE</span><span class="cd-short">Presencia personal</span></div>
-      </a>      <a class="card big" href="https://github.com/belentani7/ai-command-center-level10">
+      </a>      <a class="card big" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">A</span><span class="cd-name">AI COMMAND CENTER</span><span class="cd-short">Centro de mando IA</span></div>
-      </a>      <a class="card big" href="https://github.com/belentani7/fashion-stylist-ai">
+      </a>      <a class="card big" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">F</span><span class="cd-name">FASHION STYLIST AI</span><span class="cd-short">Estilista IA</span></div>
       </a></div>
@@ -106,339 +155,390 @@ footer a{color:#fff;border-bottom:1px solid var(--primary);text-underline-offset
   
     <section class="row" id="duck">
       <h2 class="row-title">◆ Universo DUCK</h2>
-      <div class="cardset">      <a class="card" href="https://github.com/belentani7/duck-ecosystem">
+      <div class="cardset">      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK ECOSYSTEM</span><span class="cd-short">Ecosistema DUCK</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/heyduck">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">H</span><span class="cd-name">HEYDUCK</span><span class="cd-short">Hub del universo DUCK</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/duck-2026">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK 2026</span><span class="cd-short">Iteración anual DUCK</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/duck-apps">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK APPS</span><span class="cd-short">Apps DUCK live</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/duck-apps-web">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK APPS WEB</span><span class="cd-short">Catalog y apps DUCK</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/duck-music-lab">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK MUSIC LAB</span><span class="cd-short">Playground musical</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/Duck-Deck">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK DECK</span><span class="cd-short">Assets producción</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/duck-full-studio-pro">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK STUDIO PRO</span><span class="cd-short">Ecosystem y vault</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/Duck-Omega">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK OMEGA</span><span class="cd-short">Ecosistema artístico</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/duck-studio-suite">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK STUDIO SUITE</span><span class="cd-short">Suite producción web</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/duck-unified-master">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK UNIFIED MASTER</span><span class="cd-short">Monorepo DUCK</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/duck-zion-apex-public">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK ZION APEX</span><span class="cd-short">Prod vocal</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/DUCK-ZION-PREMIUM">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK ZION PREMIUM</span><span class="cd-short">Studio OS y mastering</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/omega-max-duck">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK OMEGA MAX</span><span class="cd-short">Studio OS CRM</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/duck-lab">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK LAB</span><span class="cd-short">Laboratorio prototipos</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/DuckHTML">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK HTML</span><span class="cd-short">Experimentos HTML</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/duck-hub">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">D</span><span class="cd-name">DUCK HUB</span><span class="cd-short">Portal ecosistema DUCK</span></div>
       </a></div>
     </section>
     <section class="row" id="belentani">
       <h2 class="row-title">★ BELENTANI &amp; OMEGA</h2>
-      <div class="cardset">      <a class="card" href="https://github.com/belentani7/judas-omega-static">
+      <div class="cardset">      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">J</span><span class="cd-name">JUDAS OMEGA</span><span class="cd-short">Storyboard estático</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/belentani7">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">B</span><span class="cd-name">BELENTANI PROFILE</span><span class="cd-short">Presencia personal</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/belentaniexperience">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">B</span><span class="cd-name">BELENTANI EXPERIENCE</span><span class="cd-short">Portfolio premium</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/NOIACORE">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">N</span><span class="cd-name">NOIACORE</span><span class="cd-short">Sistema multi-agente</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/belentani7.github.io">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">B</span><span class="cd-name">BELENTANI OMEGA CORE</span><span class="cd-short">Judas OS organismo</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/Belentani">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">N</span><span class="cd-name">NOIACORE LAB</span><span class="cd-short">Catálogo y agente</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/belentani_Omega">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">B</span><span class="cd-name">BELENTANI OMEGA</span><span class="cd-short">Artista ecosistema</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/belentani-omega-portal">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">B</span><span class="cd-name">BELENTANI OMEGA PORTAL</span><span class="cd-short">Portal unificado</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/belentani-omega-immersive-portal">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">O</span><span class="cd-name">OMEGA IMMERSIVE</span><span class="cd-short">Portal 3D inmersivo</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/belentani-omega-template">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">O</span><span class="cd-name">OMEGA TEMPLATE</span><span class="cd-short">Plantilla inmersiva</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/judas-experience-galactic">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">J</span><span class="cd-name">JUDAS GALACTIC</span><span class="cd-short">Experiencia cyberpunk</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/belentani-judas">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">B</span><span class="cd-name">BELENTANI JUDAS</span><span class="cd-short">Proyecto musical Judas</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/registro-proyectos-2026">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">R</span><span class="cd-name">REGISTRO PROYECTOS</span><span class="cd-short">Registro maestro</span></div>
       </a></div>
     </section>
     <section class="row" id="social">
       <h2 class="row-title">✚ Educación · Migrantes · Bienestar</h2>
-      <div class="cardset">      <a class="card" href="https://github.com/belentani7/linguaforge">
+      <div class="cardset">      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">L</span><span class="cd-name">LINGUAFORGE</span><span class="cd-short">Traducción multilingüe</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/ux-academy-professional-program">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">U</span><span class="cd-name">UX ACADEMY</span><span class="cd-short">Plataforma UX trilingüe</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/ManosAbiertas">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">M</span><span class="cd-name">MANOS ABIERTAS</span><span class="cd-short">Educación para migrantes</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/Cruzando-el-charco">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">C</span><span class="cd-name">CRUZANDO EL CHARCO</span><span class="cd-short">Acogida migrantes LGBT+</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/tender-words-connect">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">T</span><span class="cd-name">TENDER WORDS</span><span class="cd-short">TLP y vínculos</span></div>
       </a></div>
     </section>
     <section class="row" id="moda">
       <h2 class="row-title">✦ Moda &amp; Estilo</h2>
-      <div class="cardset">      <a class="card" href="https://github.com/belentani7/fashion-stylist-ai">
+      <div class="cardset">      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">F</span><span class="cd-name">FASHION STYLIST AI</span><span class="cd-short">Estilista IA</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/arte-que-veste">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">A</span><span class="cd-name">ARTE QUE VESTE</span><span class="cd-short">Moda autoral</span></div>
       </a></div>
     </section>
     <section class="row" id="agentes">
       <h2 class="row-title">⚙ Agentes &amp; Skills</h2>
-      <div class="cardset">      <a class="card" href="https://github.com/belentani7/ai-command-center-level10">
+      <div class="cardset">      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">A</span><span class="cd-name">AI COMMAND CENTER</span><span class="cd-short">Centro de mando IA</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/omniagent">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">O</span><span class="cd-name">OMNIAGENT</span><span class="cd-short">Enrutador de modelos</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/meta-skill">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">M</span><span class="cd-name">META SKILL</span><span class="cd-short">Skill router</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/claude-skills-pack">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">C</span><span class="cd-name">CLAUDE SKILLS PACK</span><span class="cd-short">Pack de skills</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/manus-ai-skill-pack">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">M</span><span class="cd-name">MANUS AI SKILL PACK</span><span class="cd-short">Skills Manus</span></div>
       </a></div>
     </section>
     <section class="row" id="creativo">
       <h2 class="row-title">◈ Creative Tech &amp; IA Visual</h2>
-      <div class="cardset">      <a class="card" href="https://github.com/belentani7/cinematic-prompt-formatter">
+      <div class="cardset">      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">C</span><span class="cd-name">CINEMATIC PROMPT</span><span class="cd-short">Prompts cinematográficos</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/temporal-artifact-detector">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">T</span><span class="cd-name">TEMPORAL DETECTOR</span><span class="cd-short">Detector artefactos</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/comfyui-json-compiler">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">C</span><span class="cd-name">COMFYUI COMPILER</span><span class="cd-short">ComfyUI JSON</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/latent-consistency-bench">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">L</span><span class="cd-name">LATENT CONSISTENCY</span><span class="cd-short">Benchmark IA</span></div>
       </a></div>
     </section>
     <section class="row" id="tools">
       <h2 class="row-title">▣ Herramientas &amp; Seguridad</h2>
-      <div class="cardset">      <a class="card" href="https://github.com/belentani7/entrenador-jorge-bcn">
+      <div class="cardset">      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">E</span><span class="cd-name">ENTRENADOR JORGE</span><span class="cd-short">Empresa app</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/proofmesh">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">P</span><span class="cd-name">PROOFMESH</span><span class="cd-short">Inteligencia de cambios</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/gpu-cost-optimizer">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">G</span><span class="cd-name">GPU COST OPTIMIZER</span><span class="cd-short">Optimizar coste GPU</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/CARQUIDEC">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">C</span><span class="cd-name">CARQUIDEC</span><span class="cd-short">Estudio arquitectura</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/Belentani.cv-ai">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">B</span><span class="cd-name">BELENTANI CV AI</span><span class="cd-short">Estudio de CV</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/evidence-ledger">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">E</span><span class="cd-name">EVIDENCE LEDGER</span><span class="cd-short">Recibos de IA</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/openclaw-workspace">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">O</span><span class="cd-name">OPENCLAW</span><span class="cd-short">Workspace</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/rh-fiscal-ultra-elite">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">R</span><span class="cd-name">RH FISCAL</span><span class="cd-short">Suite RRHH/fiscal</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/oss-compass">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">O</span><span class="cd-name">OSS COMPASS</span><span class="cd-short">Envelopes validación</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/qbp-core">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">Q</span><span class="cd-name">QBP CORE</span><span class="cd-short">SDK protocolo</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/pbr-validator">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">P</span><span class="cd-name">PBR VALIDATOR</span><span class="cd-short">Validador PBR</span></div>
       </a></div>
     </section>
     <section class="row" id="experiencias">
       <h2 class="row-title">◉ Experiencias Inmersivas</h2>
-      <div class="cardset">      <a class="card" href="https://github.com/belentani7/nexus-os">
+      <div class="cardset">      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">N</span><span class="cd-name">NEXUS OS</span><span class="cd-short">OS de navegador cyberpunk</span></div>
       </a></div>
     </section>
     <section class="row" id="otro">
       <h2 class="row-title">• Otros</h2>
-      <div class="cardset">      <a class="card" href="https://github.com/belentani7/hack-visual">
+      <div class="cardset">      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">H</span><span class="cd-name">HACK VISUAL</span><span class="cd-short">Simulador hacker</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/harmonia-hub">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">H</span><span class="cd-name">HARMONIA HUB</span><span class="cd-short">Coordinación y bienestar</span></div>
-      </a>      <a class="card" href="https://github.com/belentani7/Steven-renovation">
+      </a>      <a class="card" >
         <div class="cd-glow"></div>
         <div class="cd-fg"><span class="cd-ico">S</span><span class="cd-name">STEVEN RENOVATION</span><span class="cd-short">Reformas web comercial</span></div>
       </a></div>
     </section>
 
   <footer>
-    <div class="back"><a href="https://github.com/belentani7/llm-vfx-orchestrator">← Volver a Orquestación VFX</a></div>
+    <div class="back"><a >← Volver a Orquestación VFX</a></div>
     <div>BELENTANI ECOSYSTEM CIRCUIT — 2026. Cada web lleva su instancia personalizada, con las webs más parecidas arriba.</div>
   </footer>
 </div>
-
-<section class="webgl-lab" data-webgl-lab>
-  <h2>Laboratorio WebGL</h2>
-  <p class="webgl-lab__lead">Una malla animada calculada en tu tarjeta gráfica. Sin imágenes, sin dependencias y sin enviar nada a ningún servidor.</p>
-  <div class="webgl-lab__stage">
-    <canvas class="webgl-lab__canvas" width="640" height="320" aria-label="Malla animada generada con WebGL" role="img"></canvas>
-    <noscript><p class="webgl-lab__fallback">Este laboratorio necesita JavaScript. El resto de la página funciona sin él.</p></noscript>
-  </div>
-  <p class="webgl-lab__actions"><button type="button" class="webgl-lab__toggle" data-webgl-toggle aria-pressed="false">Pausar animación</button></p>
-</section>
-<style>
-  .webgl-lab { margin: 2.5rem 0; padding: 1.25rem; border: 1px solid rgba(128,128,128,.28); border-radius: 14px; }
-  .webgl-lab h2 { margin: 0 0 .35rem; font-size: 1.15rem; }
-  .webgl-lab__lead { margin: 0 0 1rem; opacity: .82; max-width: 62ch; }
-  .webgl-lab__stage { position: relative; background: #0b0a12; border-radius: 10px; overflow: hidden; }
-  .webgl-lab__canvas { display: block; width: 100%; height: 220px; }
-  .webgl-lab__fallback { margin: 0; padding: 1rem; color: #f2eefc; }
-  .webgl-lab__actions { margin: .8rem 0 0; }
-  .webgl-lab__toggle { font: inherit; padding: .45rem .9rem; border-radius: 999px; border: 1px solid currentColor; background: transparent; color: inherit; cursor: pointer; }
-  .webgl-lab__toggle[aria-pressed="true"] { opacity: .65; }
-  @media (prefers-reduced-motion: reduce) { .webgl-lab__canvas { display: none; } .webgl-lab__stage::after { content: "Animación desactivada por tu preferencia de movimiento reducido."; display: block; padding: 1rem; color: #f2eefc; } }
-</style>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
 <script>
-(() => {
-  "use strict";
-  const raiz = document.querySelector("[data-webgl-lab]");
-  if (!raiz || raiz.dataset.ready === "1") return;
-  raiz.dataset.ready = "1";
-
-  const canvas = raiz.querySelector("canvas");
-  const boton = raiz.querySelector("[data-webgl-toggle]");
-  const reducir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-  if (!gl || reducir) { canvas.hidden = true; return; }
-
-  const vs = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
-  const fs = `
-    precision mediump float;
-    uniform vec2 u_res;
-    uniform float u_t;
-    void main() {
-      vec2 uv = (gl_FragCoord.xy - 0.5 * u_res) / min(u_res.x, u_res.y);
-      float d = length(uv);
-      float ondas = sin(d * 14.0 - u_t * 1.6) * 0.5 + 0.5;
-      float halo = smoothstep(0.75, 0.05, d);
-      vec3 base = vec3(0.043, 0.039, 0.07);
-      vec3 acento = vec3(0.66, 0.55, 0.98);
-      vec3 color = base + acento * (ondas * 0.35 + halo * 0.45);
-      gl_FragColor = vec4(color, 1.0);
-    }`;
-
-  const compilar = (tipo, fuente) => {
-    const s = gl.createShader(tipo);
-    gl.shaderSource(s, fuente); gl.compileShader(s);
-    return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null;
-  };
-  const v = compilar(gl.VERTEX_SHADER, vs);
-  const f = compilar(gl.FRAGMENT_SHADER, fs);
-  if (!v || !f) { canvas.hidden = true; return; }
-
-  const prog = gl.createProgram();
-  gl.attachShader(prog, v); gl.attachShader(prog, f); gl.linkProgram(prog);
-  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { canvas.hidden = true; return; }
-  gl.useProgram(prog);
-
-  const buf = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
-  const pos = gl.getAttribLocation(prog, "p");
-  gl.enableVertexAttribArray(pos);
-  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
-
-  const uRes = gl.getUniformLocation(prog, "u_res");
-  const uT = gl.getUniformLocation(prog, "u_t");
-
-  const ajustar = () => {
-    const r = canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.max(1, Math.round(r.width * dpr));
-    canvas.height = Math.max(1, Math.round(r.height * dpr));
-    gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.uniform2f(uRes, canvas.width, canvas.height);
-  };
-  ajustar();
-  window.addEventListener("resize", ajustar, { passive: true });
-
-  let t = 0, pausado = false, raf = 0;
-  const pintar = () => {
-    if (!pausado) t += 0.016;
-    gl.uniform1f(uT, t);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-    raf = requestAnimationFrame(pintar);
-  };
-  pintar();
-
-  if (boton) {
-    boton.addEventListener("click", () => {
-      pausado = !pausado;
-      boton.setAttribute("aria-pressed", String(pausado));
-      boton.textContent = pausado ? "Reanudar animación" : "Pausar animación";
-      if (pausado) { cancelAnimationFrame(raf); raf = 0; } else if (!raf) { pintar(); }
-    });
-  }
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) { cancelAnimationFrame(raf); raf = 0; }
-    else if (!pausado && !raf) { pintar(); }
-  });
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible en este navegador.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}');
+    gl.compileShader(vs);
+    var fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, 'precision mediump float;uniform vec4 c;void main(){gl_FragColor=c;}');
+    gl.compileShader(fs);
+    var prog = gl.createProgram();
+    gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    gl.useProgram(prog);
+    var loc = gl.getUniformLocation(prog,'c');
+    gl.uniform4f(loc, 0.549, 0.659, 0.545, 1.0);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var attr = gl.getAttribLocation(prog,'p');
+    gl.enableVertexAttribArray(attr);
+    gl.vertexAttribPointer(attr,2,gl.FLOAT,false,0,0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }catch(e){ console.log('WebGL init:', e.message); }
 })();
 </script>
-</main>
-<!-- page-fix:1 -->
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
+<script>
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible en este navegador.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}');
+    gl.compileShader(vs);
+    var fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, 'precision mediump float;uniform vec4 c;void main(){gl_FragColor=c;}');
+    gl.compileShader(fs);
+    var prog = gl.createProgram();
+    gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    gl.useProgram(prog);
+    var loc = gl.getUniformLocation(prog,'c');
+    gl.uniform4f(loc, 0.549, 0.659, 0.545, 1.0);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var attr = gl.getAttribLocation(prog,'p');
+    gl.enableVertexAttribArray(attr);
+    gl.vertexAttribPointer(attr,2,gl.FLOAT,false,0,0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }catch(e){ console.log('WebGL init:', e.message); }
+})();
+</script>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
+<script>
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible en este navegador.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}');
+    gl.compileShader(vs);
+    var fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, 'precision mediump float;uniform vec4 c;void main(){gl_FragColor=c;}');
+    gl.compileShader(fs);
+    var prog = gl.createProgram();
+    gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    gl.useProgram(prog);
+    var loc = gl.getUniformLocation(prog,'c');
+    gl.uniform4f(loc, 0.549, 0.659, 0.545, 1.0);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var attr = gl.getAttribLocation(prog,'p');
+    gl.enableVertexAttribArray(attr);
+    gl.vertexAttribPointer(attr,2,gl.FLOAT,false,0,0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }catch(e){ console.log('WebGL init:', e.message); }
+})();
+</script>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
+<script>
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible en este navegador.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}');
+    gl.compileShader(vs);
+    var fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, 'precision mediump float;uniform vec4 c;void main(){gl_FragColor=c;}');
+    gl.compileShader(fs);
+    var prog = gl.createProgram();
+    gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    gl.useProgram(prog);
+    var loc = gl.getUniformLocation(prog,'c');
+    gl.uniform4f(loc, 0.549, 0.659, 0.545, 1.0);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var attr = gl.getAttribLocation(prog,'p');
+    gl.enableVertexAttribArray(attr);
+    gl.vertexAttribPointer(attr,2,gl.FLOAT,false,0,0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }catch(e){ console.log('WebGL init:', e.message); }
+})();
+</script>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
+<script>
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+  }catch(e){ console.log('WebGL:', e.message); }
+})();
+</script>
 </body>
 </html>

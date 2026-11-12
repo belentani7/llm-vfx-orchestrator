@@ -1,98 +1,667 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>llm-vfx-orchestrator · LLM VFX Orchestrator</title>
-  <meta name="description" content="llm-vfx-orchestrator Repositorio llm-vfx-orchestrator — parte del ecosistema Belentani">
-  <link rel="stylesheet" href="hero.css">
-  <meta name="theme-color" content="#0ea5e9">
-  <link rel="manifest" href="/manifest.webmanifest">
-  <script type="module" src="hero.js"></script>
-
-<!-- repo-forge:head -->
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM VFX Orchestrator — Autonomous VFX Pipeline with LLMs + ComfyUI</title>
+<meta name="description" content="Two-part VFX production toolset: browser-based shot planner for model-agnostic prompts + Python vfp CLI for closed-loop LLM/ComfyUI orchestration, QA, corrections, retries and persisted job state.">
+<meta name="generator" content="repo-superpowers-audit-v1">
+<meta property="og:title" content="LLM VFX Orchestrator — Autonomous VFX Pipeline with LLMs + ComfyUI">
+<meta property="og:description" content="Two-part VFX production toolset: browser-based shot planner for model-agnostic prompts + Python vfp CLI for closed-loop LLM/ComfyUI orchestration, QA, corrections, retries and persisted job state.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="llm-vfx-orchestrator — Repositorio llm-vfx-orchestrator — parte del ecosistema Belentani">
-<meta property="og:description" content="Un artefacto editorial que respeta al lector: dato con fuente, voz con autoría, límite declarado.">
-<meta property="og:image" content="brand/og-image.svg">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/a11y.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0a09'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23c5c68c'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#0b0a09;--bg2:#131110;--ink:#f4efe7;--dim:#a89f92;--accent:#e0a35c;
+--accent2:#7fa88b;--line:rgba(244,239,231,.14);--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+--sans:ui-sans-serif,"Segoe UI",Inter,system-ui,-apple-system,sans-serif;
+--mono:ui-monospace,"Cascadia Mono",Consolas,monospace;--measure:62ch;--radius:14px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;
+-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(18px,4vw,40px);position:relative;z-index:1}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent2);outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--accent);color:#12100e;padding:10px 16px;z-index:9}
+.skip:focus{left:12px;top:12px}
+header.site{border-bottom:1px solid var(--line);padding:22px 0;display:flex;gap:18px;
+align-items:baseline;justify-content:space-between;flex-wrap:wrap}
+.brand{font-family:var(--serif);font-size:1.05rem;letter-spacing:.01em}
+.brand span{color:var(--dim)}
+nav.site{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:.72rem;
+letter-spacing:.14em;text-transform:uppercase}
+nav.site a{color:var(--dim);text-decoration:none}
+nav.site a:hover,nav.site a[aria-current=page]{color:var(--ink)}
+main{padding:clamp(48px,9vh,104px) 0}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+color:var(--accent);margin:0 0 18px}
+h1{font-family:var(--serif);font-size:clamp(2.4rem,7vw,5.2rem);line-height:.95;
+letter-spacing:-.03em;margin:0 0 24px;font-weight:500;text-wrap:balance}
+h2{font-family:var(--serif);font-size:clamp(1.4rem,3vw,2.1rem);line-height:1.15;
+letter-spacing:-.02em;margin:64px 0 18px;font-weight:500}
+h3{font-size:1.02rem;margin:28px 0 10px;letter-spacing:-.01em}
+p,li{max-width:var(--measure);color:var(--ink)}
+.lead{font-size:clamp(1.05rem,2vw,1.28rem);color:var(--dim);max-width:56ch}
+hr{border:0;border-top:1px solid var(--line);margin:clamp(40px,8vh,80px) 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;
+background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:32px 0}
+.cell{background:var(--bg2);padding:22px 20px}
+.cell h3{margin-top:0}
+.cell p{font-size:.9rem;color:var(--dim);margin:0}
+code,kbd{font-family:var(--mono);font-size:.86em;background:rgba(244,239,231,.07);
+padding:2px 6px;border-radius:5px}
+pre{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);
+padding:18px;overflow:auto;max-width:100%}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:.92rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.pill{display:inline-block;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;
+text-transform:uppercase;border:1px solid var(--line);color:var(--dim);padding:3px 9px;border-radius:999px}
+footer.site{border-top:1px solid var(--line);padding:28px 0 44px;color:var(--dim);font-size:.8rem}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+.reveal{opacity:1;transform:none;transition:none}}
+::selection{background:var(--accent);color:#12100e}
+.webgl-canvas{width:100%;height:400px;background:var(--bg2);border:1px solid var(--line);
+border-radius:var(--radius);margin:24px 0;display:block}
+.superpowers-badge{display:inline-block;font-family:var(--mono);font-size:.65rem;
+letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--accent2);
+color:var(--accent2);padding:4px 10px;border-radius:999px;margin:10px 0}
+</style>
 </head>
 <body>
-<main>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html" aria-current="page">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html" aria-current="page">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html" aria-current="page">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html" aria-current="page">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site"><div class="wrap" style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap">
+<div class="brand">llm-vfx-orchestrator <span>· ecosistema Belentani · WebGL online</span></div>
+<nav class="site" aria-label="Navegación principal"><a href="index.html" aria-current="page">Inicio</a><a href="docs.html">Documentación</a><a href="accesibilidad.html">Accesibilidad</a><a href="privacidad.html">Privacidad</a><a href="404.html">404</a></nav>
+</div></header>
+<main id="contenido"><div class="wrap">
+<div data-ux-progress aria-hidden="true"></div>
+  <a class="ux-skip" href="#main">Saltar al contenido</a>
 
-  <nav class="nav">
-    <a href="#" class="logo">llm-vfx-orchestrator</a>
-    <ul class="nav-links">
-      <li><a href="#features">Características</a></li>
-      <li><a href="#stack">Stack</a></li>
-      <li><a href="#about">Acerca de</a></li>
-    </ul>
-    <a href="workspace.html" class="cta">Abrir espacio de trabajo</a>
-  </nav>
-
-  <section class="hero">
-    <div class="hero-canvas-wrapper">
-      <canvas id="hero-canvas"></canvas>
-    </div>
-    <div class="hero-overlay">
-      <h1>llm-vfx-orchestrator</h1>
-      <p>Repositorio llm-vfx-orchestrator — parte del ecosistema Belentani</p>
-      <div class="hero-actions">
-        <a href="workspace.html" class="btn-primary">Planificar producción</a>
-        <a href="#stack" class="btn-secondary">Ver stack</a>
+  <header class="ux-nav">
+    <div class="ux-container ux-nav__inner">
+      <a class="ux-nav__brand" href="#top">
+        <span class="ux-nav__brand-dot" aria-hidden="true"></span> LLM VFX Orchestrator
+      </a>
+      <nav aria-label="Principal">
+        <ul class="ux-nav__links">
+          <li><a href="#parts">Dos partes</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pipeline">Pipeline</a></li>
+          <li><a href="#stats">Stats</a></li>
+          <li><a href="#templates">Templates</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </nav>
+      <div class="ux-nav__actions">
+        <button class="ux-btn ux-btn--ghost" data-ux-theme-toggle type="button" aria-pressed="false">
+          <i data-lucide="moon" aria-hidden="true"></i><span class="sr-only">Tema</span>
+        </button>
+        <a class="ux-btn ux-btn--primary" data-ux-magnet  rel="noopener">
+          <svg class="icon-github" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.26 5.66.41.36.77 1.05.77 2.13 0 1.54-.01 2.78-.01 3.16 0 .3.2.67.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg> GitHub
+        </a>
+        <button class="ux-menu-btn" data-ux-menu-btn type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú">
+          <i data-lucide="menu" aria-hidden="true"></i>
+        </button>
       </div>
     </div>
-  </section>
-
-  <section class="section" id="features">
-    <h2>Características</h2>
-    <p>Planifica planos, conserva las reglas de continuidad y exporta un manifiesto de producción desde tu navegador.</p>
-    <div class="grid">
-      <div class="card">
-        <h3>🚀 Hero con Shader WebGL</h3>
-        <p>Fondo animado con FBM (Fractal Brownian Motion), parallax de ratón y modo de bajo consumo.</p>
-      </div>
-      <div class="card">
-        <h3>📱 Responsive</h3>
-        <p>Diseño adaptable a móvil, tableta y desktop con Tailwind CSS.</p>
-      </div>
-      <div class="card">
-        <h3>⚡ Rápido</h3>
-        <p>Sin dependencias pesadas para el hero. Carga instantánea y DPR limitado.</p>
-      </div>
-      <div class="card">
-        <h3>🔒 Seguro</h3>
-        <p>Sin secretos hardcodeados. Variables de entorno para claves sensibles.</p>
-      </div>
+    <div data-ux-menu id="menu-movil">
+      <a href="#parts">Dos partes</a>
+      <a href="#features">Features</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#stats">Stats</a>
+      <a href="#templates">Templates</a>
+      <a href="#faq">FAQ</a>
+      <a  rel="noopener">GitHub ↗</a>
     </div>
-  </section>
+  </header>
 
-  <section class="section" id="stack">
-    <h2>Stack Tecnológico</h2>
-    <p>Tecnologías utilizadas en este repositorio.</p>
-    <ul class="stack-list">
-      
-    </ul>
-  </section>
+  <main id="main">
+    <!-- ── HERO ─────────────────────────────────────────── -->
+    <section class="ux-hero" id="top" data-ux-hero>
+      <div class="ux-hero__canvas" aria-hidden="true"><canvas id="hero-canvas"></canvas></div>
+      <div class="ux-mesh" aria-hidden="true"></div>
+      <div class="ux-container">
+        <p class="ux-eyebrow" data-ux-hero-badge><i data-lucide="cpu" aria-hidden="true" style="width:14px;height:14px"></i> vfp CLI + Browser Workspace</p>
+        <h1 class="ux-hero__title" data-ux-hero-title>LLM VFX<br><span class="ux-accent">Orchestrator</span></h1>
+        <p class="ux-hero__sub" data-ux-hero-sub>
+          Autonomous VFX pipeline: local-first shot planner for model-agnostic prompts + Python <code>vfp</code> CLI for closed-loop LLM/ComfyUI orchestration with QA, corrections, retries and persisted job state.
+        </p>
+        <div class="ux-hero__cta" data-ux-hero-cta>
+          <a class="ux-btn ux-btn--primary" data-ux-magnet  rel="noopener">
+            <i data-lucide="github" aria-hidden="true"></i> Ver en GitHub
+          </a>
+          <a class="ux-btn ux-btn--ghost"  rel="noopener">
+            <i data-lucide="external-link" aria-hidden="true"></i> Demo en Vercel
+          </a>
+        </div>
+        <div class="ux-hero__meta" data-ux-hero-meta>
+          <span><i data-lucide="terminal" aria-hidden="true"></i> Python 3.11+ / TypeScript</span>
+          <span><i data-lucide="cube" aria-hidden="true"></i> ComfyUI + LLM agnóstico</span>
+          <span><i data-lucide="shield-check" aria-hidden="true"></i> 262 tests offline</span>
+          <span><i data-lucide="scale" aria-hidden="true"></i> MIT License</span>
+        </div>
+      </div>
+    </section>
 
-  <section class="section" id="about">
-    <h2>Acerca de llm-vfx-orchestrator</h2>
-    <p>Este repositorio forma parte del ecosistema Belentani. Código abierto bajo licencia MIT. Documentación completa y tests incluidos.</p>
-  </section>
+    <!-- ── TIRA DEL ECOSISTEMA ──────────────────────────── -->
+    <section class="strip" aria-label="Ecosistema Belentani">
+      <div class="ux-container strip__inner" data-ux-reveal>
+        <a  rel="noopener"><i data-lucide="globe" aria-hidden="true"></i> Demo Vercel</a>
+        <a  rel="noopener"><svg class="icon-github-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.26 5.66.41.36.77 1.05.77 2.13 0 1.54-.01 2.78-.01 3.16 0 .3.2.67.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg> belentani7 · GitHub</a>
+        <a  rel="noopener"><i data-lucide="user" aria-hidden="true"></i> Ecosistema belentani7</a>
+        <span><i data-lucide="git-branch" aria-hidden="true"></i> Parte del ecosistema Belentani</span>
+      </div>
+    </section>
 
-  </main>
-<footer>
-    <p>© 2026 llm-vfx-orchestrator — Parte del ecosistema Belentani / NOIACORE</p>
+    <!-- ── DOS PARTES ───────────────────────────────────── -->
+    <section class="ux-section" id="parts">
+      <div class="ux-container">
+        <p class="ux-eyebrow" data-ux-reveal><i data-lucide="git-merge" aria-hidden="true" style="width:14px;height:14px"></i> Arquitectura en dos partes</p>
+        <h2 data-ux-reveal>Planificación local,<br>ejecución orquestada.</h2>
+        <p class="ux-lead" data-ux-reveal style="margin-bottom: var(--space-l);">
+          El workspace del navegador prepara la entrega; el CLI la ejecuta con bucle cerrado.
+        </p>
+        <div class="ux-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+          <article class="ux-card" data-ux-reveal>
+            <div class="ux-card__icon"><i data-lucide="layout-dashboard" aria-hidden="true"></i></div>
+            <h3>1. Browser Production Workspace</h3>
+            <p>Planificador de shots local-first que convierte project bible + shot spec en prompts reproducibles y model-agnósticos. Sin API keys, sin llamadas externas.</p>
+            <ul style="margin: var(--space-s) 0 0; padding-left: 1.2rem; color: var(--muted); font-size: var(--step--1); line-height: 1.8;">
+              <li>Secuencia coherente de 4 shots desde el inicio</li>
+              <li>Reglas visuales globales + campos por shot (cámara, movimiento, iluminación, continuidad, referencias, negative-prompt, seed)</li>
+              <li>Ensambla prompt completo desde campos explícitos; nunca lo envía a servicios remotos</li>
+              <li>Marca información crítica faltante antes del handoff</li>
+              <li>Estados: planned → prompt-ready → in-review → approved + runtime planeado</li>
+              <li>Import/export manifestos JSON versionados para backup y handoff</li>
+              <li>Edits en localStorage; exporta manifiesto para backup portátil</li>
+            </ul>
+          </article>
+          <article class="ux-card" data-ux-reveal>
+            <div class="ux-card__icon"><i data-lucide="terminal" aria-hidden="true"></i></div>
+            <h3>2. Python Orchestration Package (<code>vfp</code> CLI)</h3>
+            <p>Capa de ejecución: coordina agentes LLM + ComfyUI, trackea estado del job, QA, correcciones acotadas, reintentos y reportes machine-readable.</p>
+            <ul style="margin: var(--space-s) 0 0; padding-left: 1.2rem; color: var(--muted); font-size: var(--step--1); line-height: 1.8;">
+              <li>Acepta workflow JSON, briefs en lenguaje natural y templates nombrados</li>
+              <li>Config YAML + env vars para proveedores LLM y ComfyUI (credenciales solo en env/secret manager)</li>
+              <li>Bucle cerrado: Director → ComfyUI (queue + WS con deadline duro + fallback /history) → QA Inspector (score/issues normalizados) → Correction Agent (patch graph) → repeat</li>
+              <li>Para en <code>max_retries</code> (default 3), plateau (<code>min_score_improvement</code>, <code>plateau_patience</code>) o no-op patch</li>
+              <li>Estados finales: <strong>completed</strong>, <strong>escalated</strong> (human review, <code>escalation_reason</code> persistido) o <strong>failed</strong></li>
+              <li>Fallbacks LLM (<code>llm.fallbacks</code>) mantienen el pipeline vivo si un proveedor degrada</li>
+              <li>Concurrencia acotada: <code>pipeline.concurrency</code>, <code>qa_concurrency</code>, <code>comfyui.max_concurrent_renders</code></li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FEATURES BENTO ───────────────────────────────── -->
+    <section class="ux-section" id="features">
+      <div class="ux-container">
+        <p class="ux-eyebrow" data-ux-reveal><i data-lucide="sparkles" aria-hidden="true" style="width:14px;height:14px"></i> Capabilities</p>
+        <h2 data-ux-reveal>Diseñado para producción<br>VFX real, no demos.</h2>
+        <p class="ux-lead" data-ux-reveal style="margin-bottom: var(--space-l);">
+          Cada feature resuelve un problema concreto de pipeline: handoff limpio, calidad verificable, resiliencia.
+        </p>
+        <div class="ux-grid ux-bento">
+          <article class="ux-card" data-ux-reveal>
+            <div class="ux-card__icon"><i data-lucide="file-json" aria-hidden="true"></i></div>
+            <h3>Manifestos JSON versionados</h3>
+            <p>Backup e handoff portátil entre browser workspace y CLI. Schema estable, migraciones explícitas.</p>
+          </article>
+          <article class="ux-card" data-ux-reveal>
+            <div class="ux-card__icon"><i data-lucide="cpu" aria-hidden="true"></i></div>
+            <h3>Model-agnostic prompts</h3>
+            <p>El workspace no asume compatibilidad universal; produce spec transparente que el Director adapta al modelo objetivo.</p>
+          </article>
+          <article class="ux-card" data-ux-reveal>
+            <div class="ux-card__icon"><i data-lucide="refresh-cw" aria-hidden="true"></i></div>
+            <h3>Bucle cerrado con QA</h3>
+            <p>Vision QA inspecciona renders (base64), devuelve score/issues normalizados. Correction Agent parchea el graph ComfyUI.</p>
+          </article>
+          <article class="ux-card" data-ux-reveal>
+            <div class="ux-card__icon"><i data-lucide="shield" aria-hidden="true"></i></div>
+            <h3>Resiliencia por fallbacks</h3>
+            <p><code>llm.fallbacks: [glm, qwen]</code> + corrección de errores de ejecución ComfyUI (OOM, bad node) mantiene jobs vivos.</p>
+          </article>
+          <article class="ux-card" data-ux-reveal>
+            <div class="ux-card__icon"><i data-lucide="git-branch" aria-hidden="true"></i></div>
+            <h3>Concurrencia acotada</h3>
+            <p>Jobs paralelos (<code>-j N</code>), QA fan-out por job, límite duro de renders concurrentes en ComfyUI.</p>
+          </article>
+          <article class="ux-card" data-ux-reveal>
+            <div class="ux-card__icon"><i data-lucide="database" aria-hidden="true"></i></div>
+            <h3>Estado persistido duradero</h3>
+            <p>Job store en <code>~/.vfp/jobs</code> (o <code>$VFP_HOME</code>). Historial completo, recuperable, auditable.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PIPELINE STEPS ───────────────────────────────── -->
+    <section class="ux-section" id="pipeline">
+      <div class="ux-container">
+        <p class="ux-eyebrow" data-ux-reveal><i data-lucide="git-merge" aria-hidden="true" style="width:14px;height:14px"></i> Feedback Loop</p>
+        <h2 data-ux-reveal>Cómo funciona el<br>bucle de corrección.</h2>
+        <p class="ux-lead" data-ux-reveal style="margin-bottom: var(--space-l);">
+          Seis pasos deterministas, cada uno verificable y con límites duros.
+        </p>
+        <ol class="ux-steps">
+          <li data-ux-reveal>
+            <strong>Director</strong> genera workflow JSON ComfyUI desde prompt + template + asset hints.
+          </li>
+          <li data-ux-reveal>
+            <strong>ComfyUI</strong> ejecuta el render; cliente sigue queue + WebSocket con hard deadline (default 3600s WS) y fallback <code>/history</code> si el socket cae.
+          </li>
+          <li data-ux-reveal>
+            <strong>QA Inspector</strong> recibe imagen renderizada (base64) y retorna score normalizado + issues estructurados.
+          </li>
+          <li data-ux-reveal>
+            <strong>Correction Agent</strong> parchea el graph (inputs, add/remove nodes) si quality &lt; threshold (<code>qa_threshold</code> default 0.8).
+          </li>
+          <li data-ux-reveal>
+            <strong>Repetir</strong> pasos 2–4 hasta <code>max_retries</code> (default 3); parada temprana en plateau (<code>min_score_improvement</code> 0.01, <code>plateau_patience</code> 2) o patch no-op.
+          </li>
+          <li data-ux-reveal>
+            <strong>Finalizar</strong> job como <code>completed</code>, <code>escalated</code> (human review, <code>escalation_reason</code> persistido) o <code>failed</code>.
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ── STATS HONESTAS ───────────────────────────────── -->
+    <section class="ux-section" id="stats" style="background: var(--surface); border-block: 1px solid var(--border);">
+      <div class="ux-container">
+        <p class="ux-eyebrow" data-ux-reveal><i data-lucide="bar-chart-2" aria-hidden="true" style="width:14px;height:14px"></i> Métricas reales</p>
+        <h2 data-ux-reveal>Números que se pueden<br>verificar en el repo.</h2>
+        <div class="ux-stats">
+          <div data-ux-reveal>
+            <div class="ux-stat__num" data-ux-count>262</div>
+            <div class="ux-stat__label">Tests pytest (offline)</div>
+          </div>
+          <div data-ux-reveal>
+            <div class="ux-stat__num" data-ux-count>3</div>
+            <div class="ux-stat__label">Pipeline templates</div>
+          </div>
+          <div data-ux-reveal>
+            <div class="ux-stat__num" data-ux-count>4</div>
+            <div class="ux-stat__label">Shots por secuencia base</div>
+          </div>
+          <div data-ux-reveal>
+            <div class="ux-stat__num" data-ux-count>3</div>
+            <div class="ux-stat__label">Max retries default</div>
+          </div>
+          <div data-ux-reveal>
+            <div class="ux-stat__num" data-ux-count>0.8</div>
+            <div class="ux-stat__label">QA threshold default</div>
+          </div>
+          <div data-ux-reveal>
+            <div class="ux-stat__num" data-ux-count>4</div>
+            <div class="ux-stat__label">Concurrencia default</div>
+          </div>
+        </div>
+        <p style="margin-top: var(--space-l); color: var(--muted); font-size: var(--step--1); text-align: center; max-width: 700px; margin-inline: auto;">
+          Fuentes: <code>pytest -q</code> (262 tests), <code>orchestrator/templates/</code> (3 YAML), README §Browser workspace, config defaults en <code>orchestrator/config.py</code>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── TEMPLATES ────────────────────────────────────── -->
+    <section class="ux-section" id="templates">
+      <div class="ux-container">
+        <p class="ux-eyebrow" data-ux-reveal><i data-lucide="layout-template" aria-hidden="true" style="width:14px;height:14px"></i> Templates listos</p>
+        <h2 data-ux-reveal>Arranca en segundos,<br>personaliza sin fricción.</h2>
+        <p class="ux-lead" data-ux-reveal style="margin-bottom: var(--space-l);">
+          Los templates solo rellenan valores que el Director dejó vacíos; un workflow explícito siempre gana.
+        </p>
+        <div class="ux-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+          <article class="ux-card" data-ux-reveal>
+            <div class="ux-card__icon"><i data-lucide="user" aria-hidden="true"></i></div>
+            <h3>character_generation.yaml</h3>
+            <p>Character art con style LoRAs. Campos para character sheet, pose, expression, outfit, lighting, background.</p>
+            <p style="margin-top:.8rem"><code>vfp run --template character_generation</code></p>
+          </article>
+          <article class="ux-card" data-ux-reveal>
+            <div class="ux-card__icon"><i data-lucide="mountain" aria-hidden="true"></i></div>
+            <h3>environment_generation.yaml</h3>
+            <p>Environment / scene generation. Control de time-of-day, weather, architecture style, foliage, atmosphere.</p>
+            <p style="margin-top:.8rem"><code>vfp run --template environment_generation</code></p>
+          </article>
+          <article class="ux-card" data-ux-reveal>
+            <div class="ux-card__icon"><i data-lucide="package" aria-hidden="true"></i></div>
+            <h3>product_render.yaml</h3>
+            <p>Product photography renders. Material presets, studio lighting setups, camera angles, background options.</p>
+ <p style="margin-top:.8rem"><code>vfp run --template product_render</code></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FAQ ──────────────────────────────────────────── -->
+    <section class="ux-section" id="faq">
+      <div class="ux-container">
+        <p class="ux-eyebrow" data-ux-reveal><i data-lucide="circle-help" aria-hidden="true" style="width:14px;height:14px"></i> FAQ</p>
+        <h2 class="text-center mx-auto" data-ux-reveal>Preguntas frecuentes</h2>
+        <div class="ux-faq" style="margin-top: var(--space-l);">
+          <details data-ux-reveal>
+            <summary>¿Cómo arranco el browser workspace?</summary>
+            <p>Requiere Node ≥ 18.17 y pnpm (anclado vía corepack): <code>pnpm install --no-frozen-lockfile</code> y <code>pnpm dev</code>. Verificación completa: <code>pnpm run check && pnpm test && pnpm run build</code>.</p>
+          </details>
+          <details data-ux-reveal>
+            <summary>¿Cómo instalo el CLI <code>vfp</code>?</summary>
+            <p>Desde source (no está en PyPI): <code>python -m pip install -e '.[dev]'</code>. Luego <code>vfp --help</code> y <code>vfp run --help</code>.</p>
+          </details>
+          <details data-ux-reveal>
+            <summary>¿Necesito API keys para usar el browser workspace?</summary>
+            <p>No. El workspace es local-first, no llama a ningún LLM ni servicio externo. Las API keys solo las necesita el pipeline Python (config YAML + env vars).</p>
+          </details>
+          <details data-ux-reveal>
+            <summary>¿Qué proveedores LLM soporta el pipeline?</summary>
+            <p>Claude (Sonnet 4), Qwen-VL-Max, GLM-4V-Plus configurables en YAML; fallbacks encadenados. Cualquier endpoint OpenAI-compatible (Ollama, vLLM, Groq, Gemini…) vía <code>llm.providers</code>.</p>
+          </details>
+          <details data-ux-reveal>
+            <summary>¿Cómo configuro ComfyUI?</summary>
+            <p>En YAML: <code>comfyui.host</code>, <code>port</code>, <code>timeout</code>, <code>ws_timeout</code>, <code>max_concurrent_renders</code>, <code>use_proxy</code>. También <code>api_url</code> para remoto detrás de reverse proxy. Env overrides: <code>VFP_COMFYUI_*</code>.</p>
+          </details>
+          <details data-ux-reveal>
+            <summary>¿El pipeline garantiza que un prompt funciona en cualquier modelo?</summary>
+            <p>No. El workspace produce un handoff spec transparente; el Director adapta al modelo objetivo. La compatibilidad universal no se reclama ni se prueba.</p>
+          </details>
+          <details data-ux-reveal>
+            <summary>¿Cómo mido capacidad sin GPU?</summary>
+            <p><code>python scripts/benchmark.py --jobs 24 --render-ms 50 --qa-ms 20 --images 2 --concurrency 1,2,4,8</code> usa un stand-in HTTP+WS ComfyUI local.</p>
+          </details>
+          <details data-ux-reveal>
+            <summary>¿Dónde se guarda el estado de los jobs?</summary>
+            <p>Por defecto en <code>~/.vfp/jobs</code> (o <code>$VFP_HOME</code> / <code>VFP_STORE_DIR</code>). Historial duradero, recuperable, auditable.</p>
+          </details>
+          <details data-ux-reveal>
+            <summary>¿Qué licencia tiene el proyecto?</summary>
+            <p>MIT — ver <code>LICENSE</code>. Nota: <code>pyproject.toml</code> aún declara <code>Apache-2.0</code>; el archivo LICENSE (MIT) es el autoritativo.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CTA FINAL ────────────────────────────────────── -->
+    <section class="ux-section" id="empezar">
+      <div class="ux-container">
+        <div class="ux-cta-band" data-ux-reveal="zoom">
+          <h2>Clona, configura,<br>orquesta.</h2>
+          <p class="ux-lead mx-auto" style="margin-bottom: var(--space-l);">
+            262 tests offline, 3 templates listos, bucle cerrado con QA real. El pipeline VFX que no se rinde.
+          </p>
+          <a class="ux-btn ux-btn--primary" data-ux-magnet  rel="noopener">
+            <i data-lucide="download" aria-hidden="true"></i> Empezar en GitHub
+          </a>
+        </div>
+      </div>
+    </section>
+  <section class="cell"><h2>Planificador de producción</h2><p>Prepara planos, reglas de continuidad y prompts en tu navegador.</p><p><a href="workspace.html">Abrir espacio de trabajo VFX</a></p></section>
+</main>
+
+  <footer class="ux-footer">
+    <div class="ux-container ux-footer__inner">
+      <span>© <span data-ux-year>2026</span> LLM VFX Orchestrator · MIT · Ecosistema belentani7</span>
+      <span style="display:inline-flex;gap:1.2rem;align-items:center">
+        <a  rel="noopener" style="display:inline-flex;align-items:center;gap:.35rem"><svg class="icon-github-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.26 5.66.41.36.77 1.05.77 2.13 0 1.54-.01 2.78-.01 3.16 0 .3.2.67.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>GitHub</a>
+        <a  rel="noopener">Demo Vercel</a>
+        <a  rel="noopener">Ecosistema belentani7</a>
+      </span>
+    </div>
   </footer>
 
+  <!-- Hero WebGL shader sutil (ruido animado) -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      window.initHeroShader('hero-canvas', '#0ea5e9', '#7c3aed');
+    (function() {
+      const canvas = document.getElementById('hero-canvas');
+      if (!canvas) return;
+      const gl = canvas.getContext('webgl');
+      if (!gl) return;
+      const vs = gl.createShader(gl.VERTEX_SHADER);
+      gl.shaderSource(vs, 'attribute vec2 position; void main() { gl_Position = vec4(position, 0.0, 1.0); }');
+      gl.compileShader(vs);
+      const fs = gl.createShader(gl.FRAGMENT_SHADER);
+      gl.shaderSource(fs, 'precision mediump float; uniform vec2 u_resolution; uniform float u_time; float hash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y * p.z); } float noise(vec2 p) { vec2 i = floor(p); vec2 f = fract(p); f = f * f * (3.0 - 2.0 * f); float a = hash(i); float b = hash(i + vec2(1.0, 0.0)); float c = hash(i + vec2(0.0, 1.0)); float d = hash(i + vec2(1.0, 1.0)); return mix(mix(a, b, f.x), mix(c, d, f.x), f.y); } float fbm(vec2 p) { float v = 0.0; float a = 0.5; vec2 shift = vec2(100.0); for (int i = 0; i < 5; ++i) { v += a * noise(p); p = p * 2.0 + shift; a *= 0.5; } return v; } void main() { vec2 uv = gl_FragCoord.xy / u_resolution.xy; uv.x *= u_resolution.x / u_resolution.y; float n = fbm(uv * 3.0 + u_time * 0.15); n += fbm(uv * 6.0 - u_time * 0.08) * 0.5; n = mod(n, 1.0); vec3 color = mix(vec3(0.03, 0.05, 0.08), vec3(0.08, 0.15, 0.12), n); float vignette = 1.0 - length(uv * 2.0 - 1.0) * 0.3; color *= vignette; gl_FragColor = vec4(color, 1.0); }');
+      gl.compileShader(fs);
+      const program = gl.createProgram();
+      gl.attachShader(program, vs);
+      gl.attachShader(program, fs);
+      gl.linkProgram(program);
+      gl.useProgram(program);
+      const pb = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, pb);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
+      const pl = gl.getAttribLocation(program, 'position');
+      gl.enableVertexAttribArray(pl);
+      gl.vertexAttribPointer(pl, 2, gl.FLOAT, false, 0, 0);
+      const rl = gl.getUniformLocation(program, 'u_resolution');
+      const tl = gl.getUniformLocation(program, 'u_time');
+      function resize() { canvas.width = canvas.clientWidth * window.devicePixelRatio; canvas.height = canvas.clientHeight * window.devicePixelRatio; gl.viewport(0, 0, canvas.width, canvas.height); gl.uniform2f(rl, canvas.width, canvas.height); }
+      window.addEventListener('resize', resize);
+      resize();
+      function render(time) { gl.uniform1f(tl, time * 0.001); gl.drawArrays(gl.TRIANGLES, 0, 6); requestAnimationFrame(render); }
+      requestAnimationFrame(render);
+    })();
+  </script>
+
+  <!-- SplitText hero title animation -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof gsap !== 'undefined' && typeof SplitText !== 'undefined') {
+        gsap.registerPlugin(SplitText);
+        const title = document.querySelector('[data-ux-hero-title]');
+        if (title) {
+          const split = new SplitText(title, { type: 'chars,words', charsClass: 'ux-split-char' });
+          gsap.from(split.chars, {
+            opacity: 0,
+            y: 30,
+            rotationX: -90,
+            duration: 1.2,
+            ease: 'expo.out',
+            stagger: 0.02,
+            delay: 0.2
+          });
+          // Marcar hero como visible para CSS fallback
+          document.querySelector('[data-ux-hero]')?.classList.add('ux-hero-in');
+        }
+      } else {
+        // Fallback sin GSAP
+        document.querySelector('[data-ux-hero]')?.classList.add('ux-hero-in');
+      }
     });
   </script>
-<!-- page-fix:1 -->
+<!-- belentani-ampliacion:start -->
+<a href="ampliacion.html" data-belentani-ampliacion="1" aria-label="Abrir la ampliación de llm-vfx-orchestrator" style="position:fixed;right:16px;bottom:16px;z-index:2147483647;display:inline-flex;align-items:center;gap:.45rem;padding:.62rem .85rem;border-radius:999px;background:#0f172a;color:#f8fafc;font:600 13px/1.2 system-ui,-apple-system,Segoe UI,sans-serif;text-decoration:none;border:1px solid rgba(255,255,255,.18);box-shadow:0 8px 24px rgba(0,0,0,.28);white-space:nowrap;">Ampliación <span aria-hidden="true">&#8599;</span></a>
+<!-- belentani-ampliacion:end -->
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
+<script>
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible en este navegador.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}');
+    gl.compileShader(vs);
+    var fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, 'precision mediump float;uniform vec4 c;void main(){gl_FragColor=c;}');
+    gl.compileShader(fs);
+    var prog = gl.createProgram();
+    gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    gl.useProgram(prog);
+    var loc = gl.getUniformLocation(prog,'c');
+    gl.uniform4f(loc, 0.549, 0.659, 0.545, 1.0);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var attr = gl.getAttribLocation(prog,'p');
+    gl.enableVertexAttribArray(attr);
+    gl.vertexAttribPointer(attr,2,gl.FLOAT,false,0,0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }catch(e){ console.log('WebGL init:', e.message); }
+})();
+</script>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
+<script>
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible en este navegador.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}');
+    gl.compileShader(vs);
+    var fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, 'precision mediump float;uniform vec4 c;void main(){gl_FragColor=c;}');
+    gl.compileShader(fs);
+    var prog = gl.createProgram();
+    gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    gl.useProgram(prog);
+    var loc = gl.getUniformLocation(prog,'c');
+    gl.uniform4f(loc, 0.549, 0.659, 0.545, 1.0);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var attr = gl.getAttribLocation(prog,'p');
+    gl.enableVertexAttribArray(attr);
+    gl.vertexAttribPointer(attr,2,gl.FLOAT,false,0,0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }catch(e){ console.log('WebGL init:', e.message); }
+})();
+</script>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
+<script>
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible en este navegador.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}');
+    gl.compileShader(vs);
+    var fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, 'precision mediump float;uniform vec4 c;void main(){gl_FragColor=c;}');
+    gl.compileShader(fs);
+    var prog = gl.createProgram();
+    gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    gl.useProgram(prog);
+    var loc = gl.getUniformLocation(prog,'c');
+    gl.uniform4f(loc, 0.549, 0.659, 0.545, 1.0);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var attr = gl.getAttribLocation(prog,'p');
+    gl.enableVertexAttribArray(attr);
+    gl.vertexAttribPointer(attr,2,gl.FLOAT,false,0,0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }catch(e){ console.log('WebGL init:', e.message); }
+})();
+</script>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
+<script>
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible en este navegador.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}');
+    gl.compileShader(vs);
+    var fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, 'precision mediump float;uniform vec4 c;void main(){gl_FragColor=c;}');
+    gl.compileShader(fs);
+    var prog = gl.createProgram();
+    gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    gl.useProgram(prog);
+    var loc = gl.getUniformLocation(prog,'c');
+    gl.uniform4f(loc, 0.549, 0.659, 0.545, 1.0);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var attr = gl.getAttribLocation(prog,'p');
+    gl.enableVertexAttribArray(attr);
+    gl.vertexAttribPointer(attr,2,gl.FLOAT,false,0,0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }catch(e){ console.log('WebGL init:', e.message); }
+})();
+</script>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>llm-vfx-orchestrator · WebGL listo para servir online · <a href="index.html">Inicio</a> · <a href="accesibilidad.html">Accesibilidad</a> · <a href="privacidad.html">Privacidad</a></p>
+</div></footer>
+<script>
+(function(){
+  var canvas = document.createElement('canvas');
+  canvas.className = 'webgl-canvas';
+  var container = document.getElementById('contenido');
+  if(container){ container.appendChild(canvas); }
+  try{
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if(!gl){ canvas.innerHTML = '<p style="color:var(--dim);font-family:var(--mono);padding:12px">WebGL no disponible.</p>'; return; }
+    gl.clearColor(0.047,0.043,0.039,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+  }catch(e){ console.log('WebGL:', e.message); }
+})();
+</script>
 </body>
 </html>

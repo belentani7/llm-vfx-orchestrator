@@ -1,0 +1,35 @@
+{
+  "repo": "llm-vfx-orchestrator",
+  "moneda": "EUR",
+  "estado": "propuesta",
+  "modelo": "herramienta",
+  "quien_paga": "cliente final o equipo que necesita soporte",
+  "que_se_bloquea": "nada del nÃºcleo",
+  "regla_dura": "ninguna capacidad del nÃºcleo se reserva a un plan de pago",
+  "planes": [
+    {
+      "nombre": "Base",
+      "precio": 0,
+      "descripcion": "CÃ³digo abierto y reproducible. Uso gratuito."
+    },
+    {
+      "nombre": "Soporte",
+      "precio": 89,
+      "periodo": "mes",
+      "descripcion": "Soporte prioritario y asistencia tÃ©cnica."
+    },
+    {
+      "nombre": "Gestionado",
+      "precio": 149,
+      "periodo": "mes",
+      "descripcion": "Despliegue y mantenimiento gestionados."
+    },
+    {
+      "nombre": "ConsultorÃ­a",
+      "precio": 89,
+      "periodo": "hora",
+      "descripcion": "IntegraciÃ³n y personalizaciÃ³n del producto."
+    }
+  ]
+}
+

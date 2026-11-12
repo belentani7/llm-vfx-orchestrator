@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<!-- repo-superpowers-v1 | aplicado: 2026-11-10T22:15:02.278194+00:00 | entorno: API keys configuradas=42 -->
+
+<html lang="es" data-theme="dark" style="--accent:#a3e635;--accent-2:#14b8a6">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="llm-vfx-orchestrator — Aplicación web. A two-part VFX production toolset:">
+  <meta name="generator" content="belentani-ampliacion/2">
+  <meta name="theme-color" content="#a3e635">
+  <meta name="color-scheme" content="dark light">
+  <meta name="robots" content="index,follow">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Belentani">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="llm-vfx-orchestrator · Ampliación">
+  <meta property="og:description" content="A two-part VFX production toolset:">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="llm-vfx-orchestrator · Ampliación">
+  <meta name="twitter:description" content="A two-part VFX production toolset:">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "llm-vfx-orchestrator · Ampliación", "description": "A two-part VFX production toolset:", "inLanguage": "es", "dateModified": "2026-11-10", "about": {"@type": "Thing", "name": "Aplicación web"}, "keywords": "React, Vite, TypeScript, Vitest, Python, HTML estático, Vercel, Node.js", "isPartOf": {"@type": "CollectionPage", "name": "Catálogo de ampliaciones Belentani"}}</script>
+  <title>llm-vfx-orchestrator · Ampliación</title>
+  <style>
+/**
+ * hero.css — Estilos de landing page con hero y shader.
+ * Reutilizable en cualquier repo.
+ */
+:root {
+  --hero-color-a: #0ea5e9;
+  --hero-color-b: #7c3aed;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --bg-body: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --bg-body: #0f172a;
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-body);
+  line-height: 1.6;
+}
+
+/* Prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-canvas-wrapper canvas { animation: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* Navigation */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+.nav .logo {
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+.nav .nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav .nav-links a {
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.nav .nav-links a:hover { color: var(--text-primary); }
+.nav .cta {
+  background: var(--hero-color-a);
+  color: #ffffff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.nav .cta:hover { opacity: 0.9; }
+
+/* Hero */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+.hero-canvas-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-canvas-wrapper canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-overlay {
+  position: relative;
+  z-index: 10;
+  padding: 2rem;
+  max-width: 800px;
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--hero-color-a), var(--hero-color-b));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p {
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  color: var(--text-secondary);
+  margin: 0 0 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  background: var(--hero-color-b);
+  color: #ffffff;
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  border: 1px solid var(--text-secondary);
+  cursor: pointer;
+}
+.btn-secondary:hover { background: rgba(15, 23, 42, 0.05); }
+
+/* Sections */
+.section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section h2 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.section p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.card {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(128, 128, 128, 0.15);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+}
+@media (prefers-color-scheme: dark) {
+  .card {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+}
+.card h3 { font-size: 1.25rem; margin-bottom: 1rem; }
+.card p { font-size: 0.95rem; color: var(--text-secondary); }
+
+/* Stack */
+.stack-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+}
+.stack-list li {
+  background: rgba(15, 23, 42, 0.05);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+@media (prefers-color-scheme: dark) {
+  .stack-list li {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+  }
+}
+
+/* Footer */
+footer {
+  padding: 3rem 2rem;
+  border-top: 1px solid rgba(128, 128, 128, 0.2);
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+
+:root {
+  --bg-body: #070b16;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --surface: rgba(15, 23, 42, 0.72);
+  --line: rgba(148, 163, 184, 0.18);
+  --accent: #0ea5e9;
+  --accent-2: #7c3aed;
+}
+html[data-theme="light"] {
+  --bg-body: #f8fafc;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --surface: rgba(255, 255, 255, 0.78);
+  --line: rgba(15, 23, 42, 0.12);
+}
+html { background: var(--bg-body); }
+body {
+  background:
+    radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.12), transparent 32rem),
+    radial-gradient(circle at 85% 5%, rgba(124, 58, 237, 0.12), transparent 28rem),
+    var(--bg-body);
+}
+.nav { background: rgba(7, 11, 22, 0.72); border-bottom-color: var(--line); }
+html[data-theme="light"] .nav { background: rgba(248, 250, 252, 0.82); }
+.nav .logo { display: inline-flex; align-items: center; gap: 0.55rem; }
+.logo-mark {
+  width: 0.8rem; height: 0.8rem; border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+.nav .nav-links a { color: var(--text-secondary); }
+.nav .nav-links a:hover { color: var(--text-primary); }
+.nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+.theme-toggle {
+  border: 1px solid var(--line); background: var(--surface);
+  color: var(--text-primary); border-radius: 999px;
+  padding: 0.45rem 0.8rem; font: inherit; font-size: 0.8rem; cursor: pointer;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+.hero { min-height: 92vh; }
+.hero-canvas-wrapper { background: linear-gradient(135deg, #0ea5e9, #7c3aed); }
+.hero::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(7, 11, 22, 0.15), rgba(7, 11, 22, 0.9));
+  z-index: 1; pointer-events: none;
+}
+html[data-theme="light"] .hero::after {
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.05), rgba(248, 250, 252, 0.92));
+}
+.hero-overlay { z-index: 2; max-width: 1050px; padding: 7rem 2rem 4rem; }
+.eyebrow {
+  margin: 0 0 0.9rem; color: var(--accent); font-size: 0.75rem;
+  font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase;
+}
+.hero h1 {
+  max-width: 1000px; overflow-wrap: anywhere;
+  font-size: clamp(2.4rem, 7vw, 5.2rem);
+}
+.hero .lead {
+  max-width: 720px; font-size: clamp(1rem, 2.2vw, 1.3rem);
+  color: var(--text-secondary);
+}
+.meta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.55rem; margin-top: 1.8rem; }
+.chip {
+  border: 1px solid var(--line); background: var(--surface); color: var(--text-secondary);
+  border-radius: 999px; padding: 0.4rem 0.8rem; font-size: 0.78rem;
+}
+.section { max-width: 1180px; padding: 5rem 2rem; }
+.section h2 { text-align: left; margin-bottom: 0.8rem; }
+.section > p { text-align: left; margin-left: 0; margin-right: 0; }
+.section .eyebrow { margin-bottom: 0.6rem; }
+.feature-grid, .source-grid, .plan-grid { margin-top: 2.2rem; }
+.feature-card {
+  text-align: left; padding: 1.5rem; background: var(--surface);
+  border-color: var(--line); backdrop-filter: blur(10px);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.feature-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+.feature-card h3 { margin-bottom: 0.4rem; }
+.feature-card p { text-align: left; }
+.card-number {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.9rem; height: 1.9rem; border-radius: 0.55rem;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent); font-size: 0.8rem; font-weight: 800; margin-bottom: 0.9rem;
+}
+.source-card { text-align: left; padding: 1.2rem; background: var(--surface); border-color: var(--line); }
+.source-card h3 { font-size: 1rem; margin-bottom: 0.35rem; overflow-wrap: anywhere; }
+.source-card p { text-align: left; font-size: 0.88rem; }
+.source-card code { font-size: 0.75rem; color: var(--accent); }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin: 1.5rem 0; }
+.fact { padding: 1rem; border: 1px solid var(--line); border-radius: 0.7rem; background: var(--surface); }
+.fact dt { color: var(--text-secondary); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.fact dd { margin: 0.35rem 0 0; font-weight: 700; overflow-wrap: anywhere; }
+.plan-list { margin: 1.5rem 0 0; padding-left: 1.4rem; }
+.plan-list li { margin: 0.55rem 0; color: var(--text-secondary); }
+.plan-list strong { color: var(--text-primary); }
+.meter {
+  height: 0.45rem; background: var(--line); border-radius: 999px; overflow: hidden;
+  margin: 0.6rem 0 0.35rem;
+}
+.meter span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+.copy-button {
+  border: 1px solid var(--line); background: var(--surface); color: var(--text-primary);
+  border-radius: 0.55rem; padding: 0.65rem 0.9rem; font: inherit; cursor: pointer;
+}
+.copy-button:hover { border-color: var(--accent); }
+.note {
+  border-left: 3px solid var(--accent); padding: 0.8rem 1rem;
+  color: var(--text-secondary); background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border-radius: 0 0.5rem 0.5rem 0; text-align: left;
+}
+.footer { max-width: 1180px; margin: 0 auto; text-align: left; }
+.footer code { overflow-wrap: anywhere; }
+.btn-secondary { display: inline-block; }
+.is-disabled { opacity: 0.55; pointer-events: none; }
+.skip-link { position: absolute; left: -999px; top: 0; z-index: 100; background: var(--accent); color: #07101f; padding: 0.7rem 1rem; }
+.skip-link:focus { left: 1rem; top: 1rem; }
+@media (max-width: 700px) {
+  .nav { padding: 0.8rem 1rem; }
+  .nav .nav-links { display: none; }
+  .hero-overlay { padding: 6rem 1.2rem 3rem; }
+  .section { padding: 3.5rem 1.2rem; }
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .hero-actions a { text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+  </style>
+</head>
+<body data-repo="llm-vfx-orchestrator" data-profile="a4d9f614bd33">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <nav class="nav" aria-label="Navegación principal">
+    <a class="logo" href="#inicio"><span class="logo-mark" aria-hidden="true"></span>Belentani</a>
+    <ul class="nav-links">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#radiografia">Radiografía</a></li>
+      <li><a href="#plan">Plan</a></li>
+      <li><a href="#recursos">Kit</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="theme-toggle" type="button">Claro</button>
+      <a class="cta" href="#plan">Plan</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="inicio">
+    <div class="hero-canvas-wrapper" aria-hidden="true"><canvas id="hero-canvas"></canvas></div>
+    <div class="hero-overlay">
+      <p class="eyebrow">Aplicación web · plan máximo</p>
+      <h1>llm-vfx-orchestrator</h1>
+      <p class="lead">A two-part VFX production toolset:</p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="index.html">Abrir sitio original</a>
+        <a class="btn-secondary" href="#plan">Ver plan del repo</a>
+        <a class="btn-secondary" href="README.md">Leer README</a>
+      </div>
+      <div class="meta-row">
+        <span class="chip">React · Vite · TypeScript · Vitest · Python · HTML estático · Vercel · Node.js</span>
+        <span class="chip">95/100 · Consolidado</span>
+        <span class="chip">3 HTML · 1 CSS · 1 JS · 23 otros</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="section" id="radiografia" aria-labelledby="radiografia-title">
+      <p class="eyebrow">Radiografía</p>
+      <h2 id="radiografia-title">Radiografía de llm-vfx-orchestrator</h2>
+      <p>Radiografía de llm-vfx-orchestrator: 3 HTML · 1 CSS · 1 JS · 23 otros en la raíz; README sí; tests · docs · deploy; madurez 95/100. Estructura de primer nivel: _shared, assets, docs, magic, orchestrator, scripts, site, src.</p>
+      <dl class="facts">
+        <div class="fact"><dt>Tipo</dt><dd>Aplicación web</dd></div>
+        <div class="fact"><dt>Stack</dt><dd>React · Vite · TypeScript · Vitest · Python · HTML estático · Vercel · Node.js</dd></div>
+        <div class="fact"><dt>Madurez</dt><dd>95/100 · Consolidado</dd></div>
+        <div class="fact"><dt>Archivos en raíz</dt><dd>3 HTML · 1 CSS · 1 JS · 23 otros</dd></div>
+        <div class="fact"><dt>README</dt><dd>sí</dd></div>
+        <div class="fact"><dt>Tests / docs / deploy</dt><dd>tests · docs · deploy</dd></div>
+      </dl>
+      <div class="meter" aria-label="Madurez 95 de 100"><span style="width:95%"></span></div>
+      <p class="note">$structure_note</p>
+    </section>
+
+    <section class="section" id="plan" aria-labelledby="plan-title">
+      <p class="eyebrow">Plan máximo</p>
+      <h2 id="plan-title">Las siguientes palancas de llm-vfx-orchestrator</h2>
+      <p>Plan de llm-vfx-orchestrator: 3 palancas priorizadas. Carencias detectadas: .env.example.</p>
+      <ol class="plan-list">
+        <li><strong>Añadir a llm-vfx-orchestrator un .env.example con cada variable requerida.</strong></li>
+        <li><strong>Mantener en llm-vfx-orchestrator el contrato visual y añadir una prueba de accesibilidad automatizada.</strong></li>
+        <li><strong>Documentar una decisión técnica de llm-vfx-orchestrator y enlazarla desde el README.</strong></li>
+      </ol>
+    </section>
+
+    <section class="section" id="recursos" aria-labelledby="kit-title">
+      <p class="eyebrow">Procedencia</p>
+      <h2 id="kit-title">Procedencia aplicada a llm-vfx-orchestrator</h2>
+      <p>El kit de 6 repos se aplicó a llm-vfx-orchestrator (Aplicación web, React · Vite · TypeScript · Vitest · Python · HTML estático · Vercel · Node.js); sha-256 idéntico en los seis. La procedencia completa queda en el informe, sin repetir seis fichas en cada página.</p>
+    </section>
+
+    <section class="section" id="estado" aria-labelledby="estado-title">
+      <p class="eyebrow">Estado del repo</p>
+      <h2 id="estado-title">Datos de llm-vfx-orchestrator</h2>
+      <dl class="facts">
+        <div class="fact"><dt>Repositorio</dt><dd>llm-vfx-orchestrator</dd></div>
+        <div class="fact"><dt>Perfil</dt><dd><code>a4d9f614bd33</code></dd></div>
+        <div class="fact"><dt>Generado</dt><dd>2026-11-10</dd></div>
+        <div class="fact"><dt>Fuentes</dt><dd>6 repos</dd></div>
+      </dl>
+      <p class="eyebrow">Ruta local de referencia</p>
+      <p><code>C:\Users\USER\workspace\organizado\04_mixed\llm-vfx-orchestrator</code></p>
+      <button class="copy-button" type="button" data-copy="C:\Users\USER\workspace\organizado\04_mixed\llm-vfx-orchestrator">Copiar ruta local</button>
+      <p class="note">llm-vfx-orchestrator conserva su <code>index.html</code> original; esta ampliación es una capa separada y reversible. Perfil <code>a4d9f614bd33</code>.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Ampliación de llm-vfx-orchestrator generada el 2026-11-10 con el kit de seis repos de recursos. <a href="#inicio">Volver al inicio</a>.</p>
+    <p><code>llm-vfx-orchestrator</code> · perfil <code>a4d9f614bd33</code></p>
+  </footer>
+
+  <script>/**
+ * hero.js — Shader WebGL1 sin dependencias para landing page hero.
+ * Reutilizable en cualquier repo. Sin npm install, sin framework.
+ * Características:
+ *   - FBM (Fractal Brownian Motion) animado
+ *   - Parallax de ratón
+ *   - DPR limitado a 1.75 para rendimiento
+ *   - Pausa fuera de viewport (IntersectionObserver)
+ *   - Frame estático con prefers-reduced-motion
+ *   - Auto-ajuste al resize del canvas
+ */
+(function () {
+  'use strict';
+
+  var canvasId = 'hero-canvas';
+  var colorA = '#0ea5e9'; // azul cielo
+  var colorB = '#7c3aed'; // violeta
+  var speed = 0.0004;
+  var mouse = { x: 0.5, y: 0.5 };
+  var time = 0;
+  var raf = null;
+  var paused = false;
+  var dprCap = 1.75;
+
+  var vertexShaderSource = [
+    'attribute vec2 position;',
+    'void main() {',
+    '  gl_Position = vec4(position, 0.0, 1.0);',
+    '}'
+  ].join('\n');
+
+  var fragmentShaderSource = [
+    'precision mediump float;',
+    'uniform vec2 u_resolution;',
+    'uniform float u_time;',
+    'uniform vec2 u_mouse;',
+    'uniform vec3 u_colorA;',
+    'uniform vec3 u_colorB;',
+    '',
+    'float hash(vec2 p) {',
+    '  p = fract(p * vec2(123.34, 456.21));',
+    '  p += dot(p, p + 45.32);',
+    '  return fract(p.x * p.y);',
+    '}',
+    '',
+    'float noise(vec2 p) {',
+    '  vec2 i = floor(p);',
+    '  vec2 f = fract(p);',
+    '  f = f * f * (3.0 - 2.0 * f);',
+    '  float a = hash(i);',
+    '  float b = hash(i + vec2(1.0, 0.0));',
+    '  float c = hash(i + vec2(0.0, 1.0));',
+    '  float d = hash(i + vec2(1.0, 1.0));',
+    '  return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);',
+    '}',
+    '',
+    'float fbm(vec2 p) {',
+    '  float v = 0.0;',
+    '  float a = 0.5;',
+    '  vec2 shift = vec2(100.0);',
+    '  for (int i = 0; i < 5; ++i) {',
+    '    v += a * noise(p);',
+    '    p = p * 2.0 + shift;',
+    '    a *= 0.5;',
+    '  }',
+    '  return v;',
+    '}',
+    '',
+    'void main() {',
+    '  vec2 uv = gl_FragCoord.xy / u_resolution.xy;',
+    '  uv.x *= u_resolution.x / u_resolution.y;',
+    '  vec2 m = uv - u_mouse;',
+    '  float n = fbm(uv * 3.0 + u_time * 0.5);',
+    '  n += fbm(uv * 6.0 - u_time * 0.3) * 0.5;',
+    '  n += length(m) * 0.1;',
+    '  n = mod(n, 1.0);',
+    '  vec3 color = mix(u_colorA, u_colorB, n);',
+    '  float vignette = 1.0 - length(uv * 2.0 - 1.0) * 0.4;',
+    '  color *= vignette;',
+    '  gl_FragColor = vec4(color, 1.0);',
+    '}'
+  ].join('\n');
+
+  function createShader(gl, type, source) {
+    var shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      console.error(gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  }
+
+  function createProgram(gl, vsSource, fsSource) {
+    var vertexShader = createShader(gl, gl.VERTEX_SHADER, vsSource);
+    var fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
+    var program = gl.createProgram();
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      console.error(gl.getProgramInfoLog(program));
+      return null;
+    }
+    return program;
+  }
+
+  function hexToRgb(hex) {
+    var m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return m ? {
+      r: parseInt(m[1], 16) / 255,
+      g: parseInt(m[2], 16) / 255,
+      b: parseInt(m[3], 16) / 255
+    } : { r: 0, g: 0.5, b: 1 };
+  }
+
+  function init(canvasId, colorA, colorB) {
+    var canvas = document.getElementById(canvasId);
+    if (!canvas) {
+      console.warn('hero.js: canvas #' + canvasId + ' no encontrado');
+      return;
+    }
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!gl) {
+      console.warn('hero.js: WebGL no disponible');
+      canvas.style.background = 'linear-gradient(135deg, ' + colorA + ', ' + colorB + ')';
+      return;
+    }
+
+    var program = createProgram(gl, vertexShaderSource, fragmentShaderSource);
+    gl.useProgram(program);
+
+    var positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    var positions = new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]);
+    gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+
+    var positionLoc = gl.getAttribLocation(program, 'position');
+    gl.enableVertexAttribArray(positionLoc);
+    gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
+
+    var resolutionLoc = gl.getUniformLocation(program, 'u_resolution');
+    var timeLoc = gl.getUniformLocation(program, 'u_time');
+    var mouseLoc = gl.getUniformLocation(program, 'u_mouse');
+    var colorALoc = gl.getUniformLocation(program, 'u_colorA');
+    var colorBLoc = gl.getUniformLocation(program, 'u_colorB');
+
+    var rgbA = hexToRgb(colorA);
+    var rgbB = hexToRgb(colorB);
+    gl.uniform3f(colorALoc, rgbA.r, rgbA.g, rgbA.b);
+    gl.uniform3f(colorBLoc, rgbB.r, rgbB.g, rgbB.b);
+
+    function resize() {
+      var dpr = Math.min(window.devicePixelRatio || 1, dprCap);
+      canvas.width = canvas.clientWidth * dpr;
+      canvas.height = canvas.clientHeight * dpr;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform2f(resolutionLoc, canvas.width, canvas.height);
+    }
+
+    window.addEventListener('mousemove', function (e) {
+      mouse.x = e.clientX / window.innerWidth;
+      mouse.y = 1.0 - e.clientY / window.innerHeight;
+    });
+
+    window.addEventListener('resize', resize);
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        paused = !entry.isIntersecting;
+      });
+    }, { threshold: 0.1 });
+    observer.observe(canvas);
+
+    resize();
+
+    function loop(t) {
+      if (!paused) {
+        time = t * speed;
+        gl.uniform1f(timeLoc, time);
+        gl.uniform2f(mouseLoc, mouse.x, mouse.y);
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+      }
+      raf = requestAnimationFrame(loop);
+    }
+    raf = requestAnimationFrame(loop);
+
+    return {
+      destroy: function () {
+        if (raf) cancelAnimationFrame(raf);
+        if (observer) observer.disconnect();
+        gl.deleteProgram(program);
+        gl.deleteBuffer(positionBuffer);
+      },
+      setColors: function (a, b) {
+        var ra = hexToRgb(a), rb = hexToRgb(b);
+        gl.uniform3f(colorALoc, ra.r, ra.g, ra.b);
+        gl.uniform3f(colorBLoc, rb.r, rb.g, rb.b);
+      }
+    };
+  }
+
+  window.initHeroShader = init;
+})();
+</script>
+  <script>
+(function () {
+  'use strict';
+  var root = document.documentElement;
+  var toggle = document.getElementById('theme-toggle');
+  function applyTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    try { localStorage.setItem('belentani-theme', theme); } catch (e) {}
+    if (toggle) toggle.textContent = theme === 'light' ? 'Oscuro' : 'Claro';
+  }
+  var stored = null;
+  try { stored = localStorage.getItem('belentani-theme'); } catch (e) {}
+  if (stored === 'light' || stored === 'dark') applyTheme(stored);
+  else applyTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  if (toggle) toggle.addEventListener('click', function () {
+    applyTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  });
+  var canvas = document.getElementById('hero-canvas');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (canvas) {
+    if (reduce || !window.initHeroShader) canvas.style.background = 'linear-gradient(135deg, #0ea5e9, #7c3aed)';
+    else {
+      try { window.initHeroShader('hero-canvas', '#0ea5e9', '#7c3aed'); }
+      catch (e) { canvas.style.background = 'linear-gradient(135deg, #0ea5e9, #7c3aed)'; }
+    }
+  }
+  var copy = document.querySelector('[data-copy]');
+  if (copy) copy.addEventListener('click', function () {
+    var text = copy.getAttribute('data-copy') || '';
+    function done() {
+      var original = copy.textContent;
+      copy.textContent = 'Ruta copiada';
+      window.setTimeout(function () { copy.textContent = original; }, 1600);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(function () {});
+    else {
+      var area = document.createElement('textarea');
+      area.value = text; area.setAttribute('readonly', ''); area.style.position = 'fixed'; area.style.opacity = '0';
+      document.body.appendChild(area); area.select();
+      try { document.execCommand('copy'); done(); } catch (e) {}
+      document.body.removeChild(area);
+    }
+  });
+})();
+</script>
+</body>
+</html>
