@@ -171,3 +171,7 @@ MIT — see [LICENSE](LICENSE).
 
 ## Producto
 Véase `plataforma/OFERTA.md`, `plataforma/precios.json`, `plataforma/ONEPAGER.md`.
+
+## Alcance del producto
+
+La [ficha del producto](plataforma/FICHA.md) conserva el alcance y las tareas pendientes.

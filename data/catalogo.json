@@ -1,4 +1,33 @@
 {
+  "nombre": "llm-vfx-orchestrator",
+  "remoto": "https://github.com/belentani7/llm-vfx-orchestrator",
+  "tipo": "web-app",
+  "modelo": "orquestador VFX con LLM",
+  "publico": "artistas técnicos",
+  "licencia": "MIT",
+  "medido": {
+    "archivos": 80,
+    "lineas": 13418,
+    "bytes": 532897,
+    "html": 8,
+    "tests": 13
+  },
+  "modulos": [
+    "Planificador",
+    "Ejecutor",
+    "Registro",
+    "Coste"
+  ],
+  "paleta": {
+    "bg": "#f7f4ef",
+    "ink": "#221f1a",
+    "accent": "#8c3d22"
+  },
+  "fuente": {
+    "ruta": "repos\\llm-vfx-orchestrator",
+    "fecha": "2026-11-10"
+  },
+  "generado_por": "repo-forge",
   "repo": "llm-vfx-orchestrator",
   "familia": "educación",
   "ajustes_aplicados": 50,
@@ -6,5 +35,6 @@
   "estado": "estructurado",
   "producto_completo": false,
   "generado": "2026-11-10T18:59:04.351387+00:00",
-  "motor": "repo_forge.py"
+  "motor": "repo_forge.py",
+  "medicion_es_historica": true
 }

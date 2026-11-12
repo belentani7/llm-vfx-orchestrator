@@ -284,7 +284,7 @@ color:var(--accent2);padding:4px 10px;border-radius:999px;margin:10px 0}
             <strong>QA Inspector</strong> recibe imagen renderizada (base64) y retorna score normalizado + issues estructurados.
           </li>
           <li data-ux-reveal>
-            <strong>Correction Agent</strong> parchea el graph (inputs, add/remove nodes) si quality < threshold (<code>qa_threshold</code> default 0.8).
+            <strong>Correction Agent</strong> parchea el graph (inputs, add/remove nodes) si quality &lt; threshold (<code>qa_threshold</code> default 0.8).
           </li>
           <li data-ux-reveal>
             <strong>Repetir</strong> pasos 2–4 hasta <code>max_retries</code> (default 3); parada temprana en plateau (<code>min_score_improvement</code> 0.01, <code>plateau_patience</code> 2) o patch no-op.
@@ -424,7 +424,8 @@ color:var(--accent2);padding:4px 10px;border-radius:999px;margin:10px 0}
         </div>
       </div>
     </section>
-  </main>
+  <section class="cell"><h2>Planificador de producción</h2><p>Prepara planos, reglas de continuidad y prompts en tu navegador.</p><p><a href="workspace.html">Abrir espacio de trabajo VFX</a></p></section>
+</main>
 
   <footer class="ux-footer">
     <div class="ux-container ux-footer__inner">
