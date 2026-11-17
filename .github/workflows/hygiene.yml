@@ -15,7 +15,7 @@ on:
 jobs:
   gitleaks:
     runs-on: ubuntu-latest
-      timeout-minutes: 20
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,7 +28,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   conflict-markers:
     runs-on: ubuntu-latest
-      timeout-minutes: 20
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Scan conflict markers

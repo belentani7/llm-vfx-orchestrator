@@ -16,7 +16,7 @@ concurrency:
 jobs:
   analyze:
     runs-on: ubuntu-latest
-      timeout-minutes: 20
+    timeout-minutes: 20
     permissions:
       security-events: write
       contents: read
