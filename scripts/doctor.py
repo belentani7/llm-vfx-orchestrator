@@ -3,6 +3,7 @@ Solo lectura. Código de salida 1 si hay fallos.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -54,8 +55,36 @@ def check() -> list[tuple[str, bool, str]]:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Doctor del repositorio: comprueba estructura, reglas, HTML y banco de datos."
+    )
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Imprime las comprobaciones en formato JSON estructurado.",
+    )
+    args = parser.parse_args()
+
     results = check()
     bad = [r for r in results if not r[1]]
+    if args.json:
+        print(
+            json.dumps(
+                {
+                    "ok": len(bad) == 0,
+                    "passed": len(results) - len(bad),
+                    "total": len(results),
+                    "checks": [
+                        {"name": name, "ok": ok, "detail": detail}
+                        for name, ok, detail in results
+                    ],
+                },
+                indent=2,
+                ensure_ascii=False,
+            )
+        )
+        return 1 if bad else 0
+
     for name, ok, detail in results:
         print(("OK   " if ok else "FALLA ") + name + (f"  ({detail})" if detail else ""))
     print(f"\n{len(results) - len(bad)}/{len(results)} comprobaciones en verde")

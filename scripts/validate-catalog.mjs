@@ -2,6 +2,11 @@
 import { readFileSync } from "node:fs";
 import { catalogo } from "../data/catalogo.mjs";
 
+if (process.argv.includes("--help") || process.argv.includes("-h")) {
+  console.log("Uso: node scripts/validate-catalog.mjs [--help]\nValida la paridad entre data/catalogo.json y data/catalogo.mjs.");
+  process.exit(0);
+}
+
 const errores = [];
 for (const key of ["nombre", "remoto", "tipo", "medido", "paleta"]) {
   if (!(key in catalogo)) errores.push(`falta ${key}`);

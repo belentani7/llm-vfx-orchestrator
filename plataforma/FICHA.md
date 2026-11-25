@@ -1,4 +1,4 @@
-# Ficha de producto â€” llm-vfx-orchestrator
+# Ficha de producto — llm-vfx-orchestrator
 
 ## Identidad
 - **Nombre:** llm-vfx-orchestrator
@@ -6,27 +6,27 @@
 - **Modelo de producto:** herramienta / servicio web
 - **Origen:** clonado de GitHub (belentani7/llm-vfx-orchestrator)
 
-## QuÃ© resuelve
+## Qué resuelve
 LLM VFX Orchestrator
 
-## MÃ¡ximo potencial alcanzable
-| DimensiÃ³n | Estado actual | Techo |
+## Máximo potencial alcanzable
+| Dimensión | Estado actual | Techo |
 |-----------|---------------|-------|
 | Producto | Repositorio clonado | Producto comercial completo con 8 piezas de plataforma |
-| MonetizaciÃ³n | No definida | 4 fases de pago con regla dura |
-| Despliegue | Local / GitHub Pages | ProducciÃ³n con dominio y soporte |
+| Monetización | No definida | 4 fases de pago con regla dura |
+| Despliegue | Local / GitHub Pages | Producción con dominio y soporte |
 
 ## Brechas para completar el producto comercial
-1. OFERTA.md â€” oferta comercial concreta
-2. precios.json â€” precios definidos
-3. COBRO.md â€” flujo de pago y facturaciÃ³n
-4. ONEPAGER.md â€” landing de venta
-5. DEMO.md â€” guion de demo
-6. METRICAS.md â€” KPIs de adopciÃ³n
-7. Enlace en README â€” apuntar a landing de producto
-8. AuditorÃ­a â€” gate de 20 comprobaciones en verde
+1. OFERTA.md — oferta comercial concreta
+2. precios.json — precios definidos
+3. COBRO.md — flujo de pago y facturación
+4. ONEPAGER.md — landing de venta
+5. DEMO.md — guion de demo
+6. METRICAS.md — KPIs de adopción
+7. Enlace en README — apuntar a landing de producto
+8. Auditoría — gate de 20 comprobaciones en verde
 
-## AuditorÃ­a interna
+## Auditoría interna
 - git status: revisado
 - Cambios: create-only (plataforma/ agregado, nada modificado ni borrado)
 

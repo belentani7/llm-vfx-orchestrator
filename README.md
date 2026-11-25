@@ -135,38 +135,54 @@ Templates only fill values the Director left empty, so an explicit workflow alwa
 5. Steps 2-4 repeat up to `max_retries`; the loop stops early on a plateau or a no-op patch
 6. Jobs end **completed**, **escalated** (human review, `escalation_reason` persisted) or **failed**
 
-## Testing
+## Testing & Internal Tooling (`scripts/`)
 
-- `pytest -q` runs the whole suite offline.
-- `tests/test_integration_smoke.py` starts a real HTTP + websocket ComfyUI stand-in on localhost and runs
-  the pipeline end to end with the production client (queue → WS terminal event → `/view` download → vision QA → store).
-
-## Capacity
-
-- `vfp run --batch jobs.json -j N` runs independent jobs concurrently (bounded by `comfyui.max_concurrent_renders`).
-- QA of the rendered images runs in parallel per job (bounded provider concurrency, pooled HTTP clients).
-- `llm.fallbacks` keeps the pipeline alive when a provider degrades.
-- Measure it yourself, no GPU needed:
+- `pytest -q tests magic/tests site/tests` runs all **286** offline Python tests (including `tests/test_integration_smoke.py` against a real localhost HTTP + WebSocket ComfyUI stand-in and `tests/test_web_handoff_e2e.py` verifying Browser Workspace `.vfp-batch.json` execution).
+- `npm test` runs **12** Vitest unit, full user happy-path E2E, WebGL fallback, and `axe-core` WCAG 2.2 AA accessibility suites.
+- Every internal maintenance & verification CLI supports `--help`:
 
 ```bash
-python scripts/benchmark.py --jobs 24 --render-ms 50 --qa-ms 20 --images 2 --concurrency 1,2,4,8
+# Repository governance, required files, tokens, and HTML metadata (50 checks)
+python3 scripts/doctor.py --help
+python3 scripts/doctor.py [--json]
+
+# Semantic HTML, internal link resolution, zero external requests, WCAG AA contrast,
+# WebGL lifecycle (prefers-reduced-motion / visibilitychange), and dist/ bundle budgets
+node scripts/audit-web.mjs --help
+node scripts/audit-web.mjs [--json]
+
+# Canonical catalog parity (data/catalogo.json <-> data/catalogo.mjs)
+node scripts/validate-catalog.mjs --help
+node scripts/validate-catalog.mjs
+
+# Pipeline concurrency & throughput benchmark (offline)
+python3 scripts/benchmark.py --help
+python3 scripts/benchmark.py --jobs 24 --render-ms 50 --qa-ms 20 --images 2 --concurrency 1,2,4,8
 ```
+
+## Capacity & Cost Control
+
+- `vfp run --batch sequence.vfp-batch.json -j N` runs independent jobs concurrently (bounded by `comfyui.max_concurrent_renders`) — exportable directly from the Browser Shot Workspace via **Export vfp batch**.
+- `pipeline.max_job_cost_usd`, `pipeline.gpu_hourly_cost_usd`, and `pipeline.llm_call_cost_usd` track per-job GPU + LLM QA spend in `result.metrics["estimated_cost_usd"]` and escalate cleanly before exceeding budget.
+- QA of rendered images runs in parallel per job (bounded provider concurrency, pooled HTTP clients).
+- `llm.fallbacks` keeps the pipeline alive across mixed vision/text provider chains.
 
 ## Development
 
 ```bash
+# Python orchestrator
 pip install -e ".[dev]"
-pytest -q          # 262 tests, no network required
+pytest -q tests magic/tests site/tests
 ruff check .
-python scripts/benchmark.py
+
+# Web shot-planning workspace
+npm ci
+npm run check && npm run lint && npm test && npm run build && npm run audit:web
 ```
 
 ## License
 
 MIT — see [LICENSE](LICENSE).
-
-> Note: `pyproject.toml` still declares `license = "Apache-2.0"`; the LICENSE file (MIT) is
-> the authoritative one. Fix the metadata before any public release.
 
 
 ## Producto

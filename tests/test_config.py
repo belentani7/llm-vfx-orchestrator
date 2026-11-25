@@ -223,6 +223,22 @@ class TestLLMConfig:
         )
         assert config.configured() == ["claude"]
 
+    def test_custom_top_level_provider_registered_without_false_warning(self, tmp_path, caplog):
+        path = tmp_path / "config.yaml"
+        path.write_text(
+            "llm:\n  ollama:\n    model: qwen2.5-vl\n    base_url: http://127.0.0.1:11434\n"
+        )
+        with caplog.at_level(logging.WARNING, logger="orchestrator.config"):
+            config = PipelineConfig.from_yaml(path)
+        assert config.llm.get("ollama").usable
+        assert not caplog.records
+
+    def test_negative_cost_budget_rejected(self):
+        with pytest.raises(ValueError, match="max_job_cost_usd"):
+            PipelineConfig(max_job_cost_usd=-0.5).validate()
+        with pytest.raises(ValueError, match="max_job_cost_usd"):
+            PipelineConfig().with_overrides(["max_job_cost_usd=-0.5"])
+
 
 class TestJobsDir:
     def test_store_dir_wins(self, tmp_path):

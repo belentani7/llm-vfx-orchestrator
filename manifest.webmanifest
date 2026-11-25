@@ -1,12 +1,12 @@
 {
   "name": "LLM VFX Orchestrator",
-  "short_name": "LLM VFX Orch",
-  "description": "orquestador VFX con LLM",
-  "lang": "es",
-  "start_url": "/",
+  "short_name": "VFX Orch",
+  "description": "Local-first VFX shot planning workspace and async Python ComfyUI orchestrator.",
+  "lang": "en",
+  "start_url": "./workspace.html",
   "display": "standalone",
-  "background_color": "#f7f4ef",
-  "theme_color": "#8c3d22",
+  "background_color": "#05030a",
+  "theme_color": "#05030a",
   "icons": [
     {
       "src": "assets/favicon.svg",

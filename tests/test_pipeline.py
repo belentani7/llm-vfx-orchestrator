@@ -8,7 +8,7 @@ import json
 import pytest
 
 from orchestrator.comfyui_client import OutputImage, RenderOutcome
-from orchestrator.config import PipelineConfig
+from orchestrator.config import LLMConfig, LLMProviderConfig, PipelineConfig
 from orchestrator.pipeline import (
     PipelineResult,
     PipelineStatus,
@@ -568,3 +568,39 @@ class TestHelpers:
         config = PipelineConfig(llm=llm_config, store_dir=str(tmp_path / "default"))
         pipeline = VFPPipeline(config, comfyui=FakeComfyUI())
         assert pipeline._store.directory == tmp_path / "default" / "jobs"
+
+    def test_vision_enabled_checks_fallback_chain(self):
+        llm = LLMConfig(
+            qwen=LLMProviderConfig(model="", api_key="", vision=False),
+            claude=LLMProviderConfig(model="claude-sonnet", api_key="k", vision=True),
+            fallbacks=["claude"],
+        )
+        pipeline = VFPPipeline(PipelineConfig(llm=llm), comfyui=FakeComfyUI())
+        assert pipeline._vision_enabled() is True
+
+        text_only_llm = LLMConfig(
+            qwen=LLMProviderConfig(model="", api_key="", vision=True),
+            claude=LLMProviderConfig(model="claude-haiku", api_key="k", vision=False),
+            fallbacks=["claude"],
+        )
+        pipeline_text = VFPPipeline(PipelineConfig(llm=text_only_llm), comfyui=FakeComfyUI())
+        assert pipeline_text._vision_enabled() is False
+
+    @pytest.mark.asyncio
+    async def test_cost_budget_cap_escalates_cleanly(self, llm_config, sample_workflow, tmp_path):
+        config = PipelineConfig(
+            llm=llm_config,
+            max_retries=3,
+            qa_threshold=0.95,
+            llm_call_cost_usd=0.05,
+            max_job_cost_usd=0.05,
+            store_dir=str(tmp_path),
+        )
+        pipeline = build_pipeline(
+            config, qa=StubQA(scores=[0.4, 0.99]), store=JobStore(tmp_path / "jobs")
+        )
+        result = await pipeline.execute(sample_workflow)
+        assert result.status is PipelineState.ESCALATED
+        assert result.iterations == 1
+        assert "cost budget exceeded" in (result.escalation_reason or "")
+        assert result.metrics["estimated_cost_usd"] >= 0.05

@@ -4,19 +4,19 @@
   "estado": "propuesta",
   "modelo": "herramienta",
   "quien_paga": "cliente final o equipo que necesita soporte",
-  "que_se_bloquea": "nada del nÃºcleo",
-  "regla_dura": "ninguna capacidad del nÃºcleo se reserva a un plan de pago",
+  "que_se_bloquea": "nada del núcleo",
+  "regla_dura": "ninguna capacidad del núcleo se reserva a un plan de pago",
   "planes": [
     {
       "nombre": "Base",
       "precio": 0,
-      "descripcion": "CÃ³digo abierto y reproducible. Uso gratuito."
+      "descripcion": "Código abierto y reproducible. Uso gratuito."
     },
     {
       "nombre": "Soporte",
       "precio": 89,
       "periodo": "mes",
-      "descripcion": "Soporte prioritario y asistencia tÃ©cnica."
+      "descripcion": "Soporte prioritario y asistencia técnica."
     },
     {
       "nombre": "Gestionado",
@@ -25,10 +25,10 @@
       "descripcion": "Despliegue y mantenimiento gestionados."
     },
     {
-      "nombre": "ConsultorÃ­a",
+      "nombre": "Consultoría",
       "precio": 89,
       "periodo": "hora",
-      "descripcion": "IntegraciÃ³n y personalizaciÃ³n del producto."
+      "descripcion": "Integración y personalización del producto."
     }
   ]
 }
