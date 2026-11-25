@@ -12,8 +12,8 @@ The browser workspace is a planning and handoff tool; it does **not** generate i
 ### Start
 
 ```bash
-pnpm install --no-frozen-lockfile
-pnpm dev
+npm ci
+npm run dev
 ```
 
 ### What it does
@@ -45,11 +45,13 @@ Configure providers and ComfyUI through a YAML config and/or environment variabl
 ## Validation
 
 ```bash
-pnpm run check
-pnpm test
-pnpm run build
+npm run check
+npm run lint
+npm test
+npm run build
+npm run audit:web
 
-python -m pytest -q tests
+python -m pytest -q tests magic/tests site/tests
 vfp --help
 ```
 
@@ -102,16 +104,22 @@ pipeline:
   max_qa_images: 4            # images inspected per render
   correct_execution_errors: true   # try to fix ComfyUI execution errors (OOM, bad node…)
   store_dir: ""               # default ~/.vfp/jobs (or $VFP_HOME)
+  # Standard reference rates — calibrate to your actual GPU / LLM provider (see config.example.yaml):
+  gpu_hourly_cost_usd: 1.20
+  llm_call_cost_usd: 0.008
+  max_job_cost_usd: 0.0       # 0 = unlimited; > 0 escalates before exceeding per-job budget
 
 template:
   name: character_generation
   use_assets: false
 ```
 
+Copy `config.example.yaml` to `config.yaml` as a starting point.
 Environment overrides: `VFP_MAX_RETRIES`, `VFP_QA_THRESHOLD`, `VFP_CONCURRENCY`, `VFP_QA_CONCURRENCY`,
+`VFP_MAX_QA_IMAGES`, `VFP_GPU_HOURLY_COST_USD`, `VFP_LLM_CALL_COST_USD`, `VFP_MAX_JOB_COST_USD`,
 `VFP_STORE_DIR`, `VFP_COMFYUI_URL`, `VFP_COMFYUI_HOST`, `VFP_COMFYUI_PORT`, `VFP_COMFYUI_TIMEOUT`,
 `VFP_COMFYUI_WS_TIMEOUT`, `VFP_COMFYUI_CONCURRENCY`, `VFP_HOME`.
-Anything else can be overridden per run: `vfp run wf.json --set pipeline.qa_threshold=0.9`.
+Anything else can be overridden per run: `vfp run wf.json --set pipeline.qa_threshold=0.9 --set pipeline.gpu_hourly_cost_usd=0.69`.
 
 ## Pipeline Templates
 
@@ -137,19 +145,26 @@ Templates only fill values the Director left empty, so an explicit workflow alwa
 
 ## Testing & Internal Tooling (`scripts/`)
 
-- `pytest -q tests magic/tests site/tests` runs all **286** offline Python tests (including `tests/test_integration_smoke.py` against a real localhost HTTP + WebSocket ComfyUI stand-in and `tests/test_web_handoff_e2e.py` verifying Browser Workspace `.vfp-batch.json` execution).
-- `npm test` runs **12** Vitest unit, full user happy-path E2E, WebGL fallback, and `axe-core` WCAG 2.2 AA accessibility suites.
+- `pytest -q tests magic/tests site/tests` runs all **289** offline Python tests (including `tests/test_integration_smoke.py` against a real localhost HTTP + WebSocket ComfyUI stand-in, `tests/test_web_handoff_e2e.py` verifying Browser Workspace `.vfp-batch.json` execution, and `tests/test_repair_pages.py` verifying HTML repair idempotency).
+- `npm test` runs **13** Vitest unit, full user happy-path E2E, cost calibration, WebGL fallback, and `axe-core` WCAG 2.2 AA accessibility suites across Workspace views and all 16 static HTML entrypoints.
 - Every internal maintenance & verification CLI supports `--help`:
 
 ```bash
-# Repository governance, required files, tokens, and HTML metadata (50 checks)
+# Repository governance, required files, CODEOWNERS, tokens, and HTML metadata (52 checks)
 python3 scripts/doctor.py --help
 python3 scripts/doctor.py [--json]
 
+# Deterministic & idempotent HTML family repair / CI check
+python3 scripts/repair_pages.py --help
+python3 scripts/repair_pages.py . --check
+
 # Semantic HTML, internal link resolution, zero external requests, WCAG AA contrast,
-# WebGL lifecycle (prefers-reduced-motion / visibilitychange), and dist/ bundle budgets
+# WebGL lifecycle, and full 17/17 dist/ multi-page bundle & link budgets
 node scripts/audit-web.mjs --help
 node scripts/audit-web.mjs [--json]
+
+# Real Chromium Lighthouse CI (Core Web Vitals + Accessibility; non-blocking gate in CI)
+npm run audit:lhci
 
 # Canonical catalog parity (data/catalogo.json <-> data/catalogo.mjs)
 node scripts/validate-catalog.mjs --help

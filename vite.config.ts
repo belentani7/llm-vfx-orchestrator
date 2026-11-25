@@ -1,6 +1,8 @@
 import { cpSync, existsSync, mkdirSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { defineConfig, type Plugin } from "vite";
+
+const ROOT = import.meta.dirname;
 
 function copyStaticStudioAssets(): Plugin {
   const staticPaths = [
@@ -11,18 +13,19 @@ function copyStaticStudioAssets(): Plugin {
     "sitemap.xml",
     "assets",
     "brand",
-    "_shared",
+    "docs/site.js",
   ];
 
   return {
     name: "copy-static-studio-assets",
     closeBundle() {
-      const outRoot = resolve(__dirname, "dist");
+      const outRoot = resolve(ROOT, "dist");
       mkdirSync(outRoot, { recursive: true });
       for (const rel of staticPaths) {
-        const src = resolve(__dirname, rel);
+        const src = resolve(ROOT, rel);
         if (!existsSync(src)) continue;
         const dest = resolve(outRoot, rel);
+        mkdirSync(dirname(dest), { recursive: true });
         cpSync(src, dest, { recursive: true });
       }
     },
@@ -44,16 +47,23 @@ export default defineConfig({
     target: "es2022",
     rollupOptions: {
       input: {
-        main: resolve(__dirname, "index.html"),
-        workspace: resolve(__dirname, "workspace.html"),
-        docs: resolve(__dirname, "docs.html"),
-        ecosistema: resolve(__dirname, "ecosistema.html"),
-        ampliacion: resolve(__dirname, "ampliacion.html"),
-        accesibilidad: resolve(__dirname, "accesibilidad.html"),
-        accessibility: resolve(__dirname, "accessibility.html"),
-        privacidad: resolve(__dirname, "privacidad.html"),
-        avisoLegal: resolve(__dirname, "aviso-legal.html"),
-        notFound: resolve(__dirname, "404.html"),
+        main: resolve(ROOT, "index.html"),
+        workspace: resolve(ROOT, "workspace.html"),
+        docs: resolve(ROOT, "docs.html"),
+        ecosistema: resolve(ROOT, "ecosistema.html"),
+        ampliacion: resolve(ROOT, "ampliacion.html"),
+        accesibilidad: resolve(ROOT, "accesibilidad.html"),
+        accessibility: resolve(ROOT, "accessibility.html"),
+        privacidad: resolve(ROOT, "privacidad.html"),
+        avisoLegal: resolve(ROOT, "aviso-legal.html"),
+        notFound: resolve(ROOT, "404.html"),
+        docsPortal: resolve(ROOT, "docs/index.html"),
+        siteIndex: resolve(ROOT, "site/index.html"),
+        magicImmersive: resolve(ROOT, "magic/immersive.html"),
+        magicSfx: resolve(ROOT, "magic/sfx.html"),
+        magicShader: resolve(ROOT, "magic/shader.html"),
+        plataformaPrototipo: resolve(ROOT, "plataforma/PROTOTIPO.html"),
+        productoLanding: resolve(ROOT, "producto/landing.html"),
       },
       output: {
         manualChunks(id) {

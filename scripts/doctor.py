@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parent.parent
 REQUIRED = [
     "README.md", "LICENSE", "BIBLIA.md", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md",
     "SECURITY.md", "CHANGELOG.md", "AGENTS.md", ".editorconfig", ".gitattributes",
+    ".github/CODEOWNERS", "config.example.yaml",
     "data/catalogo.json", "brand/tokens.json", "plataforma/FICHA.md",
     "plataforma/PLATAFORMA.md", "plataforma/PAYWALL.md", "plataforma/RECURSOS.md",
 ]

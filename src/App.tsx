@@ -4,6 +4,7 @@ import {
   buildShotPrompt,
   createShot,
   createStarterProject,
+  DEFAULT_COST_CALIBRATION,
   estimateProjectBudget,
   estimateShotCost,
   exportProject,
@@ -11,6 +12,7 @@ import {
   getProjectMetrics,
   parseProject,
   validateShot,
+  type CostCalibration,
   type ShotStatus,
   type VFXProject,
   type VFXShot,
@@ -83,6 +85,25 @@ export default function App() {
     value: VFXProject[K],
   ) => {
     setProject((current) => ({ ...current, [key]: value }));
+  };
+
+  const costConfig: CostCalibration = {
+    ...DEFAULT_COST_CALIBRATION,
+    ...(project.costConfig ?? {}),
+  };
+
+  const updateCostConfig = <K extends keyof CostCalibration>(
+    key: K,
+    value: CostCalibration[K],
+  ) => {
+    setProject((current) => ({
+      ...current,
+      costConfig: {
+        ...DEFAULT_COST_CALIBRATION,
+        ...(current.costConfig ?? {}),
+        [key]: value,
+      },
+    }));
   };
 
   const updateShot = <K extends keyof VFXShot>(key: K, value: VFXShot[K]) => {
@@ -431,6 +452,69 @@ export default function App() {
                   <option value={25}>25 fps</option>
                   <option value={30}>30 fps</option>
                 </select>
+              </label>
+              <label className="field">
+                GPU rate ($/h)
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  step="0.05"
+                  value={costConfig.gpuHourlyCostUsd}
+                  onChange={(event) =>
+                    updateCostConfig(
+                      "gpuHourlyCostUsd",
+                      Math.max(0, Number(event.target.value) || 0),
+                    )
+                  }
+                />
+                <span className="field-help">
+                  Ref. $1.20/h (calibrate to provider or config.yaml).
+                </span>
+              </label>
+              <label className="field">
+                LLM call rate ($/call)
+                <input
+                  type="number"
+                  min={0}
+                  max={10}
+                  step="0.001"
+                  value={costConfig.llmCallCostUsd}
+                  onChange={(event) =>
+                    updateCostConfig(
+                      "llmCallCostUsd",
+                      Math.max(0, Number(event.target.value) || 0),
+                    )
+                  }
+                />
+                <span className="field-help">
+                  Ref. $0.008/call (vision QA + planning).
+                </span>
+              </label>
+              <label className="field">
+                Correction retries
+                <input
+                  type="number"
+                  min={0}
+                  max={10}
+                  step="1"
+                  value={costConfig.maxRetries}
+                  onChange={(event) =>
+                    updateCostConfig(
+                      "maxRetries",
+                      Math.min(
+                        10,
+                        Math.max(
+                          0,
+                          Math.floor(Number(event.target.value) || 0),
+                        ),
+                      ),
+                    )
+                  }
+                />
+                <span className="field-help">
+                  Propagated to vfp batch max_retries.
+                </span>
               </label>
             </div>
             <div className="callout">

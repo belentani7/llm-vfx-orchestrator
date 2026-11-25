@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 
 import pytest
 
@@ -238,6 +239,21 @@ class TestLLMConfig:
             PipelineConfig(max_job_cost_usd=-0.5).validate()
         with pytest.raises(ValueError, match="max_job_cost_usd"):
             PipelineConfig().with_overrides(["max_job_cost_usd=-0.5"])
+
+    def test_cost_calibration_from_yaml_env_and_example(self, tmp_path, monkeypatch):
+        root_example = Path(__file__).resolve().parent.parent / "config.example.yaml"
+        example_cfg = PipelineConfig.from_yaml(root_example)
+        assert example_cfg.gpu_hourly_cost_usd == pytest.approx(1.20)
+        assert example_cfg.llm_call_cost_usd == pytest.approx(0.008)
+        assert example_cfg.max_job_cost_usd == pytest.approx(0.0)
+
+        monkeypatch.setenv("VFP_GPU_HOURLY_COST_USD", "0.68")
+        monkeypatch.setenv("VFP_LLM_CALL_COST_USD", "0.015")
+        monkeypatch.setenv("VFP_MAX_JOB_COST_USD", "2.50")
+        env_cfg = PipelineConfig.from_env(example_cfg)
+        assert env_cfg.gpu_hourly_cost_usd == pytest.approx(0.68)
+        assert env_cfg.llm_call_cost_usd == pytest.approx(0.015)
+        assert env_cfg.max_job_cost_usd == pytest.approx(2.50)
 
 
 class TestJobsDir:

@@ -273,6 +273,9 @@ class PipelineConfig:
             "VFP_CONCURRENCY": ("concurrency", int),
             "VFP_QA_CONCURRENCY": ("qa_concurrency", int),
             "VFP_MAX_QA_IMAGES": ("max_qa_images", int),
+            "VFP_GPU_HOURLY_COST_USD": ("gpu_hourly_cost_usd", float),
+            "VFP_LLM_CALL_COST_USD": ("llm_call_cost_usd", float),
+            "VFP_MAX_JOB_COST_USD": ("max_job_cost_usd", float),
             "VFP_STORE_DIR": ("store_dir", str),
         }
         for env_name, (attr, caster) in scalars.items():

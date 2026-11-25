@@ -1,4 +1,9 @@
-# repo-forge
-* @belentani7
-/.github/ @belentani7
-/plataforma/ @belentani7
+# CODEOWNERS — llm-vfx-orchestrator (Gobernanza y revisión obligatoria)
+*                   @belentani7
+/.github/           @belentani7
+/.gitleaks.toml     @belentani7
+/orchestrator/      @belentani7
+/src/               @belentani7
+/scripts/           @belentani7
+/docs/              @belentani7
+/plataforma/        @belentani7
