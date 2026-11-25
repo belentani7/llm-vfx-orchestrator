@@ -140,7 +140,14 @@ describe("Workspace E2E happy path, WebGL graceful degradation & WCAG 2.2 AA", (
     const axeOptions: axe.RunOptions = {
       runOnly: {
         type: "tag",
-        values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "best-practice"],
+        values: [
+          "wcag2a",
+          "wcag2aa",
+          "wcag21a",
+          "wcag21aa",
+          "wcag22aa",
+          "best-practice",
+        ],
       },
       rules: {
         // JSDOM does not rasterize CSS backgrounds; exact luminance ratios are verified by scripts/audit-web.mjs
@@ -152,18 +159,31 @@ describe("Workspace E2E happy path, WebGL graceful degradation & WCAG 2.2 AA", (
     expect(shotsResults.violations).toEqual([]);
 
     await user.click(screen.getByRole("tab", { name: /02 \/ Project bible/i }));
+    const gpuRateInput = screen.getByLabelText(/GPU rate \(\$\/h\)/i);
+    await user.clear(gpuRateInput);
+    await user.type(gpuRateInput, "2.40");
     const projectResults = await axe.run(container, axeOptions);
     expect(projectResults.violations).toEqual([]);
   });
 
-  it("passes axe-core WCAG 2.2 AA accessibility checks on static HTML entrypoints", async () => {
+  it("passes axe-core WCAG 2.2 AA accessibility checks on all 16 static HTML entrypoints", async () => {
     const pages = [
-      "index.html",
-      "docs.html",
-      "ecosistema.html",
-      "accesibilidad.html",
-      "privacidad.html",
       "404.html",
+      "accesibilidad.html",
+      "accessibility.html",
+      "ampliacion.html",
+      "aviso-legal.html",
+      "docs.html",
+      "docs/index.html",
+      "ecosistema.html",
+      "index.html",
+      "magic/immersive.html",
+      "magic/sfx.html",
+      "magic/shader.html",
+      "plataforma/PROTOTIPO.html",
+      "privacidad.html",
+      "producto/landing.html",
+      "site/index.html",
     ];
 
     for (const relPath of pages) {
@@ -177,7 +197,14 @@ describe("Workspace E2E happy path, WebGL graceful degradation & WCAG 2.2 AA", (
       const results = await axe.run(document.body, {
         runOnly: {
           type: "tag",
-          values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "best-practice"],
+          values: [
+            "wcag2a",
+            "wcag2aa",
+            "wcag21a",
+            "wcag21aa",
+            "wcag22aa",
+            "best-practice",
+          ],
         },
         rules: {
           "color-contrast": { enabled: false },

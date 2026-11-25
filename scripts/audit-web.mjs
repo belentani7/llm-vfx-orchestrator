@@ -114,14 +114,23 @@ for (const filePath of sourceHtmlFiles) {
   );
 
   const mainCount = doc.querySelectorAll("main").length;
-  const validMain =
-    rel === "workspace.html"
-      ? Boolean(doc.getElementById("root"))
-      : mainCount === 1;
+  const headerCount = doc.querySelectorAll("header").length;
+  const footerCount = doc.querySelectorAll("footer").length;
+  const isReactShell = rel === "workspace.html";
+  const validLandmarks = isReactShell
+    ? Boolean(doc.getElementById("root"))
+    : mainCount === 1 && headerCount === 1 && footerCount === 1;
   recordCheck(
-    `${rel}: landmark <main> único`,
-    validMain,
-    `encontrados=${mainCount}`,
+    `${rel}: landmarks únicos (header/main/footer)`,
+    validLandmarks,
+    `header=${headerCount}, main=${mainCount}, footer=${footerCount}`,
+  );
+
+  recordCheck(
+    `${rel}: sin mojibake ni placeholders residuales`,
+    !/Ã[\x80-\xBF]|â€/.test(html) &&
+      !html.includes("$structure_note") &&
+      !doc.querySelector("[data-webgl-lab]"),
   );
 
   const anchors = [...doc.querySelectorAll("a")];
@@ -200,6 +209,19 @@ const contrastPairs = [
   ],
   ["Workspace placeholder (#8ea0b5 sobre #080d15)", "#8ea0b5", "#080d15", 4.5],
   ["Botón primario (#05030a sobre #4de8e0)", "#05030a", "#4de8e0", 4.5],
+  [
+    "Editorial texto secundario (#595651 sobre #f7f4ef)",
+    "#595651",
+    "#f7f4ef",
+    4.5,
+  ],
+  [
+    "Editorial tarjeta secundaria (#595651 sobre #f1eee9)",
+    "#595651",
+    "#f1eee9",
+    4.5,
+  ],
+  ["Editorial acento (#8c3d22 sobre #f7f4ef)", "#8c3d22", "#f7f4ef", 4.5],
 ];
 
 const contrastResults = contrastPairs.map(([label, fg, bg, minRatio]) => {
@@ -237,6 +259,36 @@ const distMetrics = {
 const distDir = join(ROOT, "dist");
 if (!args.has("--no-dist") && existsSync(distDir)) {
   distMetrics.present = true;
+  const distHtmlFiles = walkFilesByExt(distDir, ".html", new Set());
+  recordCheck(
+    `dist/: compila todas las entradas HTML (${distHtmlFiles.length}/${sourceHtmlFiles.length})`,
+    distHtmlFiles.length === sourceHtmlFiles.length,
+    `dist=${distHtmlFiles.length}, fuente=${sourceHtmlFiles.length}`,
+  );
+
+  for (const distHtmlPath of distHtmlFiles) {
+    const relDist = distHtmlPath.slice(distDir.length + 1);
+    const domDist = new JSDOM(readFileSync(distHtmlPath, "utf8"));
+    const brokenInDist = [];
+    for (const el of domDist.window.document.querySelectorAll("[href], [src]")) {
+      const val = (el.getAttribute("href") || el.getAttribute("src") || "").trim();
+      if (!val || val.startsWith("#") || URI_SCHEME_RE.test(val)) continue;
+      const cleanRel = val.split("#")[0].split("?")[0];
+      if (!cleanRel) continue;
+      const candidate = cleanRel.startsWith("/")
+        ? join(distDir, cleanRel.slice(1))
+        : resolve(dirname(distHtmlPath), cleanRel);
+      if (!existsSync(candidate)) {
+        brokenInDist.push(val);
+      }
+    }
+    recordCheck(
+      `dist/${relDist}: activos y enlaces compilados existen`,
+      brokenInDist.length === 0,
+      brokenInDist.join(", "),
+    );
+  }
+
   const distAssets = join(distDir, "assets");
   const inspectTargets = [
     join(distDir, "index.html"),

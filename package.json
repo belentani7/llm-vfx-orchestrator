@@ -12,7 +12,8 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "test": "vitest run",
-    "audit:web": "node scripts/audit-web.mjs"
+    "audit:web": "node scripts/audit-web.mjs",
+    "audit:lhci": "npx --yes @lhci/cli@0.16.1 autorun --config=lighthouserc.cjs"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -33,8 +34,8 @@
     "prettier": "^3.5.3",
     "typescript": "^5.8.0",
     "typescript-eslint": "^8.74.0",
-    "vite": "^6.4.6",
-    "vitest": "^2.1.9"
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
   },
   "engines": {
     "node": ">=22.0.0"

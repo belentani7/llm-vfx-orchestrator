@@ -151,4 +151,29 @@ describe("VFX production planning core", () => {
     });
     expect(parsed[0].prompt).toContain("01 · Establishing");
   });
+
+  it("calibrates budget and vfp batch export from project costConfig rates", () => {
+    const baseProject = createStarterProject();
+    const highProviderProject = {
+      ...baseProject,
+      costConfig: {
+        gpuHourlyCostUsd: 2.8,
+        llmCallCostUsd: 0.02,
+        maxRetries: 4,
+        qaThreshold: 0.9,
+      },
+    };
+    const defaultBudget = estimateProjectBudget(baseProject);
+    const calibratedBudget = estimateProjectBudget(highProviderProject);
+    expect(calibratedBudget.totalEstimatedCostUsd).toBeGreaterThan(
+      defaultBudget.totalEstimatedCostUsd,
+    );
+
+    const exported = JSON.parse(exportVfpBatch(highProviderProject));
+    expect(exported[0].max_retries).toBe(4);
+    expect(exported[0].qa_threshold).toBe(0.9);
+
+    const roundTrip = parseProject(exportProject(highProviderProject));
+    expect(roundTrip.costConfig).toEqual(highProviderProject.costConfig);
+  });
 });

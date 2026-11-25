@@ -85,8 +85,8 @@
     <a href="../index.html">Inicio</a> · <a href="../accesibilidad.html">Accesibilidad</a> · <a href="../privacidad.html">Privacidad</a>
   </footer>
 
-  <script src="../hero.js"></script>
-  <script>
+  <script type="module">
+    import "../hero.js";
     (function () {
       if (typeof window.initHeroShader === "function") {
         window.initHeroShader("gl", { colorA: "#4de8e0", colorB: "#d4af37", colorC: "#ff073a", intensity: 0.9 });

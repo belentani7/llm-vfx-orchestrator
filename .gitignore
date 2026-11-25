@@ -15,6 +15,7 @@ build/
 out/
 .turbo/
 playwright-report/
+.lighthouseci/
 
 # Python: entornos virtuales, bytecode y cachés de herramientas
 __pycache__/

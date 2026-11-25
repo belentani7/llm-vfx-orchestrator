@@ -16,6 +16,13 @@ export interface VFXShot {
   seed: string;
 }
 
+export interface CostCalibration {
+  gpuHourlyCostUsd: number;
+  llmCallCostUsd: number;
+  maxRetries: number;
+  qaThreshold: number;
+}
+
 export interface VFXProject {
   schemaVersion: 1;
   title: string;
@@ -24,8 +31,16 @@ export interface VFXProject {
   modelTarget: string;
   aspectRatio: "16:9" | "9:16" | "1:1" | "2.39:1";
   frameRate: 24 | 25 | 30;
+  costConfig?: CostCalibration;
   shots: VFXShot[];
 }
+
+export const DEFAULT_COST_CALIBRATION: CostCalibration = {
+  gpuHourlyCostUsd: 1.2,
+  llmCallCostUsd: 0.008,
+  maxRetries: 2,
+  qaThreshold: 0.8,
+};
 
 export interface BudgetOptions {
   gpuHourlyCostUsd?: number;
@@ -250,13 +265,28 @@ export function getProjectMetrics(project: VFXProject) {
 }
 
 export function estimateShotCost(
-  project: Pick<VFXProject, "aspectRatio" | "frameRate">,
+  project: Pick<VFXProject, "aspectRatio" | "frameRate" | "costConfig">,
   shot: VFXShot,
   options: BudgetOptions = {},
 ): ShotCostEstimate {
-  const gpuHourlyCostUsd = options.gpuHourlyCostUsd ?? 1.2;
-  const llmCallCostUsd = options.llmCallCostUsd ?? 0.008;
-  const maxRetries = Math.max(0, options.maxRetries ?? 2);
+  const gpuHourlyCostUsd = Math.max(
+    0,
+    options.gpuHourlyCostUsd ??
+      project.costConfig?.gpuHourlyCostUsd ??
+      DEFAULT_COST_CALIBRATION.gpuHourlyCostUsd,
+  );
+  const llmCallCostUsd = Math.max(
+    0,
+    options.llmCallCostUsd ??
+      project.costConfig?.llmCallCostUsd ??
+      DEFAULT_COST_CALIBRATION.llmCallCostUsd,
+  );
+  const maxRetries = Math.max(
+    0,
+    options.maxRetries ??
+      project.costConfig?.maxRetries ??
+      DEFAULT_COST_CALIBRATION.maxRetries,
+  );
 
   const safeDuration =
     Number.isFinite(shot.durationSeconds) && shot.durationSeconds > 0
@@ -330,8 +360,14 @@ export function exportVfpBatch(
   project: VFXProject,
   options: Pick<BudgetOptions, "maxRetries" | "qaThreshold"> = {},
 ): string {
-  const maxRetries = Math.max(0, options.maxRetries ?? 3);
-  const qaThreshold = options.qaThreshold ?? 0.8;
+  const maxRetries = Math.max(
+    0,
+    options.maxRetries ?? project.costConfig?.maxRetries ?? 3,
+  );
+  const qaThreshold =
+    options.qaThreshold ??
+    project.costConfig?.qaThreshold ??
+    DEFAULT_COST_CALIBRATION.qaThreshold;
 
   const jobs: VfpBatchJob[] = project.shots.map((shot) => {
     const parsedSeed = Number.parseInt(shot.seed.trim(), 10);
@@ -448,6 +484,48 @@ export function parseProject(raw: string | null): VFXProject {
       )
         ? (candidate.frameRate as VFXProject["frameRate"])
         : fallback.frameRate,
+      ...(candidate.costConfig && typeof candidate.costConfig === "object"
+        ? {
+            costConfig: {
+              gpuHourlyCostUsd: Math.min(
+                100,
+                Math.max(
+                  0,
+                  Number.isFinite(Number(candidate.costConfig.gpuHourlyCostUsd))
+                    ? Number(candidate.costConfig.gpuHourlyCostUsd)
+                    : DEFAULT_COST_CALIBRATION.gpuHourlyCostUsd,
+                ),
+              ),
+              llmCallCostUsd: Math.min(
+                10,
+                Math.max(
+                  0,
+                  Number.isFinite(Number(candidate.costConfig.llmCallCostUsd))
+                    ? Number(candidate.costConfig.llmCallCostUsd)
+                    : DEFAULT_COST_CALIBRATION.llmCallCostUsd,
+                ),
+              ),
+              maxRetries: Math.min(
+                10,
+                Math.max(
+                  0,
+                  Number.isFinite(Number(candidate.costConfig.maxRetries))
+                    ? Math.floor(Number(candidate.costConfig.maxRetries))
+                    : DEFAULT_COST_CALIBRATION.maxRetries,
+                ),
+              ),
+              qaThreshold: Math.min(
+                1,
+                Math.max(
+                  0,
+                  Number.isFinite(Number(candidate.costConfig.qaThreshold))
+                    ? Number(candidate.costConfig.qaThreshold)
+                    : DEFAULT_COST_CALIBRATION.qaThreshold,
+                ),
+              ),
+            },
+          }
+        : {}),
       shots,
     };
   } catch {

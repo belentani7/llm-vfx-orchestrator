@@ -82,8 +82,8 @@
     </div>
   </footer>
 
-  <script src="../hero.js"></script>
-  <script>
+  <script type="module">
+    import "../hero.js";
     if (typeof window.initHeroShader === "function") {
       window.initHeroShader("hero-canvas", { colorA: "#4de8e0", colorB: "#d4af37", colorC: "#ff073a", intensity: 0.85 });
     }

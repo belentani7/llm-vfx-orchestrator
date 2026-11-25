@@ -1,0 +1,52 @@
+# LLM VFX Orchestrator — Configuración de referencia (copiar a config.yaml)
+# NUNCA commitees claves de API ni secretos reales; utiliza ${VARIABLE} de entorno.
+
+comfyui:
+  host: "127.0.0.1"
+  port: 8188
+  timeout: 300.0
+  ws_timeout: 3600.0            # Deadline duro (segundos) esperando un render en cola
+  max_concurrent_renders: 1     # Incrementar en servidores multi-GPU
+  use_proxy: false              # Evita redirigir tráfico local de ComfyUI por HTTP_PROXY
+  # api_url: "https://comfy.example.com"  # Opcional: tras reverse-proxy (prevalece sobre host/port)
+
+llm:
+  claude:
+    model: "claude-sonnet-4-20250514"
+    api_key: "${ANTHROPIC_API_KEY}"
+  qwen:
+    model: "qwen-vl-max"
+    api_key: "${DASHSCOPE_API_KEY}"
+    vision: true                # Recibe los fotogramas renderizados (PNG base64)
+  glm:
+    model: "glm-4v-plus"
+    api_key: "${ZHIPUAI_API_KEY}"
+  fallbacks: ["glm", "qwen"]    # Cadena de respaldo automática ante 429/5xx
+  # providers:                  # Cualquier endpoint compatible con OpenAI (Ollama, vLLM, etc.)
+  #   local:
+  #     model: "qwen2.5-vl"
+  #     base_url: "http://127.0.0.1:11434"
+  #     kind: "openai"
+
+pipeline:
+  max_retries: 3
+  qa_threshold: 0.80
+  min_score_improvement: 0.01   # Por debajo de este avance se considera plateau
+  plateau_patience: 2
+  concurrency: 4                # Trabajos concurrentes en vfp run -j
+  qa_concurrency: 4
+  max_qa_images: 4
+  correct_execution_errors: true
+  store_dir: ""                 # Por defecto ~/.vfp/jobs (o $VFP_HOME)
+
+  # --- Calibración de costes (tarifas de referencia estándar — ajusta a tu proveedor real) ---
+  # Ejemplos orientativos GPU $/h: RTX 4090 spot ~0.45–0.80 · L40S/A6000 ~1.20 · A100 80GB ~1.90–2.80
+  # También configurables vía VFP_GPU_HOURLY_COST_USD, VFP_LLM_CALL_COST_USD y VFP_MAX_JOB_COST_USD
+  # o por ejecución con: vfp run wf.json --set pipeline.gpu_hourly_cost_usd=0.69
+  gpu_hourly_cost_usd: 1.20
+  llm_call_cost_usd: 0.008
+  max_job_cost_usd: 0.0         # 0.0 = sin tope duro; > 0 escala el job antes de superar el presupuesto
+
+template:
+  name: "character_generation"
+  use_assets: false

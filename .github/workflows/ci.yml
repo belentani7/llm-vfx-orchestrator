@@ -32,8 +32,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install actual VFX package and test dependencies
         run: python -m pip install --disable-pip-version-check -e '.[dev]'
-      - name: Run repository doctor
-        run: python scripts/doctor.py
+      - name: Run repository doctor & HTML family check
+        run: |
+          python scripts/doctor.py
+          python scripts/repair_pages.py . --check
       - name: Run Ruff linter
         run: ruff check .
       - name: Run complete pipeline regression suite
@@ -59,6 +61,8 @@ jobs:
           cache: npm
       - name: Install web dependencies deterministically
         run: npm ci
+      - name: Audit npm dependency advisories
+        run: npm audit --audit-level=moderate
       - name: Validate canonical catalog
         run: node scripts/validate-catalog.mjs
       - name: Typecheck
@@ -67,7 +71,65 @@ jobs:
         run: npm run lint
       - name: Unit, E2E & WCAG AA tests
         run: npm test
-      - name: Production build
+      - name: Production build (all 17 HTML entrypoints)
         run: npm run build
       - name: Web & accessibility static audit
         run: npm run audit:web
+
+  lighthouse-ci:
+    name: Lighthouse CI / real Chromium Core Web Vitals & WCAG (non-blocking)
+    runs-on: ubuntu-latest
+    needs: web-app
+    continue-on-error: true
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install dependencies and build dist/
+        run: |
+          npm ci
+          npm run build
+      - name: Provision Chromium via Playwright
+        run: npx --yes playwright install --with-deps chromium
+      - name: Run Lighthouse CI (@lhci/cli)
+        run: |
+          CHROME_BIN="$(command -v google-chrome-stable || find "$HOME/.cache/ms-playwright" -name chrome -type f | head -n 1)"
+          export CHROME_PATH="$CHROME_BIN"
+          echo "Using CHROME_PATH=$CHROME_PATH"
+          npm run audit:lhci
+      - name: Publish Lighthouse summary
+        if: always()
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            const manifestPath = ".lighthouseci/manifest.json";
+            if (!fs.existsSync(manifestPath)) process.exit(0);
+            const entries = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+            const lines = [
+              "### Lighthouse CI (Chromium real)",
+              "| URL | Performance | Accessibility | Best Practices | SEO |",
+              "|---|---:|---:|---:|---:|"
+            ];
+            for (const e of entries) {
+              const s = e.summary || {};
+              const pct = (v) => (typeof v === "number" ? Math.round(v * 100) : "—");
+              lines.push(`| \`${e.url}\` | ${pct(s.performance)} | ${pct(s.accessibility)} | ${pct(s["best-practices"])} | ${pct(s.seo)} |`);
+            }
+            const md = lines.join("\n") + "\n";
+            console.log(md);
+            if (process.env.GITHUB_STEP_SUMMARY) {
+              fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md);
+            }
+          '
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-ci-reports
+          path: .lighthouseci/
+          if-no-files-found: ignore
