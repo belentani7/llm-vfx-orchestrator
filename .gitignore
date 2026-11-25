@@ -1,34 +1,35 @@
-# Generated OS metadata, Python bytecode, and HTML reports
+# Artefactos de sistema operativo, cachés y compilaciones
 ._*
 __MACOSX/
 Desktop.ini
 desktop.ini
-playwright-report/
+.DS_Store
+Thumbs.db
+.git.corrupt/
 
+# Dependencias y salidas de build web
 node_modules/
 dist/
-.env
-*.log
-.DS_Store
+build/
+.next/
+out/
+.turbo/
+playwright-report/
+
+# Python: entornos virtuales, bytecode y cachés de herramientas
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+coverage/
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 .cache/
 
-# secretos — añadido por la auditoría; revisar y ajustar
-.env
-.env.*
-!.env.example
-!.env.sample
-*.pem
-*.key
-*.p12
-*.pfx
-*.keystore
-*.jks
-id_rsa
-id_ed25519
-.secrets
-secrets.json
-
-# secretos — añadido por la auditoría; revisar y ajustar
+# Secretos y credenciales locales (nunca versionar)
 .env
 .env.*
 !.env.example
@@ -46,55 +47,11 @@ secrets.json
 .npmrc
 .pypirc
 .user_env
-
-# repo-forge
-build/
-.next/
-out/
-coverage/
-__pycache__/
-*.pyc
-.venv/
-Thumbs.db
-
-# metadatos de desarrollo: locales, no versionados
-.cursor/
-.vscode/
-.aider*
-BIO.md
-REPO.md
-CODE_OF_CONDUCT.md
-CONTRIBUTING.md
-__pycache__/
-*.pyc
-node_modules/
-dist/
-.next/
-# --- higiene universal ---
-node_modules/
-dist/
-build/
-.next/
-out/
-__pycache__/
-*.py[cod]
-.venv/
-venv/
-.env
-.env.*
 *.log
-.DS_Store
-Thumbs.db
-coverage/
-htmlcov/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.turbo/
+
+# Metadatos locales de editores y asistentes
 .cursor/
 .vscode/
 .aider*
 BIO.md
 REPO.md
-CODE_OF_CONDUCT.md
-CONTRIBUTING.md

@@ -1,12 +1,12 @@
 # BELENTANI // VIRTUAL AI INSTRUCTIONS
 
 > Briefing for any AI agent (opencode, claude, etc.) operating inside this node.
-> Signature authority: **belentani.eu** Â· **noiacore.com**.
+> Signature authority: **belentani.eu** · **noiacore.com**.
 
 ## Role
 
 You are an agent inside the BELENTANI ecosystem. This repository is **llm-vfx-orchestrator**,
-axis **AI_TOOL**. You are here to bring it from ~5% to 100% â€” polish, depth and life.
+axis **AI_TOOL**. You are here to bring it from ~5% to 100% — polish, depth and life.
 
 ## Hard rules
 
@@ -22,7 +22,7 @@ axis **AI_TOOL**. You are here to bring it from ~5% to 100% â€” polish, dep
 - Add **shaders / WebGL** visual layers (see `magic/shader.html`).
 - Add **immersive HTML** experiences (see `magic/immersive.html`).
 - Add **lore** and **world-building** (see `magic/lore.md`).
-- Add **procedural sound effects** via WebAudio (see `magic/sfx.html`) â€” no binary audio files.
+- Add **procedural sound effects** via WebAudio (see `magic/sfx.html`) — no binary audio files.
 - Keep everything dependency-free and self-contained unless the repo already has a runtime.
 
 ## Checklist before you finish a task

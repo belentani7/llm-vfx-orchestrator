@@ -1,12 +1,26 @@
 # repo-forge:tareas
-.PHONY: doctor test check all
+PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; elif command -v python3 >/dev/null 2>&1; then echo python3; else echo python; fi)
+
+.PHONY: doctor test lint build audit check all
 
 doctor:
-	python scripts/doctor.py
+	$(PYTHON) scripts/doctor.py
+	node scripts/validate-catalog.mjs
+
+lint:
+	$(PYTHON) -m ruff check .
+	npm run lint
 
 test:
-	python -m unittest discover -s tests -v
+	$(PYTHON) -m pytest -q tests magic/tests site/tests
+	npm test
 
-check: doctor test
+build:
+	npm run build
+
+audit:
+	npm run audit:web
+
+check: doctor lint test build audit
 
 all: check

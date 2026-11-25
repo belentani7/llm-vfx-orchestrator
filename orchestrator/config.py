@@ -210,6 +210,9 @@ class PipelineConfig:
     max_qa_images: int = 4
     vision_max_bytes: int = 4_000_000
     correct_execution_errors: bool = True
+    gpu_hourly_cost_usd: float = 1.20
+    llm_call_cost_usd: float = 0.008
+    max_job_cost_usd: float = 0.0
     store_dir: str = ""
     comfyui: ComfyUIConfig = field(default_factory=ComfyUIConfig)
     llm: LLMConfig = field(default_factory=LLMConfig)
@@ -339,6 +342,12 @@ class PipelineConfig:
             raise ValueError("max_qa_images must be >= 1")
         if self.plateau_patience < 0:
             raise ValueError("plateau_patience must be >= 0")
+        if self.gpu_hourly_cost_usd < 0:
+            raise ValueError("gpu_hourly_cost_usd must be >= 0")
+        if self.llm_call_cost_usd < 0:
+            raise ValueError("llm_call_cost_usd must be >= 0")
+        if self.max_job_cost_usd < 0:
+            raise ValueError("max_job_cost_usd must be >= 0")
         return self
 
     @property
@@ -371,14 +380,17 @@ def _build_llm_config(data: Any) -> LLMConfig:
         return LLMConfig()
     known = {"providers", "fallbacks"}
     sections = {k: v for k, v in data.items() if k not in known}
-    unknown = sorted(set(sections) - set(_PROVIDER_SECTIONS))
-    if unknown:
-        logger.warning("config: ignoring unknown llm providers: %s", ", ".join(unknown))
     providers: dict[str, LLMProviderConfig] = {}
+    invalid: list[str] = []
     for name, raw in sections.items():
         if name in _PROVIDER_SECTIONS:
             continue
+        if not isinstance(raw, dict):
+            invalid.append(name)
+            continue
         providers[name] = _build_dataclass(LLMProviderConfig, resolve_env(raw), owner=f"llm.{name}")
+    if invalid:
+        logger.warning("config: ignoring invalid llm keys: %s", ", ".join(sorted(invalid)))
     explicit = data.get("providers")
     if isinstance(explicit, dict):
         for name, raw in explicit.items():

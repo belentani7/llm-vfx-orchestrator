@@ -1,4 +1,5 @@
-import type { ReactElement } from 'react';
-
-declare const HeroShader: (props: Record<string, unknown>) => ReactElement;
-export default HeroShader;
+export {
+  default,
+  deriveLightingPalette,
+  type HeroShaderProps,
+} from "./HeroShader.tsx";

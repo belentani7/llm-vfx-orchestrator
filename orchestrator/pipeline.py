@@ -519,6 +519,8 @@ class VFPPipeline:
                 result.metrics["worst_score"] = min(
                     [coerce_score(report.get("score", 0)) for report in round_reports] or [0.0]
                 )
+                result.metrics["llm_calls"] = result.metrics.get("llm_calls", 0) + len(round_reports)
+                result.metrics["estimated_cost_usd"] = self._estimate_cost(result)
                 self._persist(result, current, persist)
 
                 if round_reports and all(report.get("degraded") for report in round_reports):
@@ -533,6 +535,15 @@ class VFPPipeline:
                         PipelineState.COMPLETED, f"QA passed with score {round_score:.3f}"
                     )
                     result.status = PipelineState.COMPLETED
+                    break
+
+                if config.max_job_cost_usd > 0 and result.metrics["estimated_cost_usd"] >= config.max_job_cost_usd:
+                    result.escalation_reason = (
+                        f"cost budget exceeded (${result.metrics['estimated_cost_usd']:.4f} "
+                        f">= ${config.max_job_cost_usd:.4f})"
+                    )
+                    machine.transition(PipelineState.ESCALATED, result.escalation_reason)
+                    result.status = PipelineState.ESCALATED
                     break
 
                 if attempt >= budget:
@@ -638,6 +649,8 @@ class VFPPipeline:
         result.metrics["total_correction_s"] = round(
             result.metrics.get("total_correction_s", 0.0) + (time.monotonic() - started), 3
         )
+        result.metrics["llm_calls"] = result.metrics.get("llm_calls", 0) + 1
+        result.metrics["estimated_cost_usd"] = self._estimate_cost(result)
         self._persist(result, corrected, persist)
         return corrected, changed
 
@@ -690,8 +703,20 @@ class VFPPipeline:
 
     def _vision_enabled(self) -> bool:
         role = getattr(self._qa, "role", "qwen")
+        chain = self._config.llm.chain_for(role)
+        if chain:
+            return any(provider.vision for _, provider in chain)
         provider = self._config.llm.get(role)
         return bool(provider and provider.vision) if provider is not None else True
+
+    def _estimate_cost(self, result: PipelineResult) -> float:
+        render_s = float(result.metrics.get("total_render_s", 0.0))
+        llm_calls = float(result.metrics.get("llm_calls", 0.0))
+        if result.kind == "prompt":
+            llm_calls += 1.0
+        gpu_cost = (render_s / 3600.0) * self._config.gpu_hourly_cost_usd
+        llm_cost = llm_calls * self._config.llm_call_cost_usd
+        return round(gpu_cost + llm_cost, 6)
 
     def _persist(self, result: PipelineResult, workflow: dict[str, Any] | None, persist: bool) -> None:
         if not persist or self._store is None:
