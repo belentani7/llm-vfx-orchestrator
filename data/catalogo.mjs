@@ -8,8 +8,8 @@ export const catalogo = {
   "licencia": "MIT",
   "medido": {
     "archivos": 251,
-    "lineas": 23040,
-    "bytes": 862284,
+    "lineas": 23032,
+    "bytes": 862050,
     "html": 17,
     "tests": 16
   },

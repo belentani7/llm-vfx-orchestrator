@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * audit-web.mjs — Auditoría forense de HTML semántico, enlaces internos,
- * privacidad/cero peticiones externas, contraste WCAG 2.2 AA, ciclo de vida WebGL
- * y presupuesto de rendimiento sobre `dist/`.
+ * audit-web.mjs — Auditoría forense de HTML semántico (vía DOM real JSDOM),
+ * enlaces internos, privacidad/cero peticiones externas, contraste WCAG 2.2 AA,
+ * ciclo de vida WebGL y presupuesto de rendimiento sobre `dist/`.
  *
  * Uso:
  *   node scripts/audit-web.mjs            # Informe legible en consola
@@ -13,6 +13,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, extname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
+import { JSDOM } from "jsdom";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const args = new Set(process.argv.slice(2));
@@ -40,28 +41,14 @@ const SKIP_DIRS = new Set([
   "coverage",
 ]);
 
-function walkHtmlFiles(dir, skipSet = SKIP_DIRS) {
+function walkFilesByExt(dir, extension, skipSet = SKIP_DIRS) {
   const results = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     if (skipSet.has(entry.name)) continue;
     const full = join(dir, entry.name);
     if (entry.isDirectory()) {
-      results.push(...walkHtmlFiles(full, skipSet));
-    } else if (entry.isFile() && entry.name.endsWith(".html")) {
-      results.push(full);
-    }
-  }
-  return results.sort();
-}
-
-function walkCssFiles(dir) {
-  const results = [];
-  for (const entry of readdirSync(dir, { withFileTypes: true })) {
-    if (SKIP_DIRS.has(entry.name)) continue;
-    const full = join(dir, entry.name);
-    if (entry.isDirectory()) {
-      results.push(...walkCssFiles(full));
-    } else if (entry.isFile() && entry.name.endsWith(".css")) {
+      results.push(...walkFilesByExt(full, extension, skipSet));
+    } else if (entry.isFile() && entry.name.endsWith(extension)) {
       results.push(full);
     }
   }
@@ -94,6 +81,8 @@ function contrastRatio(fg, bg) {
   return Number(((lighter + 0.05) / (darker + 0.05)).toFixed(2));
 }
 
+const URI_SCHEME_RE = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
+
 const checks = [];
 const errors = [];
 
@@ -102,57 +91,67 @@ function recordCheck(name, ok, detail = "") {
   if (!ok) errors.push(`${name}${detail ? `: ${detail}` : ""}`);
 }
 
-// 1. Auditoría semántica y de enlaces sobre páginas HTML fuente
-const sourceHtmlFiles = walkHtmlFiles(ROOT);
+// 1. Auditoría semántica y de enlaces sobre páginas HTML fuente usando JSDOM
+const sourceHtmlFiles = walkFilesByExt(ROOT, ".html");
 for (const filePath of sourceHtmlFiles) {
   const rel = filePath.slice(ROOT.length + 1);
   const html = readFileSync(filePath, "utf8");
-  const strippedScripts = html
-    .replace(/<script[\s\S]*?<\/script>/gi, "")
-    .replace(/<style[\s\S]*?<\/style>/gi, "");
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
 
-  recordCheck(
-    `${rel}: doctype y lang`,
-    /<!doctype html>/i.test(html) && /<html[^>]+lang=/i.test(html),
-  );
+  const hasDoctype = Boolean(doc.doctype && doc.doctype.name === "html");
+  const hasLang = Boolean(doc.documentElement.getAttribute("lang")?.trim());
+  recordCheck(`${rel}: doctype y lang`, hasDoctype && hasLang);
+
+  const visibleClone = doc.body.cloneNode(true);
+  for (const node of visibleClone.querySelectorAll("script, style")) {
+    node.remove();
+  }
+  const visibleText = visibleClone.textContent || "";
   recordCheck(
     `${rel}: sin JS plano fuera de <script>`,
-    !/\/\*\s*Hero Shader WebGL\s*\*\//.test(strippedScripts),
+    !visibleText.includes("/* Hero Shader WebGL */"),
   );
 
-  const mainCount = (strippedScripts.match(/<main\b/gi) || []).length;
-  // workspace.html monta <main> dinámicamente desde React (#root)
+  const mainCount = doc.querySelectorAll("main").length;
   const validMain =
-    rel === "workspace.html" ? html.includes('id="root"') : mainCount === 1;
+    rel === "workspace.html"
+      ? Boolean(doc.getElementById("root"))
+      : mainCount === 1;
   recordCheck(
     `${rel}: landmark <main> único`,
     validMain,
     `encontrados=${mainCount}`,
   );
 
-  // Verificar ausencia de <a> sin href
-  const anchors = [...strippedScripts.matchAll(/<a\b([^>]*)>/gi)];
-  const missingHref = anchors.filter((m) => !/\bhref\s*=\s*["'][^"']+["']/i.test(m[1]));
+  const anchors = [...doc.querySelectorAll("a")];
+  const missingHref = anchors.filter(
+    (a) => !a.getAttribute("href") || !a.getAttribute("href").trim(),
+  );
   recordCheck(
     `${rel}: todos los <a> tienen href válido`,
     missingHref.length === 0,
     missingHref.length ? `${missingHref.length} sin href` : "",
   );
 
-  // Verificar resolución de enlaces locales href/src
-  const attrMatches = [
-    ...html.matchAll(/\b(?:href|src)\s*=\s*["']([^"']+)["']/gi),
-  ];
+  const resourceTargets = [];
+  for (const el of doc.querySelectorAll("[href], [src]")) {
+    const val = el.getAttribute("href") || el.getAttribute("src") || "";
+    if (val.trim()) resourceTargets.push(val.trim());
+  }
+
   const brokenLocal = [];
-  for (const [, rawTarget] of attrMatches) {
-    if (
-      rawTarget.startsWith("http://") ||
-      rawTarget.startsWith("https://") ||
-      rawTarget.startsWith("mailto:") ||
-      rawTarget.startsWith("data:") ||
-      rawTarget.startsWith("#") ||
-      rawTarget.startsWith("javascript:")
-    ) {
+  const externalBlocking = [];
+  for (const rawTarget of resourceTargets) {
+    if (rawTarget.startsWith("#")) continue;
+    if (URI_SCHEME_RE.test(rawTarget)) {
+      if (
+        /^https?:\/\/(fonts\.googleapis\.com|fonts\.gstatic\.com|cdn\.|unpkg\.com)/i.test(
+          rawTarget,
+        )
+      ) {
+        externalBlocking.push(rawTarget);
+      }
       continue;
     }
     const cleanRel = rawTarget.split("#")[0].split("?")[0];
@@ -164,30 +163,21 @@ for (const filePath of sourceHtmlFiles) {
       brokenLocal.push(rawTarget);
     }
   }
+
   recordCheck(
     `${rel}: enlaces y activos locales existen`,
     brokenLocal.length === 0,
     brokenLocal.join(", "),
   );
-
-  // Verificar cero scripts/fuentes externas bloqueantes
-  const externalAssets = attrMatches
-    .map((m) => m[1])
-    .filter(
-      (u) =>
-        /^https?:\/\/(fonts\.googleapis\.com|fonts\.gstatic\.com|cdn\.|unpkg\.com)/i.test(
-          u,
-        ),
-    );
   recordCheck(
     `${rel}: cero recursos externos bloqueantes`,
-    externalAssets.length === 0,
-    externalAssets.join(", "),
+    externalBlocking.length === 0,
+    externalBlocking.join(", "),
   );
 }
 
 // 2. Auditoría CSS: cero @import remotos y cero z-index desmesurados
-for (const cssPath of walkCssFiles(ROOT)) {
+for (const cssPath of walkFilesByExt(ROOT, ".css")) {
   const rel = cssPath.slice(ROOT.length + 1);
   const css = readFileSync(cssPath, "utf8");
   const hasRemoteImport = /@import\s+url\(["']?https?:\/\//i.test(css);
@@ -202,7 +192,12 @@ const contrastPairs = [
   ["Canon texto secundario (#b8b4ac sobre #05030a)", "#b8b4ac", "#05030a", 4.5],
   ["Canon señal cian (#4de8e0 sobre #05030a)", "#4de8e0", "#05030a", 4.5],
   ["Canon dorado (#d4af37 sobre #05030a)", "#d4af37", "#05030a", 4.5],
-  ["Workspace texto secundario (#a6b4c6 sobre #0e131d)", "#a6b4c6", "#0e131d", 4.5],
+  [
+    "Workspace texto secundario (#a6b4c6 sobre #0e131d)",
+    "#a6b4c6",
+    "#0e131d",
+    4.5,
+  ],
   ["Workspace placeholder (#8ea0b5 sobre #080d15)", "#8ea0b5", "#080d15", 4.5],
   ["Botón primario (#05030a sobre #4de8e0)", "#05030a", "#4de8e0", 4.5],
 ];
@@ -229,10 +224,7 @@ for (const gpuRel of ["hero.js", "src/components/HeroShader.tsx"]) {
     `${gpuRel}: degradación elegante Canvas 2D / CSS`,
     src.includes('getContext("2d")') || src.includes("canvas2d"),
   );
-  recordCheck(
-    `${gpuRel}: sin bug GLSL p.z sobre vec2`,
-    !/\bp\.z\b/.test(src),
-  );
+  recordCheck(`${gpuRel}: sin bug GLSL p.z sobre vec2`, !/\bp\.z\b/.test(src));
 }
 
 // 5. Presupuesto de rendimiento en dist/
